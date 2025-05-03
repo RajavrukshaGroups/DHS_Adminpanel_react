@@ -9,9 +9,8 @@ function App() {
   return (
     <>
     <h1 class="text-3xl font-bold underline">
-    Hello world!
-  </h1>
-  <span className='bg-amber-600'>DHS ADMIN PANEL</span>
+      DHS ADMIN PANEL
+    </h1>
     </>
   )
 }

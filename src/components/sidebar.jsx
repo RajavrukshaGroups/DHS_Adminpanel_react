@@ -83,10 +83,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                 {/* Dashboard Link */}
                 <Link
                   className="flex justify-start items-center px-4 py-3 hover:bg-gray-800 hover:text-gray-400 focus:bg-gray-800 focus:outline-none focus:ring"
-                  to="/addRoomType"
+                  to="/projectLand"
                 >
                   <MdRoomPreferences className="text-lg text-white" />
-                  <span className="mx-4 text-white">Add Rooms Type</span>
+                  <span className="mx-4 text-white">Add Project Land</span>
                 </Link>
               </div>
             </nav>

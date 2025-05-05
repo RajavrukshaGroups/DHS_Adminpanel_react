@@ -1,8 +1,8 @@
 import React from 'react'
 import SidebarComponent from '../components/sidebar'
-function Sidebar() {
+function Sidebar(data) {
   return (
-     <SidebarComponent/>
+     <SidebarComponent {...data}/>
   )
 }
 

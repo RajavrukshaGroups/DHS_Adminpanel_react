@@ -6,13 +6,16 @@ import AdminLogin from "./pages/adminLogin";
 import Dashboard from "./pages/dashboard";
 import Sidebar from "./pages/sidebar";
 import PrivateRoute from "./components/privateRoute";
+import AddLandDetails from "./Components/AddLandDetails/addLandDet";
+import MainProjLand from "./MainComp/ProLand/proLand";
+
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   return (
     <Router>
       <MainLayout sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-      <Toaster position="top-right" reverseOrder={false} />
+      <Toaster position="top-right" toastOptions={{success: { style: { background: "#22c55e", color: "white", },}, error: { style: { background: "#ef4444", color: "white", }, }, }}/>
     </Router>
   );
 }
@@ -38,10 +41,36 @@ function MainLayout({ sidebarOpen, setSidebarOpen }) {
               </PrivateRoute>
             }
           />
+          <Route
+            path="/projectLand"
+            element={
+              <PrivateRoute>
+                <MainProjLand />
+              </PrivateRoute>
+            }
+          />
         </Routes>
+        <Toaster
+        position="top-right"
+        toastOptions={{
+          success: {
+            style: {
+              background: "#22c55e",
+              color: "white",
+            },
+          },
+          error: {
+            style: {
+              background: "#ef4444",
+              color: "white",
+            },
+          },
+        }}
+      />
       </div>
     </div>
   );
 }
+
 
 export default App;

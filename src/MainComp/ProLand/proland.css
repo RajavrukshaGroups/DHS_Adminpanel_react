@@ -1,0 +1,11 @@
+/* .add-new-proland {
+    background-color: oklch(0.92 0.04 252.1);
+  } */
+
+.add-new-proland {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+  background-color: oklch(0.92 0.04 252.1);
+}

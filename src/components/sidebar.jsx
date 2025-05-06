@@ -20,50 +20,19 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   );
 
   return (
-    <div className="relative flex items-start">
-      {/* Toggle Button */}
-      <div className="fixed top-0 z-40 transition-all duration-300">
-        <div className="flex justify-end">
-          <button
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-            className={`transition-all duration-300 w-8 p-1 mx-3 my-2 rounded-full focus:outline-none ${
-              sidebarOpen ? "hover:bg-gray-200" : "hover:bg-gray-300"
-            }`}
-          >
-            <svg
-              viewBox="0 0 20 20"
-              className={`w-6 h-6 fill-current text-gray-600`}
-            >
-              {!sidebarOpen ? (
-                <path
-                  fillRule="evenodd"
-                  d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM9 15a1 1 0 011-1h6a1 1 0 110 2h-6a1 1 0 01-1-1z"
-                  clipRule="evenodd"
-                />
-              ) : (
-                <path
-                  fillRule="evenodd"
-                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                  clipRule="evenodd"
-                />
-              )}
-            </svg>
-          </button>
-        </div>
-      </div>
-
+    <div className="relative">
       {/* Sidebar */}
       <div
-        className={`fixed top-0 bottom-0 left-0 z-30 h-full min-h-screen overflow-y-auto overflow-x-hidden text-black transition-all duration-300 ease-in-out bg-white shadow-lg ${
+        className={`fixed top-16 bottom-0 left-0 z-30  h-full min-h-screen overflow-y-auto overflow-x-hidden text-black transition-all duration-300 ease-in-out bg-white shadow-lg ${
           sidebarOpen ? "w-72" : "w-0"
         }`}
       >
         <div className="flex flex-col items-stretch justify-between h-full">
           {/* Header */}
           <div className="flex flex-col flex-shrink-0 w-full">
-            <div className="flex items-center justify-center px-8 py-4 text-center border-b">
+            <div className="flex items-center justify-center px-8 py-4 text-center">
               <a href="#" className="text-xl font-semibold text-black">
-                My App
+                
               </a>
             </div>
 
@@ -101,7 +70,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                 <div className="ml-8 mt-2 space-y-3 text-[15px]">
                   <Link
                     to="/projectLand"
-                    className={`flex items-center px-3 py-2 rounded-lg ${
+                    className={`no-underline flex items-center px-3 py-2 rounded-lg ${
                       location.pathname === "/projectLand"
                         ? "bg-blue-100 text-blue-700"
                         : "text-black hover:bg-gray-100"
@@ -170,6 +139,35 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
             </nav>
           </div>
         </div>
+      </div>
+
+      {/* Toggle Button */}
+      <div className="fixed top-20 left-0 z-40 transition-all duration-300">
+        <button
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          className={`transition-all duration-300 pt-4 w-8 p-1 mx-3 my-2 rounded-full focus:outline-none ${
+            sidebarOpen ? "hover:bg-gray-200" : "hover:bg-gray-300"
+          }`}
+        >
+          <svg
+            viewBox="0 0 20 20"
+            className={`w-6 h-6 fill-current text-gray-600`}
+          >
+            {!sidebarOpen ? (
+              <path
+                fillRule="evenodd"
+                d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM9 15a1 1 0 011-1h6a1 1 0 110 2h-6a1 1 0 01-1-1z"
+                clipRule="evenodd"
+              />
+            ) : (
+              <path
+                fillRule="evenodd"
+                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                clipRule="evenodd"
+              />
+            )}
+          </svg>
+        </button>
       </div>
     </div>
   );

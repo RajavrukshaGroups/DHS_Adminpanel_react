@@ -6,6 +6,10 @@ import {
   FaChevronUp,
   FaPlusCircle,
   FaListAlt,
+  FaRulerCombined,
+  FaMapMarkedAlt,
+  FaClipboardList,
+  FaRegEye
 } from "react-icons/fa";
 import { MdRoomPreferences } from "react-icons/md";
 
@@ -107,6 +111,17 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     <span className="ml-3">Add Project Details</span>
                   </Link>
                   <Link
+                    to="/addprojectstatus"
+                    className={`flex items-center px-3 py-2 rounded-lg ${
+                      location.pathname === "/addprojectstatus"
+                        ? "bg-blue-100 text-blue-700"
+                        : "text-black hover:bg-gray-100"
+                    }`}
+                  >
+                    <FaClipboardList className="text-base" />
+                    <span className="ml-3">Add Project Status</span>
+                  </Link>
+                  <Link
                     to="/viewProjects"
                     className={`flex items-center px-3 py-2 rounded-lg ${
                       location.pathname === "/viewProjects"
@@ -116,6 +131,39 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                   >
                     <FaListAlt className="text-base" />
                     <span className="ml-3">View Projects</span>
+                  </Link>
+                  <Link
+                    to="/plotDimensions"
+                    className={`flex items-center px-3 py-2 rounded-lg ${
+                      location.pathname === "/plotDimensions"
+                        ? "bg-blue-100 text-blue-700"
+                        : "text-black hover:bg-gray-100"
+                    }`}
+                  >
+                    <FaRulerCombined className="text-base" />
+                    <span className="ml-3">Plot Dimensions</span>
+                  </Link>
+                  <Link
+                    to="/viewlanddetails"
+                    className={`flex items-center px-3 py-2 rounded-lg ${
+                      location.pathname === "/viewlanddetails"
+                        ? "bg-blue-100 text-blue-700"
+                        : "text-black hover:bg-gray-100"
+                    }`}
+                  >
+                    <FaMapMarkedAlt className="text-base" />
+                    <span className="ml-3">View Land Details</span>
+                  </Link>
+                  <Link
+                    to="/viewprojectstatus"
+                    className={`flex items-center px-3 py-2 rounded-lg ${
+                      location.pathname === "/viewprojectstatus"
+                        ? "bg-blue-100 text-blue-700"
+                        : "text-black hover:bg-gray-100"
+                    }`}
+                  >
+                    <FaRegEye className="text-base" />
+                    <span className="ml-3">View Project Status</span>
                   </Link>
                 </div>
               )}

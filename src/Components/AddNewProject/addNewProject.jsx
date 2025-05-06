@@ -168,7 +168,7 @@ const AddNewProject = ({ onProjectAdded }) => {
                 !formData.dimensions[formData.dimensions.length - 1].breadth)
             }
           >
-            + Add Dimension
+            + Add Plot Dimension
           </button>
         </div>
 

@@ -117,6 +117,7 @@ function MainLayout({ sidebarOpen, setSidebarOpen }) {
               </PrivateRoute>
             }
           />
+          
           <Route
             path="/viewprojectstatus"
             element={

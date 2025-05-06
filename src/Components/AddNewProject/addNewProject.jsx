@@ -96,7 +96,7 @@ const AddNewProject = ({ onProjectAdded }) => {
         className="bg-white p-8 rounded-xl shadow-md w-full"
         onSubmit={handleSubmit}
       >
-        <h1 className="text-2xl font-bold mb-6">Add New Project Details</h1>
+        <h2 className="text-2xl font-bold mb-6">Add New Project Details</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
           <div>

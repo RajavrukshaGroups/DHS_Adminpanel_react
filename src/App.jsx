@@ -13,7 +13,11 @@ import Sidebar from "./pages/sidebar";
 import PrivateRoute from "./components/privateRoute";
 import AddLandDetails from "./Components/AddLandDetails/addLandDet";
 import MainProjLand from "./MainComp/ProLand/proLand";
-import ViewProjects from "./pages/viewProjects";
+import ViewProjects from "./pages/Projects/viewProjects";
+import AvailablePlotDimension from "./pages/Projects/availablePlotDimension";
+import ViewLandDetails from "./pages/Projects/viewLandDetails";
+import AddProjectStatus from "./pages/Projects/addProjectStatus";
+import ViewProjectStatus from "./pages/Projects/viewProjectStatus";
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -66,6 +70,38 @@ function MainLayout({ sidebarOpen, setSidebarOpen }) {
             element={
               <PrivateRoute>
                 <ViewProjects />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/plotDimensions"
+            element={
+              <PrivateRoute>
+                <AvailablePlotDimension />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/viewlanddetails"
+            element={
+              <PrivateRoute>
+                <ViewLandDetails />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/addprojectstatus"
+            element={
+              <PrivateRoute>
+                <AddProjectStatus />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/viewprojectstatus"
+            element={
+              <PrivateRoute>
+                <ViewProjectStatus />
               </PrivateRoute>
             }
           />

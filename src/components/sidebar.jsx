@@ -1,13 +1,20 @@
-import React from "react";
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { CIcon } from "@coreui/icons-react";
-import { cilList, cilShieldAlt } from "@coreui/icons";
-import { FaHome, FaBed, FaPlusSquare, FaListAlt } from "react-icons/fa";
+import React, { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import {
+  FaHome,
+  FaChevronDown,
+  FaChevronUp,
+  FaPlusCircle,
+  FaListAlt,
+} from "react-icons/fa";
 import { MdRoomPreferences } from "react-icons/md";
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
-  console.log("sidebaropen", sidebarOpen);
+  const location = useLocation();
+  const [projectOpen, setProjectOpen] = useState(
+    location.pathname.startsWith("/project")
+  );
+
   return (
     <div className="relative flex items-start">
       {/* Toggle Button */}
@@ -16,14 +23,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
             className={`transition-all duration-300 w-8 p-1 mx-3 my-2 rounded-full focus:outline-none ${
-              sidebarOpen ? "hover:bg-gray-700" : "hover:bg-gray-300"
+              sidebarOpen ? "hover:bg-gray-200" : "hover:bg-gray-300"
             }`}
           >
             <svg
               viewBox="0 0 20 20"
-              className={`w-6 h-6 fill-current ${
-                sidebarOpen ? "text-gray-300" : "text-gray-600"
-              }`}
+              className={`w-6 h-6 fill-current text-gray-600`}
             >
               {!sidebarOpen ? (
                 <path
@@ -45,50 +50,75 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
 
       {/* Sidebar */}
       <div
-        className={`fixed top-0 bottom-0 left-0 z-30 h-full min-h-screen overflow-y-auto overflow-x-hidden text-gray-400 transition-all duration-300 ease-in-out bg-gray-900 shadow-lg ${
-          sidebarOpen ? "w-56" : "w-0"
+        className={`fixed top-0 bottom-0 left-0 z-30 h-full min-h-screen overflow-y-auto overflow-x-hidden text-black transition-all duration-300 ease-in-out bg-white shadow-lg ${
+          sidebarOpen ? "w-72" : "w-0"
         }`}
       >
         <div className="flex flex-col items-stretch justify-between h-full">
           {/* Header */}
           <div className="flex flex-col flex-shrink-0 w-full">
-            <div className="flex items-center justify-center px-8 py-3 text-center">
-              <a href="#" className="text-lg leading-normal text-gray-200">
+            <div className="flex items-center justify-center px-8 py-4 text-center border-b">
+              <a href="#" className="text-xl font-semibold text-black">
                 My App
               </a>
             </div>
 
             {/* Navigation */}
-            <nav>
-              <div
-                className={`flex-grow md:block md:overflow-y-auto overflow-x-hidden transition-opacity duration-300 ${
-                  sidebarOpen ? "opacity-100" : "opacity-0"
+            <nav className="px-4 py-6 space-y-5 text-[16px] font-medium">
+              {/* Dashboard Link */}
+              <Link
+                to="/"
+                className={`flex items-center px-4 py-3 rounded-lg ${
+                  location.pathname === "/"
+                    ? "bg-blue-100 text-blue-700"
+                    : "text-black hover:bg-gray-100"
                 }`}
               >
-                {/* Dashboard Link */}
-                <Link
-                  className="flex justify-start items-center px-4 py-3 hover:bg-gray-800 hover:text-gray-400 focus:bg-gray-800 focus:outline-none focus:ring"
-                  to="/"
-                >
-                  <FaHome className="text-lg text-white" />
-                  <span className="mx-4 text-white">Dashboard</span>
-                </Link>
-              </div>
+                <FaHome className="text-lg" />
+                <span className="ml-4">Dashboard</span>
+              </Link>
 
-              <div
-                className={`flex-grow md:block md:overflow-y-auto overflow-x-hidden transition-opacity duration-300 ${
-                  sidebarOpen ? "opacity-100" : "opacity-0"
+              {/* Project Menu */}
+              <button
+                onClick={() => setProjectOpen(!projectOpen)}
+                className={`flex items-center w-full px-4 py-3 rounded-lg ${
+                  location.pathname === "/project"
+                    ? "bg-blue-100 text-blue-700"
+                    : "text-black hover:bg-gray-100"
                 }`}
               >
-                {/* Dashboard Link */}
-                <Link
-                  className="flex justify-start items-center px-4 py-3 hover:bg-gray-800 hover:text-gray-400 focus:bg-gray-800 focus:outline-none focus:ring"
-                  to="/projectLand"
-                >
-                  <MdRoomPreferences className="text-lg text-white" />
-                  <span className="mx-4 text-white">Add Project Land</span>
-                </Link>
-              </div>
+                <MdRoomPreferences className="text-lg" />
+                <span className="ml-4 flex-grow text-left">Project</span>
+                {projectOpen ? <FaChevronUp /> : <FaChevronDown />}
+              </button>
+
+              {/* Project Sub-Menu */}
+              {projectOpen && (
+                <div className="ml-8 mt-2 space-y-3 text-[15px]">
+                  <Link
+                    to="/projectLand"
+                    className={`flex items-center px-3 py-2 rounded-lg ${
+                      location.pathname === "/projectLand"
+                        ? "bg-blue-100 text-blue-700"
+                        : "text-black hover:bg-gray-100"
+                    }`}
+                  >
+                    <FaPlusCircle className="text-base" />
+                    <span className="ml-3">Add Project Details</span>
+                  </Link>
+                  <Link
+                    to="/viewProjects"
+                    className={`flex items-center px-3 py-2 rounded-lg ${
+                      location.pathname === "/viewProjects"
+                        ? "bg-blue-100 text-blue-700"
+                        : "text-black hover:bg-gray-100"
+                    }`}
+                  >
+                    <FaListAlt className="text-base" />
+                    <span className="ml-3">View Projects</span>
+                  </Link>
+                </div>
+              )}
             </nav>
           </div>
         </div>

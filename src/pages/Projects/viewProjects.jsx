@@ -78,7 +78,7 @@ const ViewProjects = () => {
         <div className="overflow-x-auto">
           <table className="w-full table-auto border-collapse">
             <thead>
-              <tr className="bg-gray-200">
+              <tr className="bg-gray-200 text-center">
                 <th className="border px-4 py-2">S.No</th>
                 <th className="border px-4 py-2">Project Name</th>
                 <th className="border px-4 py-2">Short Code</th>

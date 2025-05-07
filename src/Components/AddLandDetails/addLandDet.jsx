@@ -2,83 +2,39 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-const AddLandDetails = ({refreshKey}) => {
-  const [project, setProject] = useState("");
+const AddLandDetails = ({ refreshKey }) => {
   const [projectOptions, setProjectOptions] = useState([]);
+  const [projectName, setProjectName] = useState("");
   const [dimensions, setDimensions] = useState([]);
-  const [selectedDimensionId, setSelectedDimensionId] = useState("");
+  const [dimensionId, setDimensionId] = useState("");
   const [propertySize, setPropertySize] = useState("");
   const [pricePerSqft, setPricePerSqft] = useState("");
   const [propertyCost, setPropertyCost] = useState("");
 
-  const fetchProjects = async () => {
-    try {
-      const res = await axios.get("http://localhost:3000/project/all-projects");
-      setProjectOptions(res.data.data || []);
-    } catch (error) {
-      console.error("Error fetching projects:", error);
-      toast.error("Failed to load project options");
-    }
-  };
-
-  // Fetch project names
   useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const res = await axios.get(
+          "http://localhost:3000/project/all-projects"
+        );
+        setProjectOptions(res.data.data || []);
+      } catch (err) {
+        console.error(err);
+        toast.error("Failed to load project options");
+      }
+    };
+
     fetchProjects();
   }, [refreshKey]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!project || !selectedDimensionId || !propertySize || !pricePerSqft) {
-      toast.error("Please fill in all fields!");
-      return;
-    }
-
-    try {
-      const res = await axios.patch(
-        "http://localhost:3000/project/update-land-details",
-        {
-          projectName: project,
-          dimensionId: selectedDimensionId,
-          pricePerSqft: parseFloat(pricePerSqft),
-          propertyCost: parseFloat(propertyCost.replace(/,/g, "")), // Remove commas before sending
-        }
-      );
-      toast.success(res.data.message);
-
-      setProject("");
-      setSelectedDimensionId("");
-      setPropertySize("");
-      setPricePerSqft("");
-      setPropertyCost("");
-      setDimensions([]);
-
-      fetchProjects();
-    } catch (err) {
-      console.error("Error saving land details:", err);
-      toast.error("Failed to save land details!");
-    }
-  };
-
-  const handleCostCalculation = (size, price) => {
-    const cost = parseFloat(size) * parseFloat(price);
-    return isNaN(cost)
-      ? ""
-      : new Intl.NumberFormat("en-IN", {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        }).format(cost);
-  };
-
   const handleProjectChange = (value) => {
-    setProject(value);
-    setSelectedDimensionId("");
+    setProjectName(value);
+    setDimensionId("");
     setPropertySize("");
-    setPropertyCost("");
     setPricePerSqft("");
+    setPropertyCost("");
 
     const selected = projectOptions.find((p) => p.projectName === value);
-
     if (selected?.dimensions?.length) {
       setDimensions(selected.dimensions);
     } else {
@@ -86,16 +42,16 @@ const AddLandDetails = ({refreshKey}) => {
     }
   };
 
-  const handleDimensionChange = (dimensionId) => {
-    setSelectedDimensionId(dimensionId);
-    const dim = dimensions.find((d) => d._id === dimensionId);
-    if (dim) {
-      const size = dim.length * dim.breadth;
+  const handleDimensionChange = (id) => {
+    setDimensionId(id);
+
+    const selectedDim = dimensions.find((dim) => dim._id === id);
+    if (selectedDim) {
+      const size = selectedDim.length * selectedDim.breadth;
       setPropertySize(size);
 
-      // Use pricePerSqft from dimension if available
-      if (dim.pricePerSqft) {
-        setPricePerSqft(dim.pricePerSqft.toString());
+      if (selectedDim.pricePerSqft) {
+        setPricePerSqft(selectedDim.pricePerSqft.toString());
       } else {
         setPricePerSqft("");
       }
@@ -107,33 +63,81 @@ const AddLandDetails = ({refreshKey}) => {
 
   useEffect(() => {
     if (propertySize && pricePerSqft) {
-      const cost = handleCostCalculation(propertySize, pricePerSqft);
-      setPropertyCost(cost);
+      const cost = parseFloat(propertySize) * parseFloat(pricePerSqft);
+      const formatted = isNaN(cost)
+        ? ""
+        : new Intl.NumberFormat("en-IN", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          }).format(cost);
+      setPropertyCost(formatted);
     } else {
       setPropertyCost("");
     }
   }, [propertySize, pricePerSqft]);
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!projectName || !dimensionId || !pricePerSqft) {
+      toast.error("Please fill all the fields!");
+      return;
+    }
+
+    try {
+      const res = await axios.patch(
+        "http://localhost:3000/project/update-land-details",
+        {
+          projectName,
+          dimensionId,
+          pricePerSqft: parseFloat(pricePerSqft),
+          propertyCost: parseFloat(propertyCost.replace(/,/g, "")),
+        }
+      );
+
+      toast.success(res.data.message || "Land details updated!");
+
+      const refreshed = await axios.get(
+        "http://localhost:3000/project/all-projects"
+      );
+      setProjectOptions(refreshed.data.data || []);
+
+      // Reset fields
+      setProjectName("");
+      setDimensions([]);
+      setDimensionId("");
+      setPropertySize("");
+      setPricePerSqft("");
+      setPropertyCost("");
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to update land details");
+    }
+  };
+
   return (
-    <div className="w-full max-w-4xl p-4">
+    <div className="w-full max-w-4xl p-4 -mt-10">
       <form
         className="bg-white p-8 rounded-xl shadow-md w-full"
         onSubmit={handleSubmit}
       >
-        <h2 className="text-2xl font-semibold mb-6">Add Land Details</h2>
+        {/* <h2 className="text-2xl font-semibold mb-6"> */}
+        <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-center">
+          Add Land Details
+        </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Project Dropdown */}
           <div>
             <label className="block mb-2 font-medium">Project</label>
             <select
-              value={project}
-              onChange={(e) => handleProjectChange(e.target.value)}
               className="w-full p-3 border rounded"
+              value={projectName}
+              onChange={(e) => handleProjectChange(e.target.value)}
             >
-              <option value="">Choose an option</option>
-              {projectOptions.map((proj, i) => (
-                <option key={i} value={proj.projectName}>
+              <option value="">Choose a project</option>
+              {projectOptions.map((proj) => (
+                <option key={proj._id} value={proj.projectName}>
                   {proj.projectName.replace(/(^|\s)\S/g, (l) =>
                     l.toUpperCase()
                   )}
@@ -144,11 +148,11 @@ const AddLandDetails = ({refreshKey}) => {
 
           {/* Dimension Dropdown */}
           <div>
-            <label className="block mb-2 font-medium">Property Size</label>
+            <label className="block mb-2 font-medium">Dimension</label>
             <select
-              value={selectedDimensionId}
-              onChange={(e) => handleDimensionChange(e.target.value)}
               className="w-full p-3 border rounded"
+              value={dimensionId}
+              onChange={(e) => handleDimensionChange(e.target.value)}
               disabled={!dimensions.length}
             >
               <option value="">Choose a dimension</option>
@@ -162,38 +166,37 @@ const AddLandDetails = ({refreshKey}) => {
 
           {/* Price Input */}
           <div>
-            <label className="block mb-2 font-medium">
-              Per Sqft Property Price
-            </label>
+            <label className="block mb-2 font-medium">Per Sqft Price</label>
             <input
               type="number"
+              className="w-full p-3 border rounded"
+              placeholder="Enter price per sqft"
               value={pricePerSqft}
               onChange={(e) => setPricePerSqft(e.target.value)}
-              className="w-full p-3 border rounded"
-              placeholder="Enter per sqft property price"
             />
           </div>
 
           {/* Cost Output */}
           <div>
-            <label className="block mb-2 font-medium">
-              Selected Property Cost
-            </label>
+            <label className="block mb-2 font-medium">Calculated Cost</label>
             <input
               type="text"
+              className="w-full p-3 border rounded bg-gray-100"
               value={propertyCost}
               disabled
-              className="w-full p-3 border rounded bg-gray-100"
             />
           </div>
-        </div>
 
-        <button
-          type="submit"
-          className="mt-6 px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-        >
-          Submit
-        </button>
+          {/* Submit Button Aligned with Grid */}
+          <div className="md:col-span-2">
+            <button
+              type="submit"
+              className="w-full px-6 py-3 bg-blue-600 text-white rounded hover:bg-blue-700"
+            >
+              Submit
+            </button>
+          </div>
+        </div>
       </form>
     </div>
   );

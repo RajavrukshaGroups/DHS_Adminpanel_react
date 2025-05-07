@@ -17,6 +17,7 @@ import ViewLandDetails from "./pages/Projects/viewLandDetails";
 import AddProjectStatus from "./pages/Projects/addProjectStatus";
 import ViewProjectStatus from "./pages/Projects/viewProjectStatus";
 import Navbar from "./Components/navbar";
+import EditViewProjectStatus from "./pages/Projects/editViewProjectStatus";
 
 function AppWrapper() {
   return (
@@ -35,10 +36,7 @@ function App() {
     <div className="flex flex-col min-h-screen">
       {!isLoginPage && <Navbar />}
       <div className={`flex flex-1 ${!isLoginPage ? "pt-[100px]" : ""}`}>
-        <MainLayout
-          sidebarOpen={sidebarOpen}
-          setSidebarOpen={setSidebarOpen}
-        />
+        <MainLayout sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
       </div>
 
       <Toaster
@@ -117,12 +115,20 @@ function MainLayout({ sidebarOpen, setSidebarOpen }) {
               </PrivateRoute>
             }
           />
-          
+
           <Route
             path="/viewprojectstatus"
             element={
               <PrivateRoute>
                 <ViewProjectStatus />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/editviewprojectstatus/:id"
+            element={
+              <PrivateRoute>
+                <EditViewProjectStatus />
               </PrivateRoute>
             }
           />

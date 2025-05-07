@@ -38,13 +38,16 @@ const AvailablePlotDimension = () => {
         <option value="" disabled>
           Select a Project
         </option>
-        {listProjects.map((project) => (
+        {listProjects.map((project, index) => (
           <option
-            key={project.shortCode}
+            key={index}
             value={project.projectName}
             className="capitalize"
           >
-            {project.projectName}
+            {project.projectName
+              .split(" ")
+              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+              .join(" ")}
           </option>
         ))}
       </select>
@@ -53,7 +56,7 @@ const AvailablePlotDimension = () => {
         <div className="bg-white rounded shadow p-4 w-full max-w-3xl">
           <table className="w-full border-collapse">
             <thead>
-              <tr className="bg-gray-100">
+              <tr className="bg-gray-100 text-center">
                 <th className="border p-2">S.No</th>
                 <th className="border p-2">Length</th>
                 <th className="border p-2">Breadth</th>

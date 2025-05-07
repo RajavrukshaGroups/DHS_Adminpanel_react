@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Puff } from "react-loader-spinner";
 
-const AddProjectStatus = () => {
+const EditProjectStatus = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const fileInputRef = useRef();
   const [listProjects, setListProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState("");
   const [statusDate, setStatusDate] = useState("");
@@ -12,11 +15,12 @@ const AddProjectStatus = () => {
   const [statusDetails, setStatusDetails] = useState("");
   const [files, setFiles] = useState([]);
   const [filePreviews, setFilePreviews] = useState([]);
+  const [existingFiles, setExistingFiles] = useState([]); // in case you're showing previous images
   const [sendSMS, setSendSMS] = useState(false);
   const [sendEmail, setSendEmail] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const fileInputRef = useRef();
-  const navigate = useNavigate();
+
+  //   console.log("existing files",existingFiles)
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -29,8 +33,34 @@ const AddProjectStatus = () => {
         console.error("Error fetching projects", error);
       }
     };
+
+    const fetchStatus = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:3000/project/indprojectstatus/${id}`
+        );
+        if (res.data.success) {
+          const data = res.data.data;
+          setSelectedProject(data.projectName);
+          setStatusDate(data.statusDate.slice(0, 10));
+          setStatusTitle(data.statusTitle);
+          setStatusDetails(data.statusDetails);
+          setSendSMS(data.sendSMS || false);
+          setSendEmail(data.sendEmail || false);
+          setExistingFiles(data.image || []);
+          console.log("data", data);
+        } else {
+          toast.error("Project status not found.");
+        }
+      } catch (error) {
+        toast.error("Error fetching project status.");
+        console.error(error);
+      }
+    };
+
     fetchProjects();
-  }, []);
+    if (id) fetchStatus();
+  }, [id]);
 
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
@@ -48,14 +78,20 @@ const AddProjectStatus = () => {
     setFilePreviews(updatedPreviews);
   };
 
+  const removeExistingImage = (index) => {
+    const updatedExistingFiles = [...existingFiles];
+    updatedExistingFiles.splice(index, 1);
+    setExistingFiles(updatedExistingFiles);
+  };
+
   const handleChooseImage = () => fileInputRef.current.click();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!selectedProject) return toast.error("Project Name is required.");
-    if (!statusDate) return toast.error("Status Date is required.");
-    if (!statusTitle) return toast.error("Status Title is required.");
-    if (!statusDetails) return toast.error("Status Details are required.");
+    if (!selectedProject || !statusDate || !statusTitle || !statusDetails) {
+      toast.error("All fields are required");
+      return;
+    }
 
     setIsLoading(true);
     const formData = new FormData();
@@ -65,29 +101,24 @@ const AddProjectStatus = () => {
     formData.append("statusDetails", statusDetails);
     formData.append("sendSMS", sendSMS);
     formData.append("sendEmail", sendEmail);
+
+    // Append retained existing files (Cloudinary URLs)
+    existingFiles.forEach((url) => formData.append("existingImages", url));
+
+    // Append new files
     files.forEach((file) => formData.append("files", file));
 
     try {
-      const response = await axios.post(
-        "http://localhost:3000/project/project-status",
+      const res = await axios.put(
+        `http://localhost:3000/project/update-indprojectstatus/${id}`,
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
-      toast.success("Project status added successfully!");
-      setSelectedProject("");
-      setStatusDate("");
-      setStatusTitle("");
-      setStatusDetails("");
-      setFiles([]);
-      setFilePreviews([]);
-      setSendSMS(false);
-      setSendEmail(false);
+      toast.success("Project status updated successfully!");
       navigate("/viewprojectstatus");
     } catch (error) {
-      toast.error(
-        error.response?.data?.message || "Error submitting project status"
-      );
-      console.error("Submit error:", error);
+      console.error(error);
+      toast.error(error.response?.data?.message || "Update failed");
     } finally {
       setIsLoading(false);
     }
@@ -96,7 +127,7 @@ const AddProjectStatus = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-blue-50 px-4">
       <div className="w-full max-w-4xl p-6 bg-white rounded-lg shadow-md mt-6">
-        <h1 className="text-2xl font-bold mb-8">Add Project Status</h1>
+        <h1 className="text-2xl font-bold mb-8">Edit Project Status</h1>
         <form
           onSubmit={handleSubmit}
           className="grid grid-cols-1 md:grid-cols-2 gap-6"
@@ -112,10 +143,7 @@ const AddProjectStatus = () => {
               <option value="">Choose an option</option>
               {listProjects.map((project, index) => (
                 <option key={index} value={project.projectName}>
-                  {project.projectName
-                    .split(" ")
-                    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                    .join(" ")}
+                  {project.projectName}
                 </option>
               ))}
             </select>
@@ -149,7 +177,6 @@ const AddProjectStatus = () => {
             <textarea
               value={statusDetails}
               onChange={(e) => setStatusDetails(e.target.value)}
-              placeholder="Enter status details"
               rows={4}
               className="w-full border rounded px-3 py-2"
             />
@@ -177,23 +204,51 @@ const AddProjectStatus = () => {
               onChange={handleFileChange}
               className="hidden"
             />
-            {filePreviews.length > 0 && (
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-3">
-                {filePreviews.map((src, i) => {
-                  const file = files[i];
-                  const isPDF = file.type === "application/pdf";
 
-                  return (
+            {/* {existingFiles.length > 0 && (
+              <div className="mt-3">
+                <label className="block mb-1 font-semibold">
+                  Previously Uploaded Files
+                </label>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-3">
+                  {existingFiles.map((fileUrl, i) => (
                     <div
                       key={i}
                       className="relative w-full h-24 rounded overflow-hidden border"
                     >
-                      {/* Render PDF preview */}
-                      {isPDF ? (
+                      <img
+                        src={fileUrl}
+                        alt={`Existing ${i}`}
+                        className="w-full h-full object-cover"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removeExistingImage(i)}
+                        className="absolute top-1 right-1 bg-red-500 text-white text-xs px-1 rounded"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )} */}
+            {existingFiles.length > 0 && (
+              <div className="mt-3">
+                <label className="block mb-1 font-semibold">
+                  Previously Uploaded Files
+                </label>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-3">
+                  {existingFiles.map((fileUrl, i) => (
+                    <div
+                      key={i}
+                      className="relative w-full h-24 rounded overflow-hidden border flex items-center justify-center bg-gray-100"
+                    >
+                      {fileUrl.toLowerCase().endsWith(".pdf") ? (
                         <div className="flex flex-col items-center justify-center h-full text-center text-sm text-gray-700 p-2">
                           <p>📄 PDF File</p>
                           <a
-                            href={src}
+                            href={fileUrl}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="underline text-blue-600"
@@ -203,28 +258,75 @@ const AddProjectStatus = () => {
                         </div>
                       ) : (
                         <img
-                          src={src}
-                          alt={`Preview ${i}`}
+                          src={fileUrl}
+                          alt={`Existing ${i}`}
                           className="w-full h-full object-cover"
                         />
                       )}
-                      {/* Remove button */}
                       <button
                         type="button"
-                        onClick={() => removeImage(i)}
+                        onClick={() => removeExistingImage(i)}
                         className="absolute top-1 right-1 bg-red-500 text-white text-xs px-1 rounded"
                       >
                         ✕
                       </button>
                     </div>
-                  );
-                })}
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {filePreviews.length > 0 && (
+              <div className="mt-3">
+                <label className="block mb-1 font-semibold">
+                  Newly Added Files
+                </label>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-3">
+                  {filePreviews.map((preview, i) => {
+                    const file = files[i];
+                    const isPDF = file.type === "application/pdf";
+
+                    return (
+                      <div
+                        key={i}
+                        className="relative w-full h-24 rounded overflow-hidden border flex items-center justify-center bg-gray-100"
+                      >
+                        {isPDF ? (
+                          <div className="flex flex-col items-center justify-center h-full text-center text-sm text-gray-700 p-2">
+                            <p>📄 PDF File</p>
+                            <a
+                              href={preview}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="underline text-blue-600"
+                            >
+                              View PDF
+                            </a>
+                          </div>
+                        ) : (
+                          <img
+                            src={preview}
+                            alt={`Preview ${i}`}
+                            className="w-full h-full object-cover"
+                          />
+                        )}
+
+                        <button
+                          type="button"
+                          onClick={() => removeImage(i)}
+                          className="absolute top-1 right-1 bg-red-500 text-white text-xs px-1 rounded"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             )}
           </div>
 
-          {/* Notifications */}
-          {/* <div className="md:col-span-2 space-y-2"> */}
+          {/* Notification Checkboxes */}
           <div className="md:col-span-2 flex flex-col gap-2">
             <label className="flex items-center space-x-2">
               <input
@@ -254,7 +356,7 @@ const AddProjectStatus = () => {
               {isLoading ? (
                 <Puff color="#fff" height={24} width={24} />
               ) : (
-                "Submit"
+                "Update"
               )}
             </button>
           </div>
@@ -264,4 +366,4 @@ const AddProjectStatus = () => {
   );
 };
 
-export default AddProjectStatus;
+export default EditProjectStatus;

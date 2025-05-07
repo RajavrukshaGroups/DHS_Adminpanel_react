@@ -41,13 +41,16 @@ const ViewLandDetails = () => {
             className="border px-3 py-2 rounded-md w-full capitalize"
           >
             <option value="">-- Select a Project --</option>
-            {listProjects.map((project) => (
+            {listProjects.map((project, index) => (
               <option
-                key={project.shortCode}
+                key={index}
                 value={project.shortCode}
                 className="capitalize"
               >
-                {project.projectName}
+                {project.projectName
+                  .split(" ")
+                  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                  .join(" ")}
               </option>
             ))}
           </select>

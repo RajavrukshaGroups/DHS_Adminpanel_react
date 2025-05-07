@@ -18,6 +18,7 @@ import AddProjectStatus from "./pages/Projects/addProjectStatus";
 import ViewProjectStatus from "./pages/Projects/viewProjectStatus";
 import Navbar from "./Components/navbar";
 import EditViewProjectStatus from "./pages/Projects/editViewProjectStatus";
+import MemberFormWrapper from "./Components/memberDetails/memberFormWrapper";
 
 function AppWrapper() {
   return (
@@ -129,6 +130,14 @@ function MainLayout({ sidebarOpen, setSidebarOpen }) {
             element={
               <PrivateRoute>
                 <EditViewProjectStatus />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/addmemberdetails"
+            element={
+              <PrivateRoute>
+                <MemberFormWrapper />
               </PrivateRoute>
             }
           />

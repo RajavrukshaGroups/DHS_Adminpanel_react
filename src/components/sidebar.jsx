@@ -19,6 +19,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
     location.pathname.startsWith("/project")
   );
 
+  const [memberDetailsOpen, setMemberDetailsOpen] = useState(
+    location.pathname.startsWith("/memberDetails")
+  );
+
   return (
     <div className="relative">
       {/* Sidebar */}
@@ -133,6 +137,36 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                   >
                     <FaRegEye className="text-base" />
                     <span className="ml-3">View Project Status</span>
+                  </Link>
+                </div>
+              )}
+              {/* Member Details Menu */}
+              <button
+                onClick={() => setMemberDetailsOpen(!memberDetailsOpen)}
+                className={`flex items-center w-full px-4 py-3 rounded-lg ${
+                  location.pathname.startsWith("/addreferencedetails")
+                    ? "bg-blue-100 text-blue-700"
+                    : "text-black hover:bg-gray-100"
+                }`}
+              >
+                <FaRegEye className="text-lg" />
+                <span className="ml-4 flex-grow text-left">Member Details</span>
+                {memberDetailsOpen ? <FaChevronUp /> : <FaChevronDown />}
+              </button>
+
+              {/* Member Details Sub-Menu */}
+              {memberDetailsOpen && (
+                <div className="ml-8 mt-2 space-y-3 text-[15px]">
+                  <Link
+                    to="/addmemberdetails"
+                    className={`flex items-center px-3 py-2 rounded-lg ${
+                      location.pathname === "/addreferencedetails"
+                        ? "bg-blue-100 text-blue-700"
+                        : "text-black hover:bg-gray-100"
+                    }`}
+                  >
+                    <FaPlusCircle className="text-base" />
+                    <span className="ml-3">Add New User</span>
                   </Link>
                 </div>
               )}

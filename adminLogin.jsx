@@ -4,7 +4,7 @@ import { Signin } from "../api/auth";
 import { loginSuccess } from "../redux/authSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { showSuccessToast,showErrorToast  } from "../../src/components/utils/toastHelper"; // Adjust path as needed
+import { showSuccessToast,showErrorToast  } from "../../src/components/utils/toastHelper"; 
 import axiosInstance from "../api/interceptors";
 
 const Login = () => {
@@ -59,7 +59,6 @@ const Login = () => {
           
         </div>
       </header>
-
       {/* Login Form */}
       <div className="flex-1 flex  justify-center p-4">
         <div className="w-full max-w-md pt-16">
@@ -77,9 +76,7 @@ const Login = () => {
                   type="text"
                   placeholder="Enter email id"
                   value={email}
-              onChange={(e) => setEmail(e.target.value)}
-                
-                  // className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-green-500"
+                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
                 />
               </div>

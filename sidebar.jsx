@@ -9,7 +9,7 @@ import {
   FaRulerCombined,
   FaMapMarkedAlt,
   FaClipboardList,
-  FaRegEye
+  FaRegEye,
 } from "react-icons/fa";
 import { MdRoomPreferences } from "react-icons/md";
 
@@ -18,12 +18,15 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const [projectOpen, setProjectOpen] = useState(
     location.pathname.startsWith("/project")
   );
+  const [memberDetailsOpen, setMemberDetailsOpen] = useState(
+    location.pathname.startsWith("/memberDetails")
+  );
 
   return (
     <div className="relative">
       {/* Sidebar */}
       <div
-        className={`fixed top-16 bottom-0 left-0 z-30  h-full min-h-screen overflow-y-auto overflow-x-hidden text-black transition-all duration-300 ease-in-out bg-white shadow-lg ${
+        className={`fixed top-16 bottom-0 left-0 z-30 h-full min-h-screen overflow-y-auto overflow-x-hidden text-black transition-all duration-300 ease-in-out bg-white shadow-lg ${
           sidebarOpen ? "w-72" : "w-0"
         }`}
       >
@@ -31,9 +34,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
           {/* Header */}
           <div className="flex flex-col flex-shrink-0 w-full">
             <div className="flex items-center justify-center px-8 py-4 text-center">
-              <a href="#" className="text-xl font-semibold text-black">
-                
-              </a>
+              <a href="#" className="text-xl font-semibold text-black"></a>
             </div>
 
             {/* Navigation */}
@@ -55,7 +56,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
               <button
                 onClick={() => setProjectOpen(!projectOpen)}
                 className={`flex items-center w-full px-4 py-3 rounded-lg ${
-                  location.pathname === "/project"
+                  location.pathname.startsWith("/project")
                     ? "bg-blue-100 text-blue-700"
                     : "text-black hover:bg-gray-100"
                 }`}
@@ -101,38 +102,36 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     <FaListAlt className="text-base" />
                     <span className="ml-3">View Projects</span>
                   </Link>
+                </div>
+              )}
+
+              {/* Member Details Menu */}
+              <button
+                onClick={() => setMemberDetailsOpen(!memberDetailsOpen)}
+                className={`flex items-center w-full px-4 py-3 rounded-lg ${
+                  location.pathname.startsWith("/addreferencedetails")
+                    ? "bg-blue-100 text-blue-700"
+                    : "text-black hover:bg-gray-100"
+                }`}
+              >
+                <FaRegEye className="text-lg" />
+                <span className="ml-4 flex-grow text-left">Member Details</span>
+                {memberDetailsOpen ? <FaChevronUp /> : <FaChevronDown />}
+              </button>
+
+              {/* Member Details Sub-Menu */}
+              {memberDetailsOpen && (
+                <div className="ml-8 mt-2 space-y-3 text-[15px]">
                   <Link
-                    to="/plotDimensions"
+                    to="/addreferencedetails"
                     className={`flex items-center px-3 py-2 rounded-lg ${
-                      location.pathname === "/plotDimensions"
+                      location.pathname === "/addreferencedetails"
                         ? "bg-blue-100 text-blue-700"
                         : "text-black hover:bg-gray-100"
                     }`}
                   >
-                    <FaRulerCombined className="text-base" />
-                    <span className="ml-3">Plot Dimensions</span>
-                  </Link>
-                  <Link
-                    to="/viewlanddetails"
-                    className={`flex items-center px-3 py-2 rounded-lg ${
-                      location.pathname === "/viewlanddetails"
-                        ? "bg-blue-100 text-blue-700"
-                        : "text-black hover:bg-gray-100"
-                    }`}
-                  >
-                    <FaMapMarkedAlt className="text-base" />
-                    <span className="ml-3">View Land Details</span>
-                  </Link>
-                  <Link
-                    to="/viewprojectstatus"
-                    className={`flex items-center px-3 py-2 rounded-lg ${
-                      location.pathname === "/viewprojectstatus"
-                        ? "bg-blue-100 text-blue-700"
-                        : "text-black hover:bg-gray-100"
-                    }`}
-                  >
-                    <FaRegEye className="text-base" />
-                    <span className="ml-3">View Project Status</span>
+                    <FaPlusCircle className="text-base" />
+                    <span className="ml-3">Add New User</span>
                   </Link>
                 </div>
               )}

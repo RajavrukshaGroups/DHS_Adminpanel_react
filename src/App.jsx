@@ -19,7 +19,7 @@ import ViewProjectStatus from "./pages/Projects/viewProjectStatus";
 import Navbar from "./Components/navbar";
 import EditViewProjectStatus from "./pages/Projects/editViewProjectStatus";
 import MemberFormWrapper from "./Components/memberDetails/memberFormWrapper";
-
+import ViewMemberdetails from "./Components/memberDetails/viewMemberdetails";
 function AppWrapper() {
   return (
     <Router>
@@ -145,7 +145,7 @@ function MainLayout({ sidebarOpen, setSidebarOpen }) {
             path="/viewmemberdetails"
             element={
               <PrivateRoute>
-                <MemberFormWrapper />
+                <ViewMemberdetails />
               </PrivateRoute>
             }
           />

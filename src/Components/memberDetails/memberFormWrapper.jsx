@@ -78,7 +78,7 @@ const MemberFormWrapper = () => {
           {/* Form Sections */}
           <ReferenceDetails formData={formData} handleChange={handleChange} />
           <ProppertyDetails formData={formData} handleChange={handleChange} />
-          <PersonalDetails formData={formData} handleChange={handleChange} setFormData={setFormData} />
+          <PersonalDetails formData={formData} handleChange={handleChange}  />
           <NomineePerticular formData={formData} handleChange={handleChange} />
           <SeniorityDetails formData={formData} handleChange={handleChange} />
           <MemberShipDetails formData={formData} handleChange={handleChange} />

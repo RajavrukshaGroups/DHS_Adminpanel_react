@@ -141,6 +141,14 @@ function MainLayout({ sidebarOpen, setSidebarOpen }) {
               </PrivateRoute>
             }
           />
+          <Route
+            path="/viewmemberdetails"
+            element={
+              <PrivateRoute>
+                <MemberFormWrapper />
+              </PrivateRoute>
+            }
+          />
         </Routes>
       </div>
     </div>

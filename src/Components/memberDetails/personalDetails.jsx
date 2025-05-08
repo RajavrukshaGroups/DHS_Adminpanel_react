@@ -1,6 +1,8 @@
 import React from "react";
+import { useState } from "react";
 
-const PersonalDetails = ({ formData, handleChange }) => {
+const PersonalDetails = ({ formData, handleChange  }) => {
+
   return (
     <div className="bg-white p-6 rounded-xl shadow-md mb-6">
       <h2 className="text-xl font-bold mb-4">Personal Details</h2>
@@ -115,30 +117,20 @@ const PersonalDetails = ({ formData, handleChange }) => {
             rows="2"
           />
         </div>
-        <div>
+        {/* <div>
           <label className="block font-medium mb-1">Member Photo</label>
-          <input
-            type="file"
-            name="memberPhoto"
-            placeholder="Member Photo"
-            value={formData.memberPhoto}
-            onChange={handleChange}
-            className="w-full border px-4 py-2 rounded-md"
-            rows="2"
-          />
+          <input type="file" accept="image/*" name="memberPhoto" onChange={handleFileChange} />
+          {photoPreview && <img src={photoPreview} alt="Preview" width="120" />}
         </div>
-        <div>
+
+
+       <div>
           <label className="block font-medium mb-1">Member Sign</label>
-          <input
-          type="file"
-            name="memberSign"
-            placeholder="Member Sign"
-            value={formData.memberSign}
-            onChange={handleChange}
-            className="w-full border px-4 py-2 rounded-md"
-            rows="2"
-          />
-        </div>
+          <input type="file" accept="image/*" name="memberSign" onChange={handleFileChange} />
+          {signPreview && <img src={signPreview} alt="Preview" width="120" />}
+        </div> */}
+
+
       </div>
     </div>
   );

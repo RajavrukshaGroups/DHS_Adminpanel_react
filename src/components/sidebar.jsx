@@ -168,6 +168,17 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     <FaPlusCircle className="text-base" />
                     <span className="ml-3">Add New User</span>
                   </Link>
+                  <Link
+                    to="/viewmemberdetails"
+                    className={`flex items-center px-3 py-2 rounded-lg ${
+                      location.pathname === "/addreferencedetails"
+                        ? "bg-blue-100 text-blue-700"
+                        : "text-black hover:bg-gray-100"
+                    }`}
+                  >
+                    <FaPlusCircle className="text-base" />
+                    <span className="ml-3">View Member Details</span>
+                  </Link>
                 </div>
               )}
             </nav>

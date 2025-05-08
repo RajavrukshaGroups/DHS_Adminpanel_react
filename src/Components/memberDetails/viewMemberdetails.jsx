@@ -20,18 +20,11 @@ function ViewMemberdetails() {
         , []);
 
   return (
-    <div className="flex  items-center justify-center min-h-screen bg-blue-50 px-4">
+    <div className="flex   justify-center min-h-screen bg-blue-50 px-4 py-6">
     <div className="w-full max-w-8xl bg-white rounded-lg shadow p-6">
-      <h1 className="text-xl font-semibold mb-4 text-center">
+      {/* <h1 className="text-xl font-semibold mb-4 text-center">
         View Member Details
-      </h1>
-
-      {/* <div className="mb-6">
-        <label htmlFor="projectSelect" className="block mb-2 font-medium">
-          Select Project
-        </label>
-      
-      </div> */}
+      </h1> */}
 
         <div className="mt-4">
           {/* <h2 className="text-lg font-bold mb-3">Available Land Details</h2> */}
@@ -44,10 +37,10 @@ function ViewMemberdetails() {
                 Mobile No
                 </th>
                 <th className="border px-3 py-2 text-center">Seniority ID</th>
+                <th className="border px-3 py-2 text-center">Email</th>
                 <th className="border px-3 py-2 text-center">Password</th>
                 <th className="border px-3 py-2 text-center">Status</th>
-                <th className="border px-3 py-2 text-center">Send email
-                </th>
+                <th className="border px-3 py-2 text-center">Send email</th>
               </tr>
             </thead>
             <tbody>
@@ -63,6 +56,7 @@ function ViewMemberdetails() {
         <td className="border px-3 py-2 text-center">{index + 1}</td>
         <td className="border px-3 py-2 text-center">{member.refname}</td>
         <td className="border px-3 py-2 text-center">{member.mobileNumber}</td>
+        <td className="border px-3 py-2 text-center">{member.email}</td>
         <td className="border px-3 py-2 text-center">{member.SeniorityID}</td>
         <td className="border px-3 py-2 text-center">{member.serviceId}</td>
         <td className="border px-3 py-2 text-center">

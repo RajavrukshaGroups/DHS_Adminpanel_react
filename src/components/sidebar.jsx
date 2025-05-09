@@ -9,7 +9,12 @@ import {
   FaRulerCombined,
   FaMapMarkedAlt,
   FaClipboardList,
-  FaRegEye
+  FaRegEye,
+  FaUsers,
+  FaUserPlus,
+  FaUserFriends,
+  FaTasks,
+  FaFolderOpen
 } from "react-icons/fa";
 import { MdRoomPreferences } from "react-icons/md";
 
@@ -20,7 +25,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   );
 
   const [memberDetailsOpen, setMemberDetailsOpen] = useState(
-    location.pathname.startsWith("/memberDetails")
+    // location.pathname.startsWith("/memberDetails")
+    location.pathname.startsWith("/addmemberdetails") ||
+      location.pathname.startsWith("/viewmemberdetails")
   );
 
   return (
@@ -35,9 +42,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
           {/* Header */}
           <div className="flex flex-col flex-shrink-0 w-full">
             <div className="flex items-center justify-center px-8 py-4 text-center">
-              <a href="#" className="text-xl font-semibold text-black">
-                
-              </a>
+              <a href="#" className="text-xl font-semibold text-black"></a>
             </div>
 
             {/* Navigation */}
@@ -64,7 +69,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     : "text-black hover:bg-gray-100"
                 }`}
               >
-                <MdRoomPreferences className="text-lg" />
+                <FaFolderOpen className="text-lg" />
                 <span className="ml-4 flex-grow text-left">Project</span>
                 {projectOpen ? <FaChevronUp /> : <FaChevronDown />}
               </button>
@@ -149,7 +154,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     : "text-black hover:bg-gray-100"
                 }`}
               >
-                <FaRegEye className="text-lg" />
+                {/* <FaRegEye className="text-lg" /> */}
+                <FaUsers className="text-lg" />
+
                 <span className="ml-4 flex-grow text-left">Member Details</span>
                 {memberDetailsOpen ? <FaChevronUp /> : <FaChevronDown />}
               </button>
@@ -160,23 +167,28 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                   <Link
                     to="/addmemberdetails"
                     className={`flex items-center px-3 py-2 rounded-lg ${
-                      location.pathname === "/addreferencedetails"
+                      // location.pathname === "/addreferencedetails"
+                      location.pathname === "/addmemberdetails"
                         ? "bg-blue-100 text-blue-700"
                         : "text-black hover:bg-gray-100"
                     }`}
                   >
-                    <FaPlusCircle className="text-base" />
+                    {/* <FaPlusCircle className="text-base" /> */}
+                    <FaUserPlus className="text-base" />
+
                     <span className="ml-3">Add New User</span>
                   </Link>
                   <Link
                     to="/viewmemberdetails"
                     className={`flex items-center px-3 py-2 rounded-lg ${
-                      location.pathname === "/addreferencedetails"
+                      // location.pathname === "/addreferencedetails"
+                      location.pathname === "/viewmemberdetails"
                         ? "bg-blue-100 text-blue-700"
                         : "text-black hover:bg-gray-100"
                     }`}
                   >
-                    <FaPlusCircle className="text-base" />
+                    {/* <FaPlusCircle className="text-base" /> */}
+                    <FaUserFriends className="text-base" />
                     <span className="ml-3">View Member Details</span>
                   </Link>
                 </div>

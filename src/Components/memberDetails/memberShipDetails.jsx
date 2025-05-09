@@ -1,6 +1,6 @@
 import React from 'react'
 
-function MemberShipDetails({ formData, handleChange }) {
+function MemberShipDetails({ formData, handleChange ,formErrors }) {
   return (
     <div className="bg-white p-6 rounded-xl shadow-md mb-6">
       <h2 className="text-xl font-bold mb-4">Membership Details</h2>
@@ -15,6 +15,7 @@ function MemberShipDetails({ formData, handleChange }) {
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
+          {formErrors.recieptNo && <p className="text-red-600 text-sm">{formErrors.recieptNo}</p>}
         </div>
         <div>
           <label className="block font-medium mb-1">Date</label>
@@ -26,6 +27,7 @@ function MemberShipDetails({ formData, handleChange }) {
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
+          {formErrors.date && <p className="text-red-600 text-sm">{formErrors.date}</p>}
         </div>
         <div>
           <label className="block font-medium mb-1">No of Shares</label>
@@ -37,6 +39,7 @@ function MemberShipDetails({ formData, handleChange }) {
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
+          {formErrors.numberOfShares && <p className="text-red-600 text-sm">{formErrors.numberOfShares}</p>}
         </div>
         <div>    
           <label className="block font-medium mb-1">Share Fee
@@ -49,6 +52,7 @@ function MemberShipDetails({ formData, handleChange }) {
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
+          {formErrors.shareFee && <p className="text-red-600 text-sm">{formErrors.shareFee}</p>}
         </div>
         <div>
           <label className="block font-medium mb-1">Membership Fee</label>
@@ -60,6 +64,7 @@ function MemberShipDetails({ formData, handleChange }) {
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
+          {formErrors.memberShipFee && <p className="text-red-600 text-sm">{formErrors.memberShipFee}</p>}
         </div>
         <div>
           <label className="block font-medium mb-1">Application Fee</label>
@@ -71,6 +76,7 @@ function MemberShipDetails({ formData, handleChange }) {
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
+          {formErrors.applicationFee && <p className="text-red-600 text-sm">{formErrors.applicationFee}</p>}
         </div>
         <div>
           <label className="block font-medium mb-1">Admission Fee</label>
@@ -82,6 +88,7 @@ function MemberShipDetails({ formData, handleChange }) {
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
+          {formErrors.adminissionFee && <p className="text-red-600 text-sm">{formErrors.adminissionFee}</p>}
         </div>
         <div>
           <label className="block font-medium mb-1">Miscellaneous Expenses</label>
@@ -93,6 +100,7 @@ function MemberShipDetails({ formData, handleChange }) {
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
+          {formErrors.miscellaneousExpenses && <p className="text-red-600 text-sm">{formErrors.miscellaneousExpenses}</p>}
         </div>
       </div>
     </div>

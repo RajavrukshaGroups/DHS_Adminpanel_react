@@ -1,6 +1,6 @@
 import React from 'react'
 
-function SeniorityDetails({ formData, handleChange }) {
+function SeniorityDetails({ formData, handleChange , formErrors }) {
   return (
     <div className="bg-white p-6 rounded-xl shadow-md mb-6">
       <h2 className="text-xl font-bold mb-4">Membership & Seniority Details</h2>
@@ -15,6 +15,7 @@ function SeniorityDetails({ formData, handleChange }) {
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
+          {formErrors.seniorityId && <p className="text-red-600 text-sm">{formErrors.seniorityId}</p>}
         </div>
         <div>
           <label className="block font-medium mb-1">Membership No</label>
@@ -26,6 +27,7 @@ function SeniorityDetails({ formData, handleChange }) {
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
+          {formErrors.membershipNo && <p className="text-red-600 text-sm">{formErrors.membershipNo}</p>}
         </div>
         <div>
           <label className="block font-medium mb-1">Confirmation Letter No</label>
@@ -37,6 +39,7 @@ function SeniorityDetails({ formData, handleChange }) {
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
+          {formErrors.cunfirmationLetterNo && <p className="text-red-600 text-sm">{formErrors.cunfirmationLetterNo}</p>}
         </div>
         <div>
           <label className="block font-medium mb-1">Share Certificate Number</label>
@@ -48,6 +51,7 @@ function SeniorityDetails({ formData, handleChange }) {
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
+          {formErrors.shareCertificateNo && <p className="text-red-600 text-sm">{formErrors.shareCertificateNo}</p>}
         </div>
       </div>
     </div>

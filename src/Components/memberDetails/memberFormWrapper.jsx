@@ -9,6 +9,7 @@ import ProppertyDetails from './proppertyDetails.jsx';
 import axiosInstance from '../../api/interceptors';
 
 const MemberFormWrapper = () => {
+  const [formErrors, setFormErrors] = useState({});
   const [formData, setFormData] = useState({
     salutation: '',
     name: '',
@@ -24,18 +25,166 @@ const MemberFormWrapper = () => {
     rankDesignation: '',
     ServiceId: '',
     relationship: '',
+
+    projectName: '',
+    PropertySize: '',
+    perSqftPropertyPrice: '',
+    selectedPropertyCost: '',
+    percentage: '',
+    percentageCost: '',
+     // Nominee Particulars
+  nomineeName: '',
+  nomineeAge: '',
+  nomineeRelationship: '',
+  nomineeAddress: '',
+   // Add these for SeniorityDetails
+   seniorityId: '',
+   membershipNo: '',
+   cunfirmationLetterNo: '',  // Consider correcting spelling if possible
+   shareCertificateNo: '',
+
+  // Membership Details
+   recieptNo: "",
+   date: "",
+   noofShares: "",
+   shareFee: "",
+   memberShipFee: "",
+   applicationFee: "",
+   adminissionFee: "",
+   miscellaneousExpenses: "",
+
+   // Payment Details
+    paymentType: "",
+    paymentMode: "",
+    bankName: "",
+    branchName: "",
+    amount: "",
   });
+
+  
 
   const [memberPhoto, setMemberPhoto] = useState(null);
   const [memberSign, setMemberSign] = useState(null);
 
+  const validatePersonalDetails = (data) => {
+    const errors = {};
+  
+    if (!data.salutation.trim()) errors.salutation = "Salutation is required";
+    if (!data.name.trim()) errors.name = "Name is required";
+    if (!data.mobile.trim()) errors.mobile = "Mobile is required";
+    else if (!/^[6-9]\d{9}$/.test(data.mobile)) errors.mobile = "Invalid mobile number";
+    if (data.altMobile && !/^[6-9]\d{9}$/.test(data.altMobile)) {
+      errors.altMobile = "Invalid alternative mobile number";
+    }
+    if (!data.email.trim()) errors.email = "Email is required";
+    else if (!/^\S+@\S+\.\S+$/.test(data.email)) errors.email = "Invalid email";
+    if (!data.dob.trim()) errors.dob = "Date of Birth is required";
+    if (!data.fatherSpouse.trim()) errors.fatherSpouse = "Father/Spouse Name is required";
+    if (!data.correspondenceAddress.trim()) errors.correspondenceAddress = "Correspondence Address is required";
+    if (!data.permanentAddress.trim()) errors.permanentAddress = "Permanent Address is required";
+    if (!data.workingAddress.trim()) errors.workingAddress = "Working Address is required";
+  
+    if (!data.refencName.trim()) errors.refencName = "Reference Name is required";
+    if (!data.rankDesignation.trim()) errors.rankDesignation = "Rank / Designation is required";
+    if (!data.ServiceId.trim()) errors.ServiceId = "Service / ID No is required";
+    if (!data.relationship.trim()) errors.relationship = "Relationship is required";
+
+    if (!data.projectName.trim()) errors.projectName = "Project name is required";
+    if (!data.PropertySize) errors.PropertySize = "Property size is required";
+    if (!data.perSqftPropertyPrice) errors.perSqftPropertyPrice = "Price per sqft is required";
+    if (!data.selectedPropertyCost) errors.selectedPropertyCost = "Total property cost is required";
+    if (!data.percentage) errors.percentage = "Please select a percentage";
+    if (!data.percentageCost) errors.percentageCost = "Percentage cost is required";
+    if (!data.nomineeName.trim()) errors.nomineeName = "Nominee Name is required";
+    if (!data.nomineeAge || isNaN(data.nomineeAge)) errors.nomineeAge = "Valid age is required";
+    if (!data.nomineeRelationship.trim()) errors.nomineeRelationship = "Relationship is required";
+    if (!data.nomineeAddress.trim()) errors.nomineeAddress = "Address is required";
+    if (!data.seniorityId.trim()) errors.seniorityId = "Seniority ID is required";
+    if (!data.membershipNo.trim()) errors.membershipNo = "Membership No is required";
+    if (!data.cunfirmationLetterNo.trim()) errors.cunfirmationLetterNo = "Confirmation Letter No is required";
+    if (!data.shareCertificateNo.trim()) errors.shareCertificateNo = "Share Certificate No is required";
+    
+
+    // Membership Details
+if (!data.recieptNo.trim()) errors.recieptNo = "Receipt No is required";
+if (!data.date.trim()) errors.date = "Date is required";
+if (!data.noofShares || isNaN(data.noofShares) || Number(data.noofShares) <= 0) {
+  errors.noofShares = "Valid number of shares is required";
+}
+if (!data.shareFee || isNaN(data.shareFee) || Number(data.shareFee) <= 0) {
+  errors.shareFee = "Valid Share Fee is required";
+}
+if (!data.memberShipFee || isNaN(data.memberShipFee) || Number(data.memberShipFee) <= 0) {
+  errors.memberShipFee = "Valid Membership Fee is required";
+}
+if (!data.applicationFee || isNaN(data.applicationFee) || Number(data.applicationFee) <= 0) {
+  errors.applicationFee = "Valid Application Fee is required";
+}
+if (!data.adminissionFee || isNaN(data.adminissionFee) || Number(data.adminissionFee) <= 0) {
+  errors.adminissionFee = "Valid Admission Fee is required";
+}
+if (!data.miscellaneousExpenses || isNaN(data.miscellaneousExpenses) || Number(data.miscellaneousExpenses) < 0) {
+  errors.miscellaneousExpenses = "Valid Miscellaneous Expenses are required";
+}
+// Payment Details
+
+if (!formData.paymentType.trim()) {
+  errors.paymentType = "Payment type is required";
+}
+
+if (!formData.paymentMode.trim()) {
+  errors.paymentMode = "Payment mode is required";
+}
+
+if (
+  ["cheque", "online", "card"].includes(formData.paymentMode.toLowerCase())
+) {
+  if (!formData.bankName.trim()) {
+    errors.bankName = "Bank name is required for this payment mode";
+  }
+
+  if (!formData.branchName.trim()) {
+    errors.branchName = "Branch name is required for this payment mode";
+  }
+}
+
+if (!formData.amount || isNaN(formData.amount) || Number(formData.amount) <= 0) {
+  errors.amount = "Valid amount is required";
+}
+
+if (!formData.memberPhoto) {
+  errors.memberPhoto = "Member photo is required";
+}
+
+if (!formData.memberSign) {
+  errors.memberSign = "Member signature is required";
+}
+
+    return errors;
+  };
+  
+
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     [name]: value,
+  //   }));
+  // };
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type } = e.target;
+  
+    // Prevent negative numbers for numeric inputs
+    if (type === "number" || ["noofShares", "shareFee", "memberShipFee", "applicationFee", "adminissionFee", "miscellaneousExpenses", "amount", "nomineeAge", "perSqftPropertyPrice", "PropertySize", "selectedPropertyCost", "percentage", "percentageCost"].includes(name)) {
+      if (Number(value) < 0) return; // Ignore update if value is negative
+    }
+  
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
+  
 
   const handleFileChange = (e) => {
     const { name, files } = e.target;
@@ -45,6 +194,17 @@ const MemberFormWrapper = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+      // Validate PersonalDetails section
+  const personalErrors = validatePersonalDetails(formData);
+
+  if (Object.keys(personalErrors).length > 0) {
+    setFormErrors(personalErrors);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    return;
+  }
+
+  setFormErrors({}); // clear errors if passed
 
     const data = new FormData();
 
@@ -76,15 +236,16 @@ const MemberFormWrapper = () => {
       <div className="p-6 max-w-5xl w-full mx-auto">
         <form onSubmit={handleSubmit}>
           {/* Form Sections */}
-          <ReferenceDetails formData={formData} handleChange={handleChange} />
-          <ProppertyDetails formData={formData} handleChange={handleChange} />
-          <PersonalDetails formData={formData} handleChange={handleChange}  />
-          <NomineePerticular formData={formData} handleChange={handleChange} />
-          <SeniorityDetails formData={formData} handleChange={handleChange} />
-          <MemberShipDetails formData={formData} handleChange={handleChange} />
-          <PaymentDetails formData={formData} handleChange={handleChange} />
+          <ReferenceDetails formData={formData} handleChange={handleChange} formErrors={formErrors}/>
+          <ProppertyDetails formData={formData} handleChange={handleChange} formErrors={formErrors}/>
+          <PersonalDetails formData={formData} handleChange={handleChange}   formErrors={formErrors}/>
+          <NomineePerticular formData={formData} handleChange={handleChange} formErrors={formErrors} />
+          <SeniorityDetails formData={formData} handleChange={handleChange}  formErrors={formErrors}/>
+          <MemberShipDetails formData={formData} handleChange={handleChange}  formErrors={formErrors}/>
+          <PaymentDetails formData={formData} handleChange={handleChange}  formErrors={formErrors}/>
 
           {/* Image Uploads */}
+
           <div className="mb-6">
               <label className="block mb-2 text-sm font-medium text-gray-700">
                 Member Photo
@@ -96,6 +257,7 @@ const MemberFormWrapper = () => {
                 onChange={handleFileChange}
                 className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 p-2"
               />
+              {formErrors.memberPhoto && <p className="text-red-500 text-sm">{formErrors.memberPhoto}</p>}
             </div>
 
             <div className="mb-6">
@@ -109,7 +271,9 @@ const MemberFormWrapper = () => {
                 onChange={handleFileChange}
                 className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 p-2"
               />
+              {formErrors.memberSign && <p className="text-red-500 text-sm">{formErrors.memberSign}</p>}
             </div>
+
 
             <div className="flex justify-end mt-6">
               <button

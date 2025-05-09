@@ -61,7 +61,7 @@ function PaymentDetails({ formData, handleChange ,formErrors }) {
           Branch Name:</label>
           <input
             type="text"
-            name="brnachName"
+            name="branchName"
             placeholder="Branch Name"
             value={formData.branchName}
             onChange={handleChange}

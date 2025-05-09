@@ -1,6 +1,6 @@
 import React from 'react'
 
-function PaymentDetails({ formData, handleChange }) {
+function PaymentDetails({ formData, handleChange ,formErrors }) {
   return (
     <div className="bg-white p-6 rounded-xl shadow-md mb-6">
       <h2 className="text-xl font-bold mb-4">Payment Details</h2>
@@ -15,6 +15,7 @@ function PaymentDetails({ formData, handleChange }) {
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
+          {formErrors.paymentType && <p className="text-red-500 text-sm">{formErrors.paymentType}</p>}
         </div>
         <div>
           <label className="block font-medium mb-1">Payment Mode:</label>
@@ -31,6 +32,7 @@ function PaymentDetails({ formData, handleChange }) {
             <option value="online">Online</option>
             <option value="card">Card</option>
           </select>
+          {formErrors.paymentMode && <p className="text-red-500 text-sm">{formErrors.paymentMode}</p>}
         </div>
         {/* <div>
           <label className="block font-medium mb-1">Payment Mode:</label>
@@ -52,6 +54,7 @@ function PaymentDetails({ formData, handleChange }) {
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
+          {formErrors.bankName && <p className="text-red-500 text-sm">{formErrors.bankName}</p>}
         </div>
         <div>
           <label className="block font-medium mb-1">
@@ -64,6 +67,7 @@ function PaymentDetails({ formData, handleChange }) {
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
+          {formErrors.branchName && <p className="text-red-500 text-sm">{formErrors.branchName}</p>}
         </div>
         <div>
           <label className="block font-medium mb-1">
@@ -76,6 +80,7 @@ function PaymentDetails({ formData, handleChange }) {
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
+          {formErrors.amount && <p className="text-red-500 text-sm">{formErrors.amount}</p>}
         </div>
       </div>
     </div>

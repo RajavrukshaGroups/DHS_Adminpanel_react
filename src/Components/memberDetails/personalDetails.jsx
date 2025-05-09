@@ -1,11 +1,11 @@
 import React from "react";
 import { useState } from "react";
 
-const PersonalDetails = ({ formData, handleChange  }) => {
+const PersonalDetails = ({ formData, handleChange, formErrors  }) => {
 
   return (
     <div className="bg-white p-6 rounded-xl shadow-md mb-6">
-      <h2 className="text-xl font-bold mb-4">Personal Details</h2>
+      <h2 className="text-xl font-semibold mb-4">Personal Details</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label className="block font-medium mb-1">Salutation</label>
@@ -16,7 +16,11 @@ const PersonalDetails = ({ formData, handleChange  }) => {
             value={formData.salutation}
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
+            
           />
+           {formErrors.salutation && (
+            <p className="text-red-500 text-sm">{formErrors.salutation}</p>
+          )}
         </div>
         <div>
           <label className="block font-medium mb-1">Name</label>
@@ -28,6 +32,7 @@ const PersonalDetails = ({ formData, handleChange  }) => {
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
+          {formErrors.name && ( <p className="text-red-500 text-sm">{formErrors.name}</p> )}
         </div>
         <div>
           <label className="block font-medium mb-1">Mobile</label>
@@ -39,6 +44,8 @@ const PersonalDetails = ({ formData, handleChange  }) => {
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
+          {formErrors.mobile && ( <p className="text-red-500 text-sm">{formErrors.mobile}</p> )}
+
         </div>
         <div>
           <label className="block font-medium mb-1">Alternative Mobile</label>
@@ -50,6 +57,7 @@ const PersonalDetails = ({ formData, handleChange  }) => {
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
+          {formErrors.altMobile && ( <p className="text-red-500 text-sm">{formErrors.altMobile}</p> )}
         </div>
         <div>
           <label className="block font-medium mb-1">Email id</label>
@@ -61,6 +69,7 @@ const PersonalDetails = ({ formData, handleChange  }) => {
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
+          {formErrors.email && ( <p className="text-red-500 text-sm">{formErrors.email}</p> )}
         </div>
         <div>
           <label className="block font-medium mb-1">Date of Birth</label>
@@ -72,6 +81,7 @@ const PersonalDetails = ({ formData, handleChange  }) => {
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
+          {formErrors.dob && ( <p className="text-red-500 text-sm">{formErrors.dob}</p> )}
         </div>
         <div>
           <label className="block font-medium mb-1">Father/Spouse Name</label>
@@ -83,6 +93,7 @@ const PersonalDetails = ({ formData, handleChange  }) => {
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
+          {formErrors.fatherSpouse && ( <p className="text-red-500 text-sm">{formErrors.fatherSpouse}</p> )}
         </div>
         <div>
           <label className="block font-medium mb-1">Correspondence Address</label>
@@ -94,6 +105,9 @@ const PersonalDetails = ({ formData, handleChange  }) => {
             className="w-full border px-4 py-2 rounded-md"
             rows="2"
           />
+          {formErrors.correspondenceAddress && (
+            <p className="text-red-500 text-sm">{formErrors.correspondenceAddress}</p>
+          )}
         </div>
         <div>
           <label className="block font-medium mb-1">Permanent Address</label>
@@ -105,6 +119,9 @@ const PersonalDetails = ({ formData, handleChange  }) => {
             className="w-full border px-4 py-2 rounded-md"
             rows="2"
           />
+          {formErrors.permanentAddress && (
+            <p className="text-red-500 text-sm">{formErrors.permanentAddress}</p>
+          )}
         </div>
         <div>
           <label className="block font-medium mb-1">Working Address</label>
@@ -116,6 +133,9 @@ const PersonalDetails = ({ formData, handleChange  }) => {
             className="w-full border px-4 py-2 rounded-md"
             rows="2"
           />
+          {formErrors.workingAddress && (
+            <p className="text-red-500 text-sm">{formErrors.workingAddress}</p>
+          )}
         </div>
         {/* <div>
           <label className="block font-medium mb-1">Member Photo</label>

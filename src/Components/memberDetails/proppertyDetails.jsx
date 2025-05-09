@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-function ProppertyDetails({ formData, handleChange, refreshKey }) {
+function ProppertyDetails({ formData, handleChange, refreshKey,formErrors }) {
   const [projectOptions, setProjectOptions] = useState([]);
   const [dimensions, setDimensions] = useState([]);
 
@@ -109,6 +109,7 @@ useEffect(() => {
               </option>
             ))}
           </select>
+          {formErrors.projectName && <p className="text-red-600 text-sm">{formErrors.projectName}</p>}  
         </div>
 
         <div>
@@ -125,6 +126,7 @@ useEffect(() => {
               </option>
             ))}
           </select>
+          {formErrors.PropertySize && <p className="text-red-600 text-sm">{formErrors.PropertySize}</p>}
         </div>
 
 
@@ -132,12 +134,14 @@ useEffect(() => {
           <label className="block font-medium mb-1">Per Sqft Property Price</label>
           <input
             type="number"
+            min={0}
             name="perSqftPropertyPrice"
             placeholder="Per Sqft Property Price"
             value={formData.perSqftPropertyPrice}
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
+          {formErrors.perSqftPropertyPrice && <p className="text-red-600 text-sm">{formErrors.perSqftPropertyPrice}</p>}
         </div>
 
         <div>
@@ -150,6 +154,7 @@ useEffect(() => {
             readOnly
             className="w-full border px-4 py-2 rounded-md bg-gray-100"
           />
+          {formErrors.selectedPropertyCost && <p className="text-red-600 text-sm">{formErrors.selectedPropertyCost}</p>}
         </div>
 
         <div>
@@ -170,6 +175,7 @@ useEffect(() => {
       </label>
     ))}
   </div>
+  {formErrors.percentage && <p className="text-red-600 text-sm">{formErrors.percentage}</p>}
 </div>
 
 <div>
@@ -181,6 +187,7 @@ useEffect(() => {
     readOnly
     className="w-full border px-4 py-2 rounded-md bg-gray-100"
   />
+  {formErrors.percentageCost && <p className="text-red-600 text-sm">{formErrors.percentageCost}</p>}
 </div>
 
       </div>

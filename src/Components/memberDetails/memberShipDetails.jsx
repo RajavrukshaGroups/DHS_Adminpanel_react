@@ -35,7 +35,7 @@ function MemberShipDetails({ formData, handleChange ,formErrors }) {
             type="number" 
             name="numberOfShares"
             placeholder="No of Shares"
-            value={formData.noofShares}
+            value={formData.numberOfShares}
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />

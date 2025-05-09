@@ -46,7 +46,8 @@ const MemberFormWrapper = () => {
   // Membership Details
    recieptNo: "",
    date: "",
-   noofShares: "",
+   numberOfShares: "",
+   
    shareFee: "",
    memberShipFee: "",
    applicationFee: "",
@@ -60,7 +61,6 @@ const MemberFormWrapper = () => {
     branchName: "",
     amount: "",
   });
-
   
 
   const [memberPhoto, setMemberPhoto] = useState(null);
@@ -68,7 +68,7 @@ const MemberFormWrapper = () => {
 
   const validatePersonalDetails = (data) => {
     const errors = {};
-  
+
     if (!data.salutation.trim()) errors.salutation = "Salutation is required";
     if (!data.name.trim()) errors.name = "Name is required";
     if (!data.mobile.trim()) errors.mobile = "Mobile is required";
@@ -103,13 +103,12 @@ const MemberFormWrapper = () => {
     if (!data.membershipNo.trim()) errors.membershipNo = "Membership No is required";
     if (!data.cunfirmationLetterNo.trim()) errors.cunfirmationLetterNo = "Confirmation Letter No is required";
     if (!data.shareCertificateNo.trim()) errors.shareCertificateNo = "Share Certificate No is required";
-    
 
     // Membership Details
 if (!data.recieptNo.trim()) errors.recieptNo = "Receipt No is required";
 if (!data.date.trim()) errors.date = "Date is required";
-if (!data.noofShares || isNaN(data.noofShares) || Number(data.noofShares) <= 0) {
-  errors.noofShares = "Valid number of shares is required";
+if (!data.numberOfShares || isNaN(data.numberOfShares) || Number(data.noofShares) <= 0) {
+  errors.numberOfShares = "Valid number of shares is required";
 }
 if (!data.shareFee || isNaN(data.shareFee) || Number(data.shareFee) <= 0) {
   errors.shareFee = "Valid Share Fee is required";
@@ -152,11 +151,11 @@ if (!formData.amount || isNaN(formData.amount) || Number(formData.amount) <= 0) 
   errors.amount = "Valid amount is required";
 }
 
-if (!formData.memberPhoto) {
+if (!memberPhoto) {
   errors.memberPhoto = "Member photo is required";
 }
 
-if (!formData.memberSign) {
+if (!memberSign) {
   errors.memberSign = "Member signature is required";
 }
 

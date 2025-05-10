@@ -74,18 +74,33 @@ useEffect(() => {
     handleChange({ target: { name: "selectedPropertyCost", value: "" } });
   };
 
+  // const handleDimensionSelect = (e) => {
+  //   const dimId = e.target.value;
+  //   const selectedDim = dimensions.find((dim) => dim._id === dimId);
+  //   if (selectedDim) {
+  //     const size = selectedDim.length * selectedDim.breadth;
+  //     handleChange({ target: { name: "PropertySize", value: size } });
+  //     handleChange({
+  //       target: {
+  //         name: "perSqftPropertyPrice",
+  //         value: selectedDim.pricePerSqft?.toString() || "",
+  //       },
+  //     });
+  //   }
+  // };
+
   const handleDimensionSelect = (e) => {
     const dimId = e.target.value;
     const selectedDim = dimensions.find((dim) => dim._id === dimId);
     if (selectedDim) {
       const size = selectedDim.length * selectedDim.breadth;
+  
       handleChange({ target: { name: "PropertySize", value: size } });
-      handleChange({
-        target: {
-          name: "perSqftPropertyPrice",
-          value: selectedDim.pricePerSqft?.toString() || "",
-        },
-      });
+      handleChange({ target: { name: "perSqftPropertyPrice", value: selectedDim.pricePerSqft?.toString() || "" } });
+  
+      // ADD THESE:
+      handleChange({ target: { name: "plotLength", value: selectedDim.length.toString() } });
+      handleChange({ target: { name: "plotBreadth", value: selectedDim.breadth.toString() } });
     }
   };
 
@@ -128,8 +143,17 @@ useEffect(() => {
           </select>
           {formErrors.PropertySize && <p className="text-red-600 text-sm">{formErrors.PropertySize}</p>}
         </div>
+                <input
+          type="hidden"
+          name="plotLength"
+          value={formData.plotLength}
+        />
 
-
+        <input
+          type="hidden"
+          name="plotBreadth"
+          value={formData.plotBreadth}
+        />
         <div>
           <label className="block font-medium mb-1">Per Sqft Property Price</label>
           <input
@@ -196,3 +220,6 @@ useEffect(() => {
 }
 
 export default ProppertyDetails;
+
+
+

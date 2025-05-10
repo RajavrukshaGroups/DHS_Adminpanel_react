@@ -14,8 +14,14 @@ import {
   FaUserPlus,
   FaUserFriends,
   FaTasks,
-  FaFolderOpen
+  FaFolderOpen,
+  FaUsersCog,
+  
 } from "react-icons/fa";
+import { RiUserSettingsLine } from "react-icons/ri";
+import { FaUsersSlash } from "react-icons/fa";
+
+
 import { MdRoomPreferences } from "react-icons/md";
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
@@ -188,7 +194,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     }`}
                   >
                     {/* <FaPlusCircle className="text-base" /> */}
-                    <FaUserFriends className="text-base" />
+                    <FaUsersCog className="text-base" />
                     <span className="ml-3">View Member Details</span>
                   </Link>
                   <Link
@@ -201,8 +207,21 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     }`}
                   >
                     {/* <FaPlusCircle className="text-base" /> */}
-                    <FaUserFriends className="text-base" />
+                    <FaUsersSlash className="text-base" />
                     <span className="ml-3 w">Inactive Members</span>
+                  </Link>
+                  <Link
+                    to="/ViewUserDetails"
+                    className={`flex items-center px-3 py-2 rounded-lg ${
+                      // location.pathname === "/addreferencedetails"
+                      location.pathname === "/viewUserdetails"
+                        ? "bg-blue-100 text-blue-700"
+                        : "text-black hover:bg-gray-100"
+                    }`}
+                  >
+                    {/* <FaPlusCircle className="text-base" /> */}
+                    <FaUsers  className="text-base" />
+                    <span className="ml-3 w">View User Details</span>
                   </Link>
                 </div>
               )}

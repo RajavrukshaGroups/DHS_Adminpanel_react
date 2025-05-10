@@ -7,6 +7,10 @@ import MemberShipDetails from './memberShipDetails';
 import PaymentDetails from './paymentDetails';
 import ProppertyDetails from './proppertyDetails.jsx';
 import axiosInstance from '../../api/interceptors';
+import { FaSpinner } from 'react-icons/fa';
+import toast from "react-hot-toast";
+import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from 'react-router-dom';
 
 const MemberFormWrapper = () => {
   const [formErrors, setFormErrors] = useState({});
@@ -62,9 +66,11 @@ const MemberFormWrapper = () => {
     amount: "",
   });
   
-
+  const navigate = useNavigate();
   const [memberPhoto, setMemberPhoto] = useState(null);
   const [memberSign, setMemberSign] = useState(null);
+  const [loading, setLoading] = useState(false);
+
 
   const validatePersonalDetails = (data) => {
     const errors = {};
@@ -193,7 +199,8 @@ if (!memberSign) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
- console.log("Form Data:", formData);
+    console.log("Form Data:", formData);
+    setLoading(true); // Start loading
  
       // Validate PersonalDetails section
   const personalErrors = validatePersonalDetails(formData);
@@ -201,6 +208,8 @@ if (!memberSign) {
   if (Object.keys(personalErrors).length > 0) {
     setFormErrors(personalErrors);
     window.scrollTo({ top: 0, behavior: "smooth" });
+    setLoading(false); // Stop loading on validation error
+
     return;
   }
 
@@ -223,11 +232,19 @@ if (!memberSign) {
           'Content-Type': 'multipart/form-data',
         },
       });
+      toast.success("Member added successfully!");
+
+      navigate("/viewmemberdetails")
+
 
       console.log('Success:', res.data);
       // Show toast or redirect
+    
     } catch (error) {
       console.error('Error submitting form:', error);
+    }
+    finally {
+      setLoading(false); // Always stop loading at the end
     }
   };
 
@@ -275,13 +292,23 @@ if (!memberSign) {
             </div>
 
 
-            <div className="flex justify-end mt-6">
-              <button
-                type="submit"
-                className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-2 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
-              >
-                Submit
-              </button>
+            <div className="flex justify-start mt-6">
+            <button
+              type="submit"
+              disabled={loading}
+              className={`bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-2 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 flex items-center justify-center ${
+                loading ? 'opacity-50 cursor-not-allowed' : ''
+              }`}
+            >
+              {loading ? (
+                <span className="flex items-center gap-2">
+                  <FaSpinner className="animate-spin" />
+                  Submitting...
+                </span>
+              ) : (
+                'Submit'
+              )}
+            </button>
             </div>
 
         </form>

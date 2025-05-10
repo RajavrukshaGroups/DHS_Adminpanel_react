@@ -77,7 +77,7 @@ function ViewMemberdetails() {
                       {index + 1}
                     </td>
                     <td className="border px-3 py-2 text-center">
-                      {member.refname}
+                      {member.name}
                     </td>
                     <td className="border px-3 py-2 text-center">
                       {member.mobileNumber}
@@ -93,33 +93,27 @@ function ViewMemberdetails() {
                     </td>
                     <td className="border px-3 py-2 text-center">
                       <div className="flex gap-2 justify-center">
-                        {/* Active Button */}
-                        <button
-                          onClick={() => handleStatusToggle(member._id, false)}
-                          className={`flex items-center gap-1 px-3 py-1 text-xs font-medium rounded transition-all duration-200
-              ${
-                member.isActive
-                  ? "bg-green-600 text-white"
-                  : "bg-green-100 text-green-700"
-              }`}
-                        >
-                          Active
-                          <FaCheckCircle className="text-white" />
-                        </button>
+                       
+                        <div className="flex items-center gap-2 justify-center border border-gray-500 py-1 px-2 rounded">  
+                          <button
+                            onClick={() => handleStatusToggle(member._id, member.isActive)}
+                            className={`relative w-12 h-6 rounded-full transition-colors duration-300 
+                              ${member.isActive ? "bg-green-500" : "bg-red-500"}`}
+                          >
+                            <span
+                              className={`absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow-md transform transition-transform duration-300 
+                                ${member.isActive ? "translate-x-6" : "translate-x-0"}`}
+                            ></span>
+                          </button>
+                          <span
+                            className={`text-sm font-medium ${
+                              member.isActive ? "text-green-600" : "text-red-600"
+                            }`}
+                          >
+                            {member.isActive ? "Active" : "Inactive"}
+                          </span>
+                        </div>
 
-                        {/* Inactive Button */}
-                        <button
-                          onClick={() => handleStatusToggle(member._id, true)}
-                          className={`flex items-center gap-1 px-3 py-1 text-xs font-medium rounded transition-all duration-200
-              ${
-                !member.isActive
-                  ? "bg-red-600 text-white"
-                  : "bg-red-100 text-red-700"
-              }`}
-                        >
-                          <FaTimesCircle className="text-white" />
-                          Inactive
-                        </button>
                       </div>
                     </td>
                     <td className="border px-3 py-2 text-center">

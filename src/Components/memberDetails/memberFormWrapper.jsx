@@ -29,13 +29,14 @@ const MemberFormWrapper = () => {
     rankDesignation: '',
     ServiceId: '',
     relationship: '',
-
     projectName: '',
     PropertySize: '',
     perSqftPropertyPrice: '',
     selectedPropertyCost: '',
     percentage: '',
     percentageCost: '',
+    plotLength: '',
+    plotBreadth: '',
      // Nominee Particulars
   nomineeName: '',
   nomineeAge: '',

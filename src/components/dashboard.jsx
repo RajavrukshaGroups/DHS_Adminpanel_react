@@ -16,6 +16,7 @@ import axios from "axios";
 
 function Dashboard() {
   const [totalProjectsCount, setTotalProjects] = useState(0);
+  const [totalRegMembers, setTotalRegMembers] = useState(0);
   const user = {
     name: "Tom Cook",
     email: "tom@example.com",
@@ -37,6 +38,7 @@ function Dashboard() {
           "http://localhost:3000/project/totalprojectscount"
         );
         setTotalProjects(response.data.totalProjects);
+        setTotalRegMembers(response.data.totalRegMembers);
       } catch (err) {
         toast.error("failed to fetch the projects count");
         console.error("failed to fetch the projects count", error);
@@ -68,7 +70,7 @@ function Dashboard() {
               <h2 className="text-2xl font-semibold capitalize mb-2">
                 Total Registered Members
               </h2>
-              <p className="text-4xl font-bold">...</p>
+              <p className="text-4xl font-bold">{totalRegMembers}</p>
             </div>
             <div className="bg-white border-1 border-blue-500 text-blue-600 rounded-lg shadow-md w-64 h-48 flex flex-col items-center justify-center text-center hover:shadow-lg transition p-4">
               <h2 className="text-2xl font-semibold capitalize mb-2">

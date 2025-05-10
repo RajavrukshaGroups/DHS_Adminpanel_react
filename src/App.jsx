@@ -20,6 +20,7 @@ import Navbar from "./Components/navbar";
 import EditViewProjectStatus from "./pages/Projects/editViewProjectStatus";
 import MemberFormWrapper from "./Components/memberDetails/memberFormWrapper";
 import ViewMemberdetails from "./Components/memberDetails/viewMemberdetails";
+import ViewInactiveMembers from "./Components/memberDetails/viewInactiveMembers"
 function AppWrapper() {
   return (
     <Router>
@@ -68,6 +69,7 @@ function MainLayout({ sidebarOpen, setSidebarOpen }) {
       >
         <Routes>
           <Route path="/adminlogin" element={<AdminLogin />} />
+
           <Route
             path="/"
             element={
@@ -76,6 +78,7 @@ function MainLayout({ sidebarOpen, setSidebarOpen }) {
               </PrivateRoute>
             }
           />
+          
           <Route
             path="/projectLand"
             element={
@@ -146,6 +149,14 @@ function MainLayout({ sidebarOpen, setSidebarOpen }) {
             element={
               <PrivateRoute>
                 <ViewMemberdetails />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/viewInactiveMembers"
+            element={
+              <PrivateRoute>
+                <ViewInactiveMembers />
               </PrivateRoute>
             }
           />

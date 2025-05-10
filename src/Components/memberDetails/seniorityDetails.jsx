@@ -3,10 +3,9 @@ import axiosInstance from '../../api/interceptors';
 
 function SeniorityDetails({ handleChange, formData, formErrors }) {
   const [duplicateFields, setDuplicateFields] = useState({});
-
   // Map frontend field names to backend response keys
   const fieldKeyMap = {
-    SeniorityID: 'SeniorityID',
+    seniorityId: 'SeniorityID',
     membershipNo: 'MembershipNo',
     cunfirmationLetterNo: 'ConfirmationLetterNo',
     shareCertificateNo: 'ShareCertificateNumber'
@@ -14,15 +13,14 @@ function SeniorityDetails({ handleChange, formData, formErrors }) {
 
   useEffect(() => {
     const delay = setTimeout(() => {
-      const { SeniorityID, membershipNo, cunfirmationLetterNo, shareCertificateNo } = formData;
-
-      if (SeniorityID || membershipNo || cunfirmationLetterNo || shareCertificateNo) {
+      const { seniorityId, membershipNo, cunfirmationLetterNo, shareCertificateNo } = formData;
+      if (seniorityId || membershipNo || cunfirmationLetterNo || shareCertificateNo) {
+        
         console.log('Checking for duplicates...');
-
         axiosInstance
           .get('/member/check-duplicates', {
             params: {
-              SeniorityID,
+              SeniorityID:seniorityId,
               MembershipNo: membershipNo,
               ConfirmationLetterNo: cunfirmationLetterNo,
               ShareCertificateNumber: shareCertificateNo
@@ -51,13 +49,13 @@ function SeniorityDetails({ handleChange, formData, formErrors }) {
           <label className="block font-medium mb-1">Seniority ID</label>
           <input
             type="text"
-            name="SeniorityID"
+            name="seniorityId"
             placeholder="Seniority ID"
-            value={formData.SeniorityID}
+            value={formData.seniorityId}
             onChange={handleChange}
-            className={`w-full border px-4 py-2 rounded-md ${isDuplicate("SeniorityID") ? 'border-red-500' : ''}`}
+            className={`w-full border px-4 py-2 rounded-md ${isDuplicate("seniorityId") ? 'border-red-500' : ''}`}
           />
-          {isDuplicate("SeniorityID") && (
+          {isDuplicate("seniorityId") && (
             <p className="text-red-600 text-sm">This Seniority ID is already used.</p>
           )}
         </div>

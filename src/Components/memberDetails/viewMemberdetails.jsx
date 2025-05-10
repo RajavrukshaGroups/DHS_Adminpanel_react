@@ -12,6 +12,7 @@ function ViewMemberdetails() {
         const response = await axiosInstance.get(
           "http://localhost:3000/member/view-member-details"
         );
+        console.log("response",response);
         setMemberDetails(response.data || []);
       } catch (error) {
         console.error("Error fetching member details:", error);

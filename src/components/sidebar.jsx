@@ -191,6 +191,19 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     <FaUserFriends className="text-base" />
                     <span className="ml-3">View Member Details</span>
                   </Link>
+                  <Link
+                    to="/viewInactiveMembers"
+                    className={`flex items-center px-3 py-2 rounded-lg ${
+                      // location.pathname === "/addreferencedetails"
+                      location.pathname === "/viewInactiveMembers"
+                        ? "bg-blue-100 text-blue-700"
+                        : "text-black hover:bg-gray-100"
+                    }`}
+                  >
+                    {/* <FaPlusCircle className="text-base" /> */}
+                    <FaUserFriends className="text-base" />
+                    <span className="ml-3 w">Inactive Members</span>
+                  </Link>
                 </div>
               )}
             </nav>

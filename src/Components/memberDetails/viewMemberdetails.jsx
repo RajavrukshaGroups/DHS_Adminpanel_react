@@ -36,8 +36,8 @@ function ViewMemberdetails() {
                 <th className="border px-3 py-2 text-center">
                 Mobile No
                 </th>
-                <th className="border px-3 py-2 text-center">Seniority ID</th>
                 <th className="border px-3 py-2 text-center">Email</th>
+                <th className="border px-3 py-2 text-center">Seniority ID</th>
                 <th className="border px-3 py-2 text-center">Password</th>
                 <th className="border px-3 py-2 text-center">Status</th>
                 <th className="border px-3 py-2 text-center">Send email</th>

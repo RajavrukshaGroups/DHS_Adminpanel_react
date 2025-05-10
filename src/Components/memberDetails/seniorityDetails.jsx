@@ -3,10 +3,9 @@ import axiosInstance from '../../api/interceptors';
 
 function SeniorityDetails({ handleChange, formData, formErrors }) {
   const [duplicateFields, setDuplicateFields] = useState({});
-
   // Map frontend field names to backend response keys
   const fieldKeyMap = {
-    SeniorityID: 'SeniorityID',
+    seniorityId: 'SeniorityID',
     membershipNo: 'MembershipNo',
     cunfirmationLetterNo: 'ConfirmationLetterNo',
     shareCertificateNo: 'ShareCertificateNumber'
@@ -15,10 +14,8 @@ function SeniorityDetails({ handleChange, formData, formErrors }) {
   useEffect(() => {
     const delay = setTimeout(() => {
       const { SeniorityID, membershipNo, cunfirmationLetterNo, shareCertificateNo } = formData;
-
       if (SeniorityID || membershipNo || cunfirmationLetterNo || shareCertificateNo) {
         console.log('Checking for duplicates...');
-
         axiosInstance
           .get('/member/check-duplicates', {
             params: {
@@ -51,9 +48,9 @@ function SeniorityDetails({ handleChange, formData, formErrors }) {
           <label className="block font-medium mb-1">Seniority ID</label>
           <input
             type="text"
-            name="SeniorityID"
+            name="seniorityId"
             placeholder="Seniority ID"
-            value={formData.SeniorityID}
+            value={formData.seniorityId}
             onChange={handleChange}
             className={`w-full border px-4 py-2 rounded-md ${isDuplicate("SeniorityID") ? 'border-red-500' : ''}`}
           />

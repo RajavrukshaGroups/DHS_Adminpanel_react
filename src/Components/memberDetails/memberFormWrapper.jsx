@@ -193,7 +193,8 @@ if (!memberSign) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+ console.log("Form Data:", formData);
+ 
       // Validate PersonalDetails section
   const personalErrors = validatePersonalDetails(formData);
 

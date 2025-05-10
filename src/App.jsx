@@ -68,6 +68,7 @@ function MainLayout({ sidebarOpen, setSidebarOpen }) {
       >
         <Routes>
           <Route path="/adminlogin" element={<AdminLogin />} />
+
           <Route
             path="/"
             element={
@@ -76,6 +77,7 @@ function MainLayout({ sidebarOpen, setSidebarOpen }) {
               </PrivateRoute>
             }
           />
+          
           <Route
             path="/projectLand"
             element={

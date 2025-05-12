@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import axiosInstance from "../../api/interceptors";
-
+import { Link } from "react-router-dom";
+import { IoIosAddCircleOutline } from "react-icons/io";
 
 function ViewUserdetails() {
   const [memberDetails, setMemberDetails] = useState([]);
@@ -23,22 +24,23 @@ function ViewUserdetails() {
   return (
     <div className="flex justify-center min-h-screen bg-blue-50 px-4 py-6">
       <div className="w-full max-w-8xl bg-white rounded-lg shadow p-6">
-        <h1 className="text-xl font-semibold mb-4 text-center">
+        {/* <h1 className="text-xl font-semibold mb-4 text-center">
           View Member Details
-        </h1>
+        </h1> */}
 
         <div className="mt-4 overflow-x-auto">
           <table className="w-full text-left border border-gray-300">
             <thead className="bg-gray-100">
               <tr>
                 <th className="border px-3 py-2 text-center">S.No</th>
-                <th className="border px-3 py-2 text-center">Name & Seniority ID</th>
-                <th className="border px-3 py-2 text-center">Project Name</th>
-                <th className="border px-3 py-2 text-center">Project Size (sqft)</th>
+                <th className="border px-3 py-2 text-center">Member details & Seniority ID</th>
+                <th className="border px-3 py-2 text-center">Project</th>
+                <th className="border px-3 py-2 text-center">Project Size </th>
                 <th className="border px-3 py-2 text-center">Project Price (₹)</th>
                 <th className="border px-3 py-2 text-center">Paid Amount (₹)</th>
                 <th className="border px-3 py-2 text-center">Pending Amount (₹)</th>
                 <th className="border px-3 py-2 text-center">Status</th>
+                <th className="border px-3 py-2 text-center">Additional Details</th>
               </tr>
             </thead>
             <tbody>
@@ -68,7 +70,7 @@ function ViewUserdetails() {
                         </span>
                       </td>
                       <td className="border px-3 py-2 text-center">{projectName}</td>
-                      <td className="border px-3 py-2 text-center">{propertySize}</td>
+                      <td className="border px-3 py-2 text-center">{`${member.propertyDetails.length} X ${member.propertyDetails.breadth} `}</td>
                       <td className="border px-3 py-2 text-center">{propertyCost}</td>
                       <td className="border px-3 py-2 text-center">{Amount}</td>
                       <td className="border px-3 py-2 text-center text-red-500">{pending}</td>
@@ -81,6 +83,13 @@ function ViewUserdetails() {
                           {member.isActive ? "Active" : "Inactive"}
                         </span>
                       </td>
+
+                      <td className="border px-3 py-2 text-center text-red-500">
+                      <Link to={`/addconfirmationLetter/${member._id}`} title="Add Confirmation Letter">
+                            <IoIosAddCircleOutline className="text-2xl flex m-auto text-blue-500" />
+                          </Link>
+                      </td>
+
                     </tr>
                   );
                 })

@@ -32,8 +32,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
 
   const [memberDetailsOpen, setMemberDetailsOpen] = useState(
     // location.pathname.startsWith("/memberDetails")
-    location.pathname.startsWith("/addmemberdetails") ||
-      location.pathname.startsWith("/viewmemberdetails")
+    location.pathname.startsWith("/addmemberdetails")
+  );
+  const [recieptDetailsOpen, setRecieptDetailsOpen] = useState(
+    // location.pathname.startsWith("/memberDetails")
+    location.pathname.startsWith("/addmemberdetails")
   );
 
   return (
@@ -223,6 +226,40 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     <FaUsers  className="text-base" />
                     <span className="ml-3 w">View User Details</span>
                   </Link>
+                </div>
+              )}
+               {/* Recipt Details Menu */}
+               <button
+                onClick={() => setRecieptDetailsOpen(!recieptDetailsOpen)}
+                className={`flex items-center w-full px-4 py-3 rounded-lg ${
+                  location.pathname.startsWith("/addreferencedetails")
+                    ? "bg-blue-100 text-blue-700"
+                    : "text-black hover:bg-gray-100"
+                }`}
+              >
+                {/* <FaRegEye className="text-lg" /> */}
+                <FaUsers className="text-lg" />
+
+                <span className="ml-4 flex-grow text-left">Reciept Details</span>
+                {memberDetailsOpen ? <FaChevronUp /> : <FaChevronDown />}
+              </button>
+              {recieptDetailsOpen && (
+                <div className="ml-8 mt-2 space-y-3 text-[15px]">
+                  <Link
+                    to="/viewsiteBooking"
+                    className={`flex items-center px-3 py-2 rounded-lg ${
+                      // location.pathname === "/addreferencedetails"
+                      location.pathname === "/addmemberdetails"
+                        ? "bg-blue-100 text-blue-700"
+                        : "text-black hover:bg-gray-100"
+                    }`}
+                  >
+                    {/* <FaPlusCircle className="text-base" /> */}
+                    <FaUserPlus className="text-base" />
+
+                    <span className="ml-3">Booking Confirmation</span>
+                  </Link>
+                
                 </div>
               )}
             </nav>

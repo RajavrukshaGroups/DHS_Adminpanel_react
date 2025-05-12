@@ -6,6 +6,7 @@ import {
   Route,
   useLocation,
 } from "react-router-dom";
+
 import AdminLogin from "./pages/adminLogin";
 import Dashboard from "./pages/dashboard";
 import Sidebar from "./pages/sidebar";
@@ -22,6 +23,9 @@ import MemberFormWrapper from "./Components/memberDetails/memberFormWrapper";
 import ViewMemberdetails from "./Components/memberDetails/viewMemberdetails";
 import ViewInactiveMembers from "./Components/memberDetails/viewInactiveMembers";
 import ViewUserdetails from "./Components/memberDetails/viewUserdetails";
+import SiteBookingConfirmation from "./Components/memberDetails/siteBookingConfirmation";
+import AddConfirmationletter from "./Components/memberDetails/addConfirmationletter";
+import ViewSitebookingConfirmation from "./Components/recieptDetails/viewSitebookingConfirmation";
 function AppWrapper() {
   return (
     <Router>
@@ -166,6 +170,30 @@ function MainLayout({ sidebarOpen, setSidebarOpen }) {
             element={
               <PrivateRoute>
                 <ViewUserdetails />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/siteBookingConfirmation"
+            element={
+              <PrivateRoute>
+                <SiteBookingConfirmation />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/addconfirmationLetter/:id"
+            element={
+              <PrivateRoute>
+                <AddConfirmationletter />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/viewSiteBooking"
+            element={
+              <PrivateRoute>
+                <ViewSitebookingConfirmation />
               </PrivateRoute>
             }
           />

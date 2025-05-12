@@ -79,6 +79,9 @@ function ViewSitebookingConfirmation() {
                         View Confirmation
                       </button>
                     </td>
+                    <td>
+                        
+                    </td>
                   </tr>
                 ))
               )}

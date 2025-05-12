@@ -26,6 +26,7 @@ function ViewUserdetails() {
   //   };
   //   fetchData();
   // }, []);
+  
   const fetchData = async (page = 1, search = "") => {
     try {
       const response = await axiosInstance.get(
@@ -49,6 +50,23 @@ function ViewUserdetails() {
       }
     }
   };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this member?")) return;
+  
+    try {
+      await axiosInstance.delete(`http://localhost:3000/member/delete-member/${id}`);
+      toast.success("Member deleted successfully");
+      
+      // Refresh data for the current page
+      fetchData(currentPage, searchTerm);
+    } catch (error) {
+      console.error("Error deleting member:", error);
+      toast.error("Failed to delete member");
+    }
+  };
+  
+ 
 
   useEffect(() => {
     fetchData(currentPage, searchTerm);
@@ -88,6 +106,8 @@ function ViewUserdetails() {
                 <th className="border px-3 py-2 text-center">Pending Amount (₹)</th>
                 <th className="border px-3 py-2 text-center">Status</th>
                 <th className="border px-3 py-2 text-center">Additional Details</th>
+                <th className="border px-3 py-2 text-center">Delete</th>
+
               </tr>
             </thead>
             <tbody>
@@ -141,6 +161,15 @@ function ViewUserdetails() {
                       <Link to={`/addconfirmationLetter/${member._id}`} title="Add Confirmation Letter">
                             <IoIosAddCircleOutline className="text-2xl flex m-auto text-blue-500" />
                           </Link>
+                      </td>
+
+                      <td className="border px-3 py-2 text-center text-red-500">
+                        <button
+                          onClick={() => handleDelete(member._id)}
+                          className="text-red-500 hover:text-red-700"
+                        >
+                          Delete
+                        </button>
                       </td>
 
                     </tr>

@@ -10,6 +10,7 @@ const AddLandDetails = ({ refreshKey }) => {
   const [propertySize, setPropertySize] = useState("");
   const [pricePerSqft, setPricePerSqft] = useState("");
   const [propertyCost, setPropertyCost] = useState("");
+  const [location, setLocation] = useState("");
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -35,10 +36,20 @@ const AddLandDetails = ({ refreshKey }) => {
     setPropertyCost("");
 
     const selected = projectOptions.find((p) => p.projectName === value);
+    console.log("selected option", selected);
+
+    // Set dimensions if available
     if (selected?.dimensions?.length) {
       setDimensions(selected.dimensions);
     } else {
       setDimensions([]);
+    }
+
+    // Set location if available
+    if (selected?.location) {
+      setLocation(selected.location);
+    } else {
+      setLocation("");
     }
   };
 
@@ -92,6 +103,7 @@ const AddLandDetails = ({ refreshKey }) => {
           dimensionId,
           pricePerSqft: parseFloat(pricePerSqft),
           propertyCost: parseFloat(propertyCost.replace(/,/g, "")),
+          location,
         }
       );
 
@@ -109,6 +121,7 @@ const AddLandDetails = ({ refreshKey }) => {
       setPropertySize("");
       setPricePerSqft("");
       setPropertyCost("");
+      setLocation("");
     } catch (err) {
       console.error(err);
       toast.error("Failed to update land details");
@@ -185,6 +198,16 @@ const AddLandDetails = ({ refreshKey }) => {
               value={propertyCost}
               disabled
             />
+          </div>
+          <div>
+            <label className="block mb-2 font-medium">Project Location</label>
+            <textarea
+              name="location"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              rows={2}
+            ></textarea>
           </div>
 
           {/* Submit Button Aligned with Grid */}

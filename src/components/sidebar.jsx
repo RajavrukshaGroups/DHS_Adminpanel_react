@@ -16,11 +16,9 @@ import {
   FaTasks,
   FaFolderOpen,
   FaUsersCog,
-  
 } from "react-icons/fa";
 import { RiUserSettingsLine } from "react-icons/ri";
 import { FaUsersSlash } from "react-icons/fa";
-
 
 import { MdRoomPreferences } from "react-icons/md";
 
@@ -217,19 +215,19 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     to="/ViewUserDetails"
                     className={`flex items-center px-3 py-2 rounded-lg ${
                       // location.pathname === "/addreferencedetails"
-                      location.pathname === "/viewUserdetails"
+                      location.pathname === "/ViewUserDetails"
                         ? "bg-blue-100 text-blue-700"
                         : "text-black hover:bg-gray-100"
                     }`}
                   >
                     {/* <FaPlusCircle className="text-base" /> */}
-                    <FaUsers  className="text-base" />
+                    <FaUsers className="text-base" />
                     <span className="ml-3 w">View User Details</span>
                   </Link>
                 </div>
               )}
-               {/* Recipt Details Menu */}
-               <button
+              {/* Recipt Details Menu */}
+              <button
                 onClick={() => setRecieptDetailsOpen(!recieptDetailsOpen)}
                 className={`flex items-center w-full px-4 py-3 rounded-lg ${
                   location.pathname.startsWith("/addreferencedetails")
@@ -240,7 +238,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                 {/* <FaRegEye className="text-lg" /> */}
                 <FaUsers className="text-lg" />
 
-                <span className="ml-4 flex-grow text-left">Reciept Details</span>
+                <span className="ml-4 flex-grow text-left">
+                  Reciept Details
+                </span>
                 {memberDetailsOpen ? <FaChevronUp /> : <FaChevronDown />}
               </button>
               {recieptDetailsOpen && (
@@ -249,7 +249,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     to="/viewsiteBooking"
                     className={`flex items-center px-3 py-2 rounded-lg ${
                       // location.pathname === "/addreferencedetails"
-                      location.pathname === "/addmemberdetails"
+                      location.pathname === "/viewsiteBooking"
                         ? "bg-blue-100 text-blue-700"
                         : "text-black hover:bg-gray-100"
                     }`}
@@ -259,7 +259,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
 
                     <span className="ml-3">Booking Confirmation</span>
                   </Link>
-                
                 </div>
               )}
             </nav>

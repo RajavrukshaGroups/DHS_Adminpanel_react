@@ -17,6 +17,7 @@ import axios from "axios";
 function Dashboard() {
   const [totalProjectsCount, setTotalProjects] = useState(0);
   const [totalRegMembers, setTotalRegMembers] = useState(0);
+  const [totalInactiveMembers, setTotalInactiveMembers] = useState(0);
   const user = {
     name: "Tom Cook",
     email: "tom@example.com",
@@ -39,9 +40,10 @@ function Dashboard() {
         );
         setTotalProjects(response.data.totalProjects);
         setTotalRegMembers(response.data.totalRegMembers);
+        setTotalInactiveMembers(response.data.totalInactiveMembers);
       } catch (err) {
         toast.error("failed to fetch the projects count");
-        console.error("failed to fetch the projects count", error);
+        console.error("failed to fetch the projects count", err);
       }
     };
     fetchProjectsCount();
@@ -50,14 +52,6 @@ function Dashboard() {
     <>
       <div className="bg-[#E7F2FD] w-full h-screen">
         <div className="min-h-full bg-[#E7F2FD]">
-          {/* <header className="bg-[#E7F2FD] shadow-sm">
-            <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-              <h1 className="text-5xl font-bold justify-center items-center flex pt-4">
-                Dashboard
-              </h1>
-            </div>
-          </header> */}
-
           <div className="flex justify-center gap-10 pt-12">
             <div className="bg-white border-1 border-green-500 text-green-600 rounded-lg shadow-md w-64 h-48 flex flex-col items-center justify-center text-center hover:shadow-lg transition p-4">
               <h2 className="text-2xl font-semibold capitalize mb-2">
@@ -74,9 +68,9 @@ function Dashboard() {
             </div>
             <div className="bg-white border-1 border-blue-500 text-blue-600 rounded-lg shadow-md w-64 h-48 flex flex-col items-center justify-center text-center hover:shadow-lg transition p-4">
               <h2 className="text-2xl font-semibold capitalize mb-2">
-                Total Active Members
+                Inactive Members
               </h2>
-              <p className="text-4xl font-bold">...</p>
+              <p className="text-4xl font-bold">{totalInactiveMembers}</p>
             </div>
           </div>
           <div className="mt-12 mx-auto w-11/12 max-w-5xl overflow-hidden rounded-lg border border-gray-300 bg-white shadow-md">

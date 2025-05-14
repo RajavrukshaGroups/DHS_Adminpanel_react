@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axiosInstance from '../../api/interceptors';
 
-function SeniorityDetails({ handleChange, formData, formErrors }) {
+function SeniorityDetails({ handleChange, formData, formErrors ,setDuplicateFields}) {
   const [duplicateFields, setDuplicateFields] = useState({});
   // Map frontend field names to backend response keys
   const fieldKeyMap = {
@@ -28,6 +28,7 @@ function SeniorityDetails({ handleChange, formData, formErrors }) {
           })
           .then((res) => {
             console.log("Duplicate fields response:", res);
+            // setDuplicateFields(res.fields || {});
             setDuplicateFields(res.fields || {});
           })
           .catch((err) => console.error('Error checking duplicates:', err));
@@ -59,7 +60,6 @@ function SeniorityDetails({ handleChange, formData, formErrors }) {
             <p className="text-red-600 text-sm">This Seniority ID is already used.</p>
           )}
         </div>
-
         {/* Membership No */}
         <div>
           <label className="block font-medium mb-1">Membership No</label>

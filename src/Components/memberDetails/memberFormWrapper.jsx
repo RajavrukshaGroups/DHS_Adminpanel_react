@@ -13,6 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from 'react-router-dom';
 
 const MemberFormWrapper = () => {
+  const [duplicateFields, setDuplicateFields] = useState({});
   const [formErrors, setFormErrors] = useState({});
   const [formData, setFormData] = useState({
     salutation: '',
@@ -77,9 +78,17 @@ const MemberFormWrapper = () => {
   const [memberSign, setMemberSign] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  const hasDuplicates = () => {
+    return Object.values(duplicateFields).some((value) => value === true);
+  };
 
   const validatePersonalDetails = (data) => {
     const errors = {};
+
+    if (hasDuplicates()) {
+      toast.error("Please resolve duplicate field errors before submitting.");
+      return;
+    }
 
     if (!data.salutation.trim()) errors.salutation = "Salutation is required";
     if (!data.name.trim()) errors.name = "Name is required";
@@ -262,7 +271,7 @@ if (!memberSign) {
           <ProppertyDetails formData={formData} handleChange={handleChange} formErrors={formErrors}/>
           <PersonalDetails formData={formData} handleChange={handleChange}   formErrors={formErrors}/>
           <NomineePerticular formData={formData} handleChange={handleChange} formErrors={formErrors} />
-          <SeniorityDetails formData={formData} handleChange={handleChange}  formErrors={formErrors}/>
+          <SeniorityDetails formData={formData} handleChange={handleChange}  formErrors={formErrors} setDuplicateFields={setDuplicateFields}/>
           <MemberShipDetails formData={formData} handleChange={handleChange}  formErrors={formErrors}/>
           <PaymentDetails formData={formData} handleChange={handleChange}  formErrors={formErrors}/>
 

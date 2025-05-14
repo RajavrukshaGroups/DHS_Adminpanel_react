@@ -51,13 +51,13 @@ const MemberFormWrapper = () => {
   // Membership Details
    recieptNo: "",
    date: "",
-   numberOfShares: "",
+   numberOfShares: "2",
    
-   shareFee: "",
-   memberShipFee: "",
-   applicationFee: "",
-   adminissionFee: "",
-   miscellaneousExpenses: "",
+   shareFee: "2000",
+   memberShipFee: "100",
+   applicationFee: "200",
+   adminissionFee: "100",
+   miscellaneousExpenses: "100",
 
    // Payment Details
     paymentType: "Membership Fee",

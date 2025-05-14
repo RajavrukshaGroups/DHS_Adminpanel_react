@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axiosInstance from '../../api/interceptors';
 
 function SeniorityDetails({ handleChange, formData, formErrors ,setDuplicateFields}) {
-  const [duplicateFields, setDuplicateFields] = useState({});
+  // const [duplicateFields, setDuplicateFields] = useState({});
   // Map frontend field names to backend response keys
   const fieldKeyMap = {
     seniorityId: 'SeniorityID',

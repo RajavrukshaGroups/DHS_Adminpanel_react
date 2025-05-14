@@ -26,7 +26,7 @@ function ViewUserdetails() {
   //   };
   //   fetchData();
   // }, []);
-  
+
   const fetchData = async (page = 1, search = "") => {
     try {
       const response = await axiosInstance.get(
@@ -36,8 +36,8 @@ function ViewUserdetails() {
       );
       console.log("response", response);
       setMemberDetails(response.data || []);
-      setCurrentPage(response.currentPage);
-      setTotalPages(response.totalPages);
+      setCurrentPage(response.currentPage || 1);
+      setTotalPages(Math.max(response.totalPages || 1, 1));
     } catch (error) {
       console.log(error);
       if (error.status && error.status === 404) {
@@ -53,11 +53,13 @@ function ViewUserdetails() {
 
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this member?")) return;
-  
+
     try {
-      await axiosInstance.delete(`http://localhost:3000/member/delete-member/${id}`);
+      await axiosInstance.delete(
+        `http://localhost:3000/member/delete-member/${id}`
+      );
       toast.success("Member deleted successfully");
-      
+
       // Refresh data for the current page
       fetchData(currentPage, searchTerm);
     } catch (error) {
@@ -65,8 +67,6 @@ function ViewUserdetails() {
       toast.error("Failed to delete member");
     }
   };
-  
- 
 
   useEffect(() => {
     fetchData(currentPage, searchTerm);
@@ -98,16 +98,25 @@ function ViewUserdetails() {
             <thead className="bg-gray-100">
               <tr>
                 <th className="border px-3 py-2 text-center">S.No</th>
-                <th className="border px-3 py-2 text-center">Member details & Seniority ID</th>
+                <th className="border px-3 py-2 text-center">
+                  Member details & Seniority ID
+                </th>
                 <th className="border px-3 py-2 text-center">Project</th>
                 <th className="border px-3 py-2 text-center">Project Size </th>
-                <th className="border px-3 py-2 text-center">Project Price (₹)</th>
-                <th className="border px-3 py-2 text-center">Paid Amount (₹)</th>
-                <th className="border px-3 py-2 text-center">Pending Amount (₹)</th>
+                <th className="border px-3 py-2 text-center">
+                  Project Price (₹)
+                </th>
+                <th className="border px-3 py-2 text-center">
+                  Paid Amount (₹)
+                </th>
+                <th className="border px-3 py-2 text-center">
+                  Pending Amount (₹)
+                </th>
                 <th className="border px-3 py-2 text-center">Status</th>
-                <th className="border px-3 py-2 text-center">Additional Details</th>
+                <th className="border px-3 py-2 text-center">
+                  Additional Details
+                </th>
                 <th className="border px-3 py-2 text-center">Delete</th>
-
               </tr>
             </thead>
             <tbody>
@@ -138,9 +147,13 @@ function ViewUserdetails() {
                           {member.SeniorityID}
                         </span>
                       </td>
-                      <td className="border px-3 py-2 text-center">{projectName}</td>
+                      <td className="border px-3 py-2 text-center">
+                        {projectName}
+                      </td>
                       <td className="border px-3 py-2 text-center">{`${member.propertyDetails.length} X ${member.propertyDetails.breadth} `}</td>
-                      <td className="border px-3 py-2 text-center">{propertyCost}</td>
+                      <td className="border px-3 py-2 text-center">
+                        {propertyCost}
+                      </td>
                       <td className="border px-3 py-2 text-center">{Amount}</td>
                       <td className="border px-3 py-2 text-center text-red-500">
                         {pending}
@@ -158,9 +171,12 @@ function ViewUserdetails() {
                       </td>
 
                       <td className="border px-3 py-2 text-center text-red-500">
-                      <Link to={`/addconfirmationLetter/${member._id}`} title="Add Confirmation Letter">
-                            <IoIosAddCircleOutline className="text-2xl flex m-auto text-blue-500" />
-                          </Link>
+                        <Link
+                          to={`/addconfirmationLetter/${member._id}`}
+                          title="Add Confirmation Letter"
+                        >
+                          <IoIosAddCircleOutline className="text-2xl flex m-auto text-blue-500" />
+                        </Link>
                       </td>
 
                       <td className="border px-3 py-2 text-center text-red-500">
@@ -171,7 +187,6 @@ function ViewUserdetails() {
                           Delete
                         </button>
                       </td>
-
                     </tr>
                   );
                 })
@@ -179,25 +194,29 @@ function ViewUserdetails() {
             </tbody>
           </table>
         </div>
-        <div className="flex justify-center mt-6 gap-4">
-          <button
-            disabled={currentPage === 1}
-            onClick={() => setCurrentPage((prev) => prev - 1)}
-            className="bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded disabled:opacity-50"
-          >
-            Previous
-          </button>
-          <span className="text-sm font-medium mt-1">
-            Page {currentPage} of {totalPages}
-          </span>
-          <button
-            disabled={currentPage === totalPages}
-            onClick={() => setCurrentPage((prev) => prev + 1)}
-            className="bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded disabled:opacity-50"
-          >
-            Next
-          </button>
-        </div>
+        {memberDetails.length > 0 && (
+          <div className="flex justify-center mt-6 gap-4">
+            <button
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage((prev) => prev - 1)}
+              className="bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded disabled:opacity-50"
+            >
+              Previous
+            </button>
+            <span className="text-sm font-medium mt-1">
+              Page {currentPage} of {totalPages}
+            </span>
+            <button
+              disabled={
+                currentPage === totalPages || memberDetails.length === 0
+              }
+              onClick={() => setCurrentPage((prev) => prev + 1)}
+              className="bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded disabled:opacity-50"
+            >
+              Next
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

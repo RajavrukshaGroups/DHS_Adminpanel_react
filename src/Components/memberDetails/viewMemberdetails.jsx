@@ -20,8 +20,8 @@ function ViewMemberdetails() {
       );
       console.log("response", response);
       setMemberDetails(response.data || []);
-      setCurrentPage(response.currentPage);
-      setTotalPages(response.totalPages);
+      setCurrentPage(response.currentPage || 1);
+      setTotalPages(Math.max(response.totalPages || 1, 1));
     } catch (error) {
       console.log(error);
       if (error.status && error.status === 404) {
@@ -181,25 +181,29 @@ function ViewMemberdetails() {
           </table>
         </div>
         {/* Pagination Controls */}
-        <div className="flex justify-center mt-6 gap-4">
-          <button
-            disabled={currentPage === 1}
-            onClick={() => setCurrentPage((prev) => prev - 1)}
-            className="bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded disabled:opacity-50"
-          >
-            Previous
-          </button>
-          <span className="text-sm font-medium mt-1">
-            Page {currentPage} of {totalPages}
-          </span>
-          <button
-            disabled={currentPage === totalPages}
-            onClick={() => setCurrentPage((prev) => prev + 1)}
-            className="bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded disabled:opacity-50"
-          >
-            Next
-          </button>
-        </div>
+        {memberDetails.length > 0 && (
+          <div className="flex justify-center mt-6 gap-4">
+            <button
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage((prev) => prev - 1)}
+              className="bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded disabled:opacity-50"
+            >
+              Previous
+            </button>
+            <span className="text-sm font-medium mt-1">
+              Page {currentPage} of {totalPages}
+            </span>
+            <button
+              disabled={
+                currentPage === totalPages || memberDetails.length === 0
+              }
+              onClick={() => setCurrentPage((prev) => prev + 1)}
+              className="bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded disabled:opacity-50"
+            >
+              Next
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

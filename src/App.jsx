@@ -26,6 +26,7 @@ import ViewUserdetails from "./Components/memberDetails/viewUserdetails";
 import SiteBookingConfirmation from "./Components/memberDetails/siteBookingConfirmation";
 import AddConfirmationletter from "./Components/memberDetails/addConfirmationletter";
 import ViewSitebookingConfirmation from "./Components/recieptDetails/viewSitebookingConfirmation";
+import ViewReceiptDetails from "./Components/recieptDetails/viewReceipts";
 function AppWrapper() {
   return (
     <Router>
@@ -83,7 +84,7 @@ function MainLayout({ sidebarOpen, setSidebarOpen }) {
               </PrivateRoute>
             }
           />
-          
+
           <Route
             path="/projectLand"
             element={
@@ -194,6 +195,14 @@ function MainLayout({ sidebarOpen, setSidebarOpen }) {
             element={
               <PrivateRoute>
                 <ViewSitebookingConfirmation />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/viewReceipts"
+            element={
+              <PrivateRoute>
+                <ViewReceiptDetails />
               </PrivateRoute>
             }
           />

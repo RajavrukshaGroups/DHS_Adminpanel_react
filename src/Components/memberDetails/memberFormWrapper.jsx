@@ -60,11 +60,16 @@ const MemberFormWrapper = () => {
    miscellaneousExpenses: "",
 
    // Payment Details
-    paymentType: "",
+    paymentType: "Membership Fee",
     paymentMode: "",
     bankName: "",
     branchName: "",
-    amount: "",
+    amount: "2500",
+    checqueNumber: "",
+    transactionId: "",
+    ddNumber: "",
+
+
   });
   
   const navigate = useNavigate();
@@ -202,7 +207,6 @@ if (!memberSign) {
     e.preventDefault();
     console.log("Form Data:", formData);
     setLoading(true); // Start loading
- 
       // Validate PersonalDetails section
   const personalErrors = validatePersonalDetails(formData);
 

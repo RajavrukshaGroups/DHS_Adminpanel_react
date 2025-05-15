@@ -44,6 +44,13 @@ const ViewReceiptDetails = () => {
     setSearchTerm(value);
   }, 500);
 
+  const handleViewReceipt = (receipt) => {
+    window.open(
+      `http://localhost:3000/receipt/get-receipt-details/${receipt._id}`,
+      "_blank"
+    );
+  };
+
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">View Receipt Details</h1>
@@ -85,7 +92,7 @@ const ViewReceiptDetails = () => {
                   <br />
                   Seniority ID: {receipt.member?.SeniorityID}
                 </td>
-                <td className="px-4 py-2 border">
+                <td className="px-4 py-2 border capitalize">
                   {receipt.member?.propertyDetails?.projectName}
                 </td>
                 <td className="px-4 py-2 border">
@@ -101,7 +108,12 @@ const ViewReceiptDetails = () => {
                   {receipt?.member?.isActive ? "Active" : "Inactive"}
                 </td>
                 <td className="px-4 py-2 border">
-                  <button className="text-blue-600 hover:underline">👁️</button>
+                  <button
+                    className="text-blue-600 hover:underline"
+                    onClick={() => handleViewReceipt(receipt)}
+                  >
+                    👁️
+                  </button>
                 </td>
                 <td className="px-4 py-2 border">
                   <button className="text-red-600 hover:underline">🗑️</button>

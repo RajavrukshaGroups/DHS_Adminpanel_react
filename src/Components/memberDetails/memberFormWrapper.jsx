@@ -78,101 +78,101 @@ const MemberFormWrapper = () => {
   const [loading, setLoading] = useState(false);
 
 
-  // const validatePersonalDetails = (data) => {
-  //   const errors = {};
+  const validatePersonalDetails = (data) => {
+    const errors = {};
 
-//     if (!data.salutation.trim()) errors.salutation = "Salutation is required";
-//     if (!data.name.trim()) errors.name = "Name is required";
-//     if (!data.mobile.trim()) errors.mobile = "Mobile is required";
-//     else if (!/^[6-9]\d{9}$/.test(data.mobile)) errors.mobile = "Invalid mobile number";
-//     if (data.altMobile && !/^[6-9]\d{9}$/.test(data.altMobile)) {
-//       errors.altMobile = "Invalid alternative mobile number";
-//     }
-//     if (!data.email.trim()) errors.email = "Email is required";
-//     else if (!/^\S+@\S+\.\S+$/.test(data.email)) errors.email = "Invalid email";
-//     if (!data.dob.trim()) errors.dob = "Date of Birth is required";
-//     if (!data.fatherSpouse.trim()) errors.fatherSpouse = "Father/Spouse Name is required";
-//     if (!data.correspondenceAddress.trim()) errors.correspondenceAddress = "Correspondence Address is required";
-//     if (!data.permanentAddress.trim()) errors.permanentAddress = "Permanent Address is required";
-//     if (!data.workingAddress.trim()) errors.workingAddress = "Working Address is required";
+    if (!data.salutation.trim()) errors.salutation = "Salutation is required";
+    if (!data.name.trim()) errors.name = "Name is required";
+    if (!data.mobile.trim()) errors.mobile = "Mobile is required";
+    else if (!/^[6-9]\d{9}$/.test(data.mobile)) errors.mobile = "Invalid mobile number";
+    if (data.altMobile && !/^[6-9]\d{9}$/.test(data.altMobile)) {
+      errors.altMobile = "Invalid alternative mobile number";
+    }
+    if (!data.email.trim()) errors.email = "Email is required";
+    else if (!/^\S+@\S+\.\S+$/.test(data.email)) errors.email = "Invalid email";
+    if (!data.dob.trim()) errors.dob = "Date of Birth is required";
+    if (!data.fatherSpouse.trim()) errors.fatherSpouse = "Father/Spouse Name is required";
+    if (!data.correspondenceAddress.trim()) errors.correspondenceAddress = "Correspondence Address is required";
+    if (!data.permanentAddress.trim()) errors.permanentAddress = "Permanent Address is required";
+    if (!data.workingAddress.trim()) errors.workingAddress = "Working Address is required";
   
-//     if (!data.refencName.trim()) errors.refencName = "Reference Name is required";
-//     if (!data.rankDesignation.trim()) errors.rankDesignation = "Rank / Designation is required";
-//     if (!data.ServiceId.trim()) errors.ServiceId = "Service / ID No is required";
-//     if (!data.relationship.trim()) errors.relationship = "Relationship is required";
+    if (!data.refencName.trim()) errors.refencName = "Reference Name is required";
+    if (!data.rankDesignation.trim()) errors.rankDesignation = "Rank / Designation is required";
+    if (!data.ServiceId.trim()) errors.ServiceId = "Service / ID No is required";
+    if (!data.relationship.trim()) errors.relationship = "Relationship is required";
 
-//     if (!data.projectName.trim()) errors.projectName = "Project name is required";
-//     if (!data.PropertySize) errors.PropertySize = "Property size is required";
-//     if (!data.perSqftPropertyPrice) errors.perSqftPropertyPrice = "Price per sqft is required";
-//     if (!data.selectedPropertyCost) errors.selectedPropertyCost = "Total property cost is required";
-//     if (!data.percentage) errors.percentage = "Please select a percentage";
-//     if (!data.percentageCost) errors.percentageCost = "Percentage cost is required";
-//     if (!data.nomineeName.trim()) errors.nomineeName = "Nominee Name is required";
-//     if (!data.nomineeAge || isNaN(data.nomineeAge)) errors.nomineeAge = "Valid age is required";
-//     if (!data.nomineeRelationship.trim()) errors.nomineeRelationship = "Relationship is required";
-//     if (!data.nomineeAddress.trim()) errors.nomineeAddress = "Address is required";
-//     if (!data.seniorityId.trim()) errors.seniorityId = "Seniority ID is required";
-//     if (!data.membershipNo.trim()) errors.membershipNo = "Membership No is required";
-//     if (!data.cunfirmationLetterNo.trim()) errors.cunfirmationLetterNo = "Confirmation Letter No is required";
-//     if (!data.shareCertificateNo.trim()) errors.shareCertificateNo = "Share Certificate No is required";
+    if (!data.projectName.trim()) errors.projectName = "Project name is required";
+    if (!data.PropertySize) errors.PropertySize = "Property size is required";
+    if (!data.perSqftPropertyPrice) errors.perSqftPropertyPrice = "Price per sqft is required";
+    if (!data.selectedPropertyCost) errors.selectedPropertyCost = "Total property cost is required";
+    if (!data.percentage) errors.percentage = "Please select a percentage";
+    if (!data.percentageCost) errors.percentageCost = "Percentage cost is required";
+    if (!data.nomineeName.trim()) errors.nomineeName = "Nominee Name is required";
+    if (!data.nomineeAge || isNaN(data.nomineeAge)) errors.nomineeAge = "Valid age is required";
+    if (!data.nomineeRelationship.trim()) errors.nomineeRelationship = "Relationship is required";
+    if (!data.nomineeAddress.trim()) errors.nomineeAddress = "Address is required";
+    if (!data.seniorityId.trim()) errors.seniorityId = "Seniority ID is required";
+    if (!data.membershipNo.trim()) errors.membershipNo = "Membership No is required";
+    if (!data.cunfirmationLetterNo.trim()) errors.cunfirmationLetterNo = "Confirmation Letter No is required";
+    if (!data.shareCertificateNo.trim()) errors.shareCertificateNo = "Share Certificate No is required";
 
-//     // Membership Details
-// if (!data.recieptNo.trim()) errors.recieptNo = "Receipt No is required";
-// if (!data.date.trim()) errors.date = "Date is required";
-// if (!data.numberOfShares || isNaN(data.numberOfShares) || Number(data.noofShares) <= 0) {
-//   errors.numberOfShares = "Valid number of shares is required";
-// }
-// if (!data.shareFee || isNaN(data.shareFee) || Number(data.shareFee) <= 0) {
-//   errors.shareFee = "Valid Share Fee is required";
-// }
-// if (!data.memberShipFee || isNaN(data.memberShipFee) || Number(data.memberShipFee) <= 0) {
-//   errors.memberShipFee = "Valid Membership Fee is required";
-// }
-// if (!data.applicationFee || isNaN(data.applicationFee) || Number(data.applicationFee) <= 0) {
-//   errors.applicationFee = "Valid Application Fee is required";
-// }
-// if (!data.adminissionFee || isNaN(data.adminissionFee) || Number(data.adminissionFee) <= 0) {
-//   errors.adminissionFee = "Valid Admission Fee is required";
-// }
-// if (!data.miscellaneousExpenses || isNaN(data.miscellaneousExpenses) || Number(data.miscellaneousExpenses) < 0) {
-//   errors.miscellaneousExpenses = "Valid Miscellaneous Expenses are required";
-// }
-// // Payment Details
+    // Membership Details
+if (!data.recieptNo.trim()) errors.recieptNo = "Receipt No is required";
+if (!data.date.trim()) errors.date = "Date is required";
+if (!data.numberOfShares || isNaN(data.numberOfShares) || Number(data.noofShares) <= 0) {
+  errors.numberOfShares = "Valid number of shares is required";
+}
+if (!data.shareFee || isNaN(data.shareFee) || Number(data.shareFee) <= 0) {
+  errors.shareFee = "Valid Share Fee is required";
+}
+if (!data.memberShipFee || isNaN(data.memberShipFee) || Number(data.memberShipFee) <= 0) {
+  errors.memberShipFee = "Valid Membership Fee is required";
+}
+if (!data.applicationFee || isNaN(data.applicationFee) || Number(data.applicationFee) <= 0) {
+  errors.applicationFee = "Valid Application Fee is required";
+}
+if (!data.adminissionFee || isNaN(data.adminissionFee) || Number(data.adminissionFee) <= 0) {
+  errors.adminissionFee = "Valid Admission Fee is required";
+}
+if (!data.miscellaneousExpenses || isNaN(data.miscellaneousExpenses) || Number(data.miscellaneousExpenses) < 0) {
+  errors.miscellaneousExpenses = "Valid Miscellaneous Expenses are required";
+}
+// Payment Details
 
-// if (!formData.paymentType.trim()) {
-//   errors.paymentType = "Payment type is required";
-// }
+if (!formData.paymentType.trim()) {
+  errors.paymentType = "Payment type is required";
+}
 
-// if (!formData.paymentMode.trim()) {
-//   errors.paymentMode = "Payment mode is required";
-// }
+if (!formData.paymentMode.trim()) {
+  errors.paymentMode = "Payment mode is required";
+}
 
-// if (
-//   ["cheque", "online", "card"].includes(formData.paymentMode.toLowerCase())
-// ) {
-//   if (!formData.bankName.trim()) {
-//     errors.bankName = "Bank name is required for this payment mode";
-//   }
+if (
+  ["cheque", "online", "card"].includes(formData.paymentMode.toLowerCase())
+) {
+  if (!formData.bankName.trim()) {
+    errors.bankName = "Bank name is required for this payment mode";
+  }
 
-//   if (!formData.branchName.trim()) {
-//     errors.branchName = "Branch name is required for this payment mode";
-//   }
-// }
+  if (!formData.branchName.trim()) {
+    errors.branchName = "Branch name is required for this payment mode";
+  }
+}
 
-// if (!formData.amount || isNaN(formData.amount) || Number(formData.amount) <= 0) {
-//   errors.amount = "Valid amount is required";
-// }
+if (!formData.amount || isNaN(formData.amount) || Number(formData.amount) <= 0) {
+  errors.amount = "Valid amount is required";
+}
 
-// if (!memberPhoto) {
-//   errors.memberPhoto = "Member photo is required";
-// }
+if (!memberPhoto) {
+  errors.memberPhoto = "Member photo is required";
+}
 
-// if (!memberSign) {
-//   errors.memberSign = "Member signature is required";
-// }
+if (!memberSign) {
+  errors.memberSign = "Member signature is required";
+}
 
-//     return errors;
-//   };
+    return errors;
+  };
   
 
   // const handleChange = (e) => {
@@ -209,20 +209,19 @@ const MemberFormWrapper = () => {
     console.log("Form Data:", formData);
     setLoading(true); // Start loading
       // Validate PersonalDetails section
-  // const personalErrors = validatePersonalDetails(formData);
+  const personalErrors = validatePersonalDetails(formData);
 
-  // if (Object.keys(personalErrors).length > 0) {
-  //   setFormErrors(personalErrors);
-  //   window.scrollTo({ top: 0, behavior: "smooth" });
-  //   setLoading(false); // Stop loading on validation error
+  if (Object.keys(personalErrors).length > 0) {
+    setFormErrors(personalErrors);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    setLoading(false); // Stop loading on validation error
 
-  //   return;
-  // }
+    return;
+  }
 
-  // setFormErrors({}); // clear errors if passed
+  setFormErrors({}); // clear errors if passed
 
     const data = new FormData();
-
     // Append text fields
     for (const key in formData) {
       data.append(key, formData[key]);
@@ -240,8 +239,7 @@ const MemberFormWrapper = () => {
       });
       toast.success("Member added successfully!");
 
-      // navigate("/viewmemberdetails")
-
+      navigate("/viewmemberdetails")
 
       console.log('Success:', res.data);
       // Show toast or redirect
@@ -315,7 +313,6 @@ const MemberFormWrapper = () => {
               )}
             </button>
             </div>
-
         </form>
       </div>
     </div>

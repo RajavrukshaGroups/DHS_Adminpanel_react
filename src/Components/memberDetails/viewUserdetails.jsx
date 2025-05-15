@@ -4,6 +4,7 @@ import axiosInstance from "../../api/interceptors";
 import { Link } from "react-router-dom";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 function ViewUserdetails() {
   const [memberDetails, setMemberDetails] = useState([]);
@@ -11,6 +12,8 @@ function ViewUserdetails() {
   const [totalPages, setTotalPages] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  
+  const navigate = useNavigate();
 
   // useEffect(() => {
   //   const fetchData = async () => {
@@ -26,7 +29,7 @@ function ViewUserdetails() {
   //   };
   //   fetchData();
   // }, []);
-
+  
   const fetchData = async (page = 1, search = "") => {
     try {
       const response = await axiosInstance.get(
@@ -117,6 +120,7 @@ function ViewUserdetails() {
                   Additional Details
                 </th>
                 <th className="border px-3 py-2 text-center">Delete</th>
+                <th className="border px-3 py-2 text-center">Edit</th>
               </tr>
             </thead>
             <tbody>
@@ -185,6 +189,15 @@ function ViewUserdetails() {
                           className="text-red-500 hover:text-red-700"
                         >
                           Delete
+                        </button>
+                      </td>
+                      {/* // In the table row: */}
+                      <td className="border px-3 py-2 text-center text-red-500">
+                        <button
+                          onClick={() => navigate(`/edit-member/${member._id}`)} // Pass the member ID
+                          className="text-blue-600 hover:underline"
+                        >
+                          Edit
                         </button>
                       </td>
                     </tr>

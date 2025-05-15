@@ -11,7 +11,7 @@ const ReferenceDetails = ({ formData, handleChange,formErrors  }) => {
             type="text"
             name="refencName"
             placeholder="Reference Name"
-            value={formData.refencName}
+            value={formData?.refencName || ""} 
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
@@ -23,7 +23,7 @@ const ReferenceDetails = ({ formData, handleChange,formErrors  }) => {
             type="text"
             name="rankDesignation"
             placeholder="Rank / Designation"
-            value={formData.rankDesignation}
+            value={formData?.rankDesignation}
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
@@ -35,7 +35,7 @@ const ReferenceDetails = ({ formData, handleChange,formErrors  }) => {
             type="text"
             name="ServiceId"
             placeholder="Service / ID No"
-            value={formData.ServiceId}
+            value={formData?.ServiceId}
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
@@ -47,7 +47,7 @@ const ReferenceDetails = ({ formData, handleChange,formErrors  }) => {
             type="text"
             name="relationship"
             placeholder="Relationship"
-            value={formData.relationship}
+            value={formData?.relationship}
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />

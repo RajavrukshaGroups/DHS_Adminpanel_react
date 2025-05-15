@@ -23,16 +23,16 @@ function ProppertyDetails({ formData, handleChange, refreshKey,formErrors }) {
 
   // Update dimensions when projectName changes
   useEffect(() => {
-    const selected = projectOptions.find((p) => p.projectName === formData.projectName);
+    const selected = projectOptions.find((p) => p.projectName === formData?.projectName);
     if (selected?.dimensions?.length) {
       setDimensions(selected.dimensions);
     } else {
       setDimensions([]);
     }
-  }, [formData.projectName, projectOptions]);
+  }, [formData?.projectName, projectOptions]);
 
   useEffect(() => {
-    if (formData.PropertySize && formData.perSqftPropertyPrice) {
+    if (formData?.PropertySize && formData?.perSqftPropertyPrice) {
       const cost = parseFloat(formData.PropertySize) * parseFloat(formData.perSqftPropertyPrice);
       const formatted = isNaN(cost)
         ? ""
@@ -44,10 +44,10 @@ function ProppertyDetails({ formData, handleChange, refreshKey,formErrors }) {
     } else {
       handleChange({ target: { name: "selectedPropertyCost", value: "" } });
     }
-  }, [formData.PropertySize, formData.perSqftPropertyPrice]);
+  }, [formData?.PropertySize, formData?.perSqftPropertyPrice]);
 
 useEffect(() => {
-    if (formData.selectedPropertyCost && formData.percentage) {
+    if (formData?.selectedPropertyCost && formData?.percentage) {
       const numericCost = parseFloat(formData.selectedPropertyCost.replace(/,/g, ""));
       const percentageCost = (numericCost * parseFloat(formData.percentage)) / 100;
   
@@ -60,7 +60,7 @@ useEffect(() => {
     } else {
       handleChange({ target: { name: "percentageCost", value: "" } });
     }
-  }, [formData.selectedPropertyCost, formData.percentage]);
+  }, [formData?.selectedPropertyCost, formData?.percentage]);
   
 
   // Handle project selection
@@ -113,7 +113,7 @@ useEffect(() => {
           <label className="block font-medium mb-1">Project</label>
           <select
             name="projectName"
-            value={formData.projectName}
+            value={formData?.projectName}
             onChange={handleProjectSelect}
             className="w-full border px-4 py-2 rounded-md"
           >
@@ -146,13 +146,13 @@ useEffect(() => {
                 <input
           type="hidden"
           name="plotLength"
-          value={formData.plotLength}
+          value={formData?.plotLength}
         />
 
         <input
           type="hidden"
           name="plotBreadth"
-          value={formData.plotBreadth}
+          value={formData?.plotBreadth}
         />
         <div>
           <label className="block font-medium mb-1">Per Sqft Property Price</label>
@@ -161,7 +161,7 @@ useEffect(() => {
             min={0}
             name="perSqftPropertyPrice"
             placeholder="Per Sqft Property Price"
-            value={formData.perSqftPropertyPrice}
+            value={formData?.perSqftPropertyPrice}
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
@@ -174,7 +174,7 @@ useEffect(() => {
             type="text"
             name="selectedPropertyCost"
             placeholder="Selected Property Cost"
-            value={formData.selectedPropertyCost}
+            value={formData?.selectedPropertyCost}
             readOnly
             className="w-full border px-4 py-2 rounded-md bg-gray-100"
           />
@@ -190,7 +190,7 @@ useEffect(() => {
           type="radio"
           name="percentage"
           value={percent}
-          checked={parseInt(formData.percentage) === percent}
+          checked={parseInt(formData?.percentage) === percent}
           onChange={(e) =>
             handleChange({ target: { name: "percentage", value: e.target.value } })
           }
@@ -207,7 +207,7 @@ useEffect(() => {
   <input
     type="text"
     name="percentageCost"
-    value={formData.percentageCost}
+    value={formData?.percentageCost}
     readOnly
     className="w-full border px-4 py-2 rounded-md bg-gray-100"
   />

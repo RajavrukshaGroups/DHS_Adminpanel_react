@@ -27,6 +27,7 @@ import SiteBookingConfirmation from "./Components/memberDetails/siteBookingConfi
 import AddConfirmationletter from "./Components/memberDetails/addConfirmationletter";
 import ViewSitebookingConfirmation from "./Components/recieptDetails/viewSitebookingConfirmation";
 import ViewReceiptDetails from "./Components/recieptDetails/viewReceipts";
+import ViewReceiptHistory from "./Components/memberDetails/viewHistory";
 function AppWrapper() {
   return (
     <Router>
@@ -215,9 +216,15 @@ function MainLayout({ sidebarOpen, setSidebarOpen }) {
               </PrivateRoute>
             }
           />
-
+          <Route
+            path="/view-history/:id"
+            element={
+              <PrivateRoute>
+                <ViewReceiptHistory />
+              </PrivateRoute>
+            }
+          />
         </Routes>
-        
       </div>
     </div>
   );

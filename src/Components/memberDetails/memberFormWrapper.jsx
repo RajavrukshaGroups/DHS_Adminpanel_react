@@ -140,13 +140,11 @@ const MemberFormWrapper = () => {
   }, [id]);
   
 
-
-
   const validatePersonalDetails = (data) => {
     const errors = {};
     if (!data.salutation.trim()) errors.salutation = "Salutation is required";
     if (!data.name.trim()) errors.name = "Name is required";
-    if (!data.mobile.trim()) errors.mobile = "Mobile is required";
+    if (!data.mobile) errors.mobile = "Mobile is required";
     else if (!/^[6-9]\d{9}$/.test(data.mobile)) errors.mobile = "Invalid mobile number";
     if (data.altMobile && !/^[6-9]\d{9}$/.test(data.altMobile)) {
       errors.altMobile = "Invalid alternative mobile number";
@@ -271,8 +269,20 @@ if (!memberSign) {
     e.preventDefault();
     setLoading(true);
     // Validate form data here and set errors if any
+  const personalErrors = validatePersonalDetails(formData);
+
+  if (Object.keys(personalErrors).length > 0) {
+    setFormErrors(personalErrors);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    setLoading(false); // Stop loading on validation error
+    return;
+  }
+
     // setFormErrors(validationErrors);
+  setFormErrors({}); // clear errors if passed
+
     const data = new FormData();
+
     for (const key in formData) {
       data.append(key, formData[key]);
     }
@@ -400,22 +410,6 @@ if (!memberSign) {
             </div>
 
             <div className="flex justify-start mt-6">
-            {/* <button
-              type="submit"
-              disabled={loading}
-              className={`bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-2 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 flex items-center justify-center ${
-                loading ? 'opacity-50 cursor-not-allowed' : ''
-              }`}
-            >
-              {loading ? (
-                <span className="flex items-center gap-2">
-                  <FaSpinner className="animate-spin" />
-                  Submitting...
-                </span>
-              ) : (
-                'Submit'
-              )}
-            </button> */}
               <button
               type="submit"
               disabled={loading}

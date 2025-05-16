@@ -12,24 +12,9 @@ function ViewUserdetails() {
   const [totalPages, setTotalPages] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  
+
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axiosInstance.get(
-  //         "http://localhost:3000/member/view-member-details"
-  //       );
-  //       console.log(response, "api calling");
-  //       setMemberDetails(response.data || []);
-  //     } catch (error) {
-  //       console.error("Error fetching member details:", error);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
-  
   const fetchData = async (page = 1, search = "") => {
     try {
       const response = await axiosInstance.get(
@@ -115,6 +100,9 @@ function ViewUserdetails() {
                 <th className="border px-3 py-2 text-center">
                   Pending Amount (₹)
                 </th>
+                <th className="border px-3 py-2 text-center">
+                  Payment History
+                </th>
                 <th className="border px-3 py-2 text-center">Status</th>
                 <th className="border px-3 py-2 text-center">
                   Additional Details
@@ -162,6 +150,17 @@ function ViewUserdetails() {
                       <td className="border px-3 py-2 text-center text-red-500">
                         {pending}
                       </td>
+                      <td className="border px-3 py-2 text-center">
+                        <button
+                          onClick={() =>
+                            navigate(`/view-history/${member._id}`)
+                          }
+                          className="text-blue-600 hover:underline"
+                        >
+                          View History
+                        </button>
+                      </td>
+
                       <td className="border px-3 py-2 text-center">
                         <span
                           className={`px-2 py-1 rounded-full text-xs font-semibold ${

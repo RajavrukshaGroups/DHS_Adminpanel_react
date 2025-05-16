@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axiosInstance from "../../api/interceptors";
+import { FaSpinner } from 'react-icons/fa';
+// import { FaSpinner } from 'react-icons/fa';
+import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 function AddConfirmationletter() {
     const { id } = useParams();
     const [memberData, setMemberData] = useState({});
+    const [loading, setLoading] = useState(false);
+     const navigate = useNavigate();  
   
     useEffect(() => {
+
       const fetchMember = async () => {
         try {
           const response = await axiosInstance.get(`/member/get-confirmation/${id}`);
@@ -16,12 +23,22 @@ function AddConfirmationletter() {
           console.error("Error fetching member data:", error);
         }
       };
+
       fetchMember();
+
     }, [id]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
+          // ✅ Validate affidavit file from FormData
+    const file = formData.get("affidivate");
+    if (!file || file.size === 0) {
+      toast.error("Please upload an affidavit file before submitting.");
+      return;
+    }
+    setLoading(true);
+
         const data = Object.fromEntries(formData.entries());
         console.log("Form Data:", data);
 
@@ -32,21 +49,25 @@ function AddConfirmationletter() {
             { headers: { "Content-Type": "multipart/form-data" } }
           );
           console.log("Response:", response);
-          alert("Confirmation letter added successfully");
+          toast.success("Confirmation letter added successfully");
+          navigate("/viewsiteBooking")
         } catch (error) {
           console.error("Error adding confirmation letter:", error);
+        }finally {
+          setLoading(false);
         }
       }
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow-md mb-6">
+    <div className="bg-white p-16 rounded-xl shadow-md mb-6 ">
     <h2 className="text-xl font-bold mb-4">AddConfirmation letter</h2>
+
     <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-    <div>
+       <div>
           <label className="block font-medium mb-1">Member Name</label>
           <input
-          name="name"
+            name="name"
             type="text"
             value={memberData?.name || ""}
             className="w-full border px-4 py-2 rounded-md"
@@ -103,12 +124,13 @@ function AddConfirmationletter() {
           name="projectAddress"
           type="text"
           className="w-full border px-4 py-2 rounded-md"
+          value={memberData?.projectLocation|| ""}
         />
       </div>
       <div>
         <label className="block font-medium mb-1">Date</label>
         <input
-        name="date"
+            name="date"
             type="date"
             value={memberData.date ? new Date(memberData.date).toISOString().split("T")[0] : ''}
             placeholder="Date"
@@ -139,6 +161,7 @@ function AddConfirmationletter() {
         <label className="block font-medium mb-1">Cheque No/DD No/UTR No</label>
         <input
           name="ChequeNo"
+          value={memberData?.checqueNumber || ""}
           type="text"
           placeholder="Relationship"
           className="w-full border px-4 py-2 rounded-md"
@@ -203,7 +226,7 @@ function AddConfirmationletter() {
           value={memberData?.SeniorityID || ""}
         />
       </div>
-      <div>
+      {/* <div>
         <label className="block font-medium mb-1">Duration</label>
         <input
         name="Duration"
@@ -211,11 +234,11 @@ function AddConfirmationletter() {
           placeholder="Relationship"
           className="w-full border px-4 py-2 rounded-md"
         />
-      </div>
+      </div> */}
       <div>
         <label className="block font-medium mb-1">Confirmation Number</label>
         <input
-        name="ConfirmationLetterNo"
+          name="ConfirmationLetterNo"
           type="text"
           value={memberData?.ConfirmationLetterNo || ""}
           placeholder="Relationship"
@@ -243,13 +266,24 @@ function AddConfirmationletter() {
       </div>
 
       <div>
-  <button
-    type="submit"
-    className="w-full px-6 py-3 bg-blue-600 text-white rounded hover:bg-blue-700"
-  >
-    Submit
-  </button>
-</div>
+ 
+        </div>
+        <button
+          type="submit"
+          disabled={loading}
+          className={`w-32 px-6 py-3 bg-blue-600 text-white rounded hover:bg-blue-700 flex items-center justify-center transition-all duration-200 ${
+            loading ? 'opacity-50 cursor-not-allowed' : ''
+          }`}
+        >
+          {loading ? (
+            <span className="flex items-center gap-2">
+              <FaSpinner className="animate-spin" />
+              Submitting...
+            </span>
+          ) : (
+            'Submit'
+          )}
+        </button>
 
     </form>
   </div>

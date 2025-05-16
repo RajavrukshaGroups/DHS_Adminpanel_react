@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../../api/interceptors";
 import SiteBookingConfirmation from "../memberDetails/siteBookingConfirmation"; // Import the confirmation component
-
+import { FaEye } from "react-icons/fa";
+import { FaFileAlt } from "react-icons/fa";
 function ViewSitebookingConfirmation() {
   const [memberDetails, setMemberDetails] = useState([]);
   const [selectedMember, setSelectedMember] = useState(null);
@@ -37,7 +38,7 @@ function ViewSitebookingConfirmation() {
                 <th className="border px-3 py-2 text-center">Member Details</th>
                 <th className="border px-3 py-2 text-center">Project Address</th>
                 <th className="border px-3 py-2 text-center">Cheque/DD/UTR No</th>
-                <th className="border px-3 py-2 text-center">Duration</th>
+                {/* <th className="border px-3 py-2 text-center">Duration</th> */}
                 <th className="border px-3 py-2 text-center">Receipt No.</th>
                 <th className="border px-3 py-2 text-center">Total Amount</th>
                 <th className="border px-3 py-2 text-center">Affidavit</th>
@@ -63,21 +64,25 @@ function ViewSitebookingConfirmation() {
                     </td>
                     <td className="border px-3 py-2 text-center">{member.projectAddress}</td>
                     <td className="border px-3 py-2 text-center">{member.chequeNo}</td>
-                    <td className="border px-3 py-2 text-center">{member.duration}</td>
+                    {/* <td className="border px-3 py-2 text-center">{member.duration}</td> */}
                     <td className="border px-3 py-2 text-center">{member.userId?.ReceiptNo}</td>
                     <td className="border px-3 py-2 text-center">₹{member.userId?.Amount}</td>
                     <td className="border px-3 py-2 text-center">
-                      <a href={member.affidavitUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">
-                        View Affidavit
+                     <div className="flex justify-center">
+                     <a href={member.affidavitUrl} target="_blank" rel="noopener noreferrer" className="text-black underline">
+                        <FaEye className="text-black  text-xl cursor-pointer hover:text-black" />
+
                       </a>
+                       <button
+                        onClick={() => setSelectedMember(member)}
+                        className="text-black underline"
+                      >
+                        <FaFileAlt className="text-black text-xl cursor-pointer hover:text-blue-700" />
+                      </button>
+                     </div>
                     </td>
                     <td className="border px-3 py-2 text-center">
-                      <button
-                        onClick={() => setSelectedMember(member)}
-                        className="text-blue-600 underline"
-                      >
-                        View Confirmation
-                      </button>
+                     
                     </td>
                   </tr>
                 ))

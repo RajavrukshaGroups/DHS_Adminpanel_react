@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { FaEye } from 'react-icons/fa';
+import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 
 function ViewUserdetails() {
   const [memberDetails, setMemberDetails] = useState([]);
@@ -188,16 +190,16 @@ function ViewUserdetails() {
                           onClick={() => handleDelete(member._id)}
                           className="text-red-500 hover:text-red-700"
                         >
-                          Delete
+                          <FaTrashAlt className="text-red-600 text-xl cursor-pointer hover:text-red-700" />
                         </button>
                       </td>
                       {/* // In the table row: */}
                       <td className="border px-3 py-2 text-center text-red-500">
-                        <button
+                          <button
                           onClick={() => navigate(`/edit-member/${member._id}`)} // Pass the member ID
                           className="text-blue-600 hover:underline"
                         >
-                          Edit
+                          <FaEdit className="text-yellow-500 text-xl cursor-pointer hover:text-yellow-600" />
                         </button>
                       </td>
                     </tr>

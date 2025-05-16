@@ -51,7 +51,7 @@ function SeniorityDetails({ handleChange, formData, formErrors }) {
             type="text"
             name="seniorityId"
             placeholder="Seniority ID"
-            value={formData.seniorityId}
+            value={formData?.seniorityId}
             onChange={handleChange}
             className={`w-full border px-4 py-2 rounded-md ${isDuplicate("seniorityId") ? 'border-red-500' : ''}`}
           />
@@ -67,7 +67,7 @@ function SeniorityDetails({ handleChange, formData, formErrors }) {
             type="number"
             name="membershipNo"
             placeholder="Membership No"
-            value={formData.membershipNo}
+            value={formData?.membershipNo}
             onChange={handleChange}
             className={`w-full border px-4 py-2 rounded-md ${isDuplicate("membershipNo") ? 'border-red-500' : ''}`}
           />
@@ -83,7 +83,7 @@ function SeniorityDetails({ handleChange, formData, formErrors }) {
             type="number"
             name="cunfirmationLetterNo"
             placeholder="Confirmation Letter No"
-            value={formData.cunfirmationLetterNo}
+            value={formData?.cunfirmationLetterNo}
             onChange={handleChange}
             className={`w-full border px-4 py-2 rounded-md ${isDuplicate("cunfirmationLetterNo") ? 'border-red-500' : ''}`}
           />
@@ -99,7 +99,7 @@ function SeniorityDetails({ handleChange, formData, formErrors }) {
             type="number"
             name="shareCertificateNo"
             placeholder="Share Certificate Number"
-            value={formData.shareCertificateNo}
+            value={formData?.shareCertificateNo}
             onChange={handleChange}
             className={`w-full border px-4 py-2 rounded-md ${isDuplicate("shareCertificateNo") ? 'border-red-500' : ''}`}
           />

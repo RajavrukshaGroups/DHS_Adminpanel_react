@@ -206,7 +206,18 @@ function MainLayout({ sidebarOpen, setSidebarOpen }) {
               </PrivateRoute>
             }
           />
+
+          <Route
+            path="/edit-member/:id"
+            element={
+              <PrivateRoute>
+                <MemberFormWrapper />
+              </PrivateRoute>
+            }
+          />
+
         </Routes>
+        
       </div>
     </div>
   );

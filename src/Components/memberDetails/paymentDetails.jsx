@@ -1,7 +1,7 @@
 import React from 'react';
 
 function PaymentDetails({ formData, handleChange, formErrors }) {
-  const paymentMode = formData.paymentMode;
+  const paymentMode = formData?.paymentMode;
 
   return (
     <div className="bg-white p-6 rounded-xl shadow-md mb-6">
@@ -14,7 +14,7 @@ function PaymentDetails({ formData, handleChange, formErrors }) {
             type="text"
             name="paymentType"
             placeholder="Payment Type"
-            value={formData.paymentType || ''}
+            value={formData?.paymentType || ''}
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
@@ -26,7 +26,7 @@ function PaymentDetails({ formData, handleChange, formErrors }) {
           <label className="block font-medium mb-1">Payment Mode:</label>
           <select
             name="paymentMode"
-            value={formData.paymentMode}
+            value={formData?.paymentMode}
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           >
@@ -48,7 +48,7 @@ function PaymentDetails({ formData, handleChange, formErrors }) {
                 type="text"
                 name="bankName"
                 placeholder="Bank Name"
-                value={formData.bankName || ''}
+                value={formData?.bankName || ''}
                 onChange={handleChange}
                 className="w-full border px-4 py-2 rounded-md"
               />
@@ -60,7 +60,7 @@ function PaymentDetails({ formData, handleChange, formErrors }) {
                 type="text"
                 name="branchName"
                 placeholder="Branch Name"
-                value={formData.branchName || ''}
+                value={formData?.branchName || ''}
                 onChange={handleChange}
                 className="w-full border px-4 py-2 rounded-md"
               />
@@ -77,7 +77,7 @@ function PaymentDetails({ formData, handleChange, formErrors }) {
               type="number"
               name="amount"
               placeholder="Amount"
-              value={formData.amount || ''}
+              value={formData?.amount || ''}
               onChange={handleChange}
               className="w-full border px-4 py-2 rounded-md"
             />
@@ -93,7 +93,7 @@ function PaymentDetails({ formData, handleChange, formErrors }) {
               type="text"
               name="chequeNumber"
               placeholder="Cheque Number"
-              value={formData.chequeNumber || ''}
+              value={formData?.chequeNumber || ''}
               onChange={handleChange}
               className="w-full border px-4 py-2 rounded-md"
             />
@@ -108,7 +108,7 @@ function PaymentDetails({ formData, handleChange, formErrors }) {
               type="text"
               name="transactionId"
               placeholder="Transaction ID"
-              value={formData.transactionId || ''}
+              value={formData?.transactionId || ''}
               onChange={handleChange}
               className="w-full border px-4 py-2 rounded-md"
             />
@@ -123,7 +123,7 @@ function PaymentDetails({ formData, handleChange, formErrors }) {
               type="text"
               name="ddNumber"
               placeholder="DD Number"
-              value={formData.ddNumber || ''}
+              value={formData?.ddNumber || ''}
               onChange={handleChange}
               className="w-full border px-4 py-2 rounded-md"
             />

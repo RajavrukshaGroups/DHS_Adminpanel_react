@@ -13,7 +13,7 @@ const PersonalDetails = ({ formData, handleChange, formErrors  }) => {
             type="text"
             name="salutation"
             placeholder="Salutation"
-            value={formData.salutation}
+            value={formData?.salutation}
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
             
@@ -28,7 +28,7 @@ const PersonalDetails = ({ formData, handleChange, formErrors  }) => {
             type="text"
             name="name"
             placeholder="Name"
-            value={formData.name}
+            value={formData?.name}
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
@@ -40,7 +40,7 @@ const PersonalDetails = ({ formData, handleChange, formErrors  }) => {
             type="text"
             name="mobile"
             placeholder="Mobile"
-            value={formData.mobile}
+            value={formData?.mobile}
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
@@ -53,7 +53,7 @@ const PersonalDetails = ({ formData, handleChange, formErrors  }) => {
             type="text"
             name="altMobile"
             placeholder="Alternative Mobile"
-            value={formData.altMobile}
+            value={formData?.altMobile}
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
@@ -65,7 +65,7 @@ const PersonalDetails = ({ formData, handleChange, formErrors  }) => {
             type="email"
             name="email"
             placeholder="Email"
-            value={formData.email}
+            value={formData?.email}
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
@@ -77,7 +77,7 @@ const PersonalDetails = ({ formData, handleChange, formErrors  }) => {
             type="date"
             name="dob"
             placeholder="Date of Birth"
-            value={formData.dob}
+            value={formData?.dob}
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
@@ -89,7 +89,7 @@ const PersonalDetails = ({ formData, handleChange, formErrors  }) => {
             type="text"
             name="fatherSpouse"
             placeholder="Father/Spouse Name"
-            value={formData.fatherSpouse}
+            value={formData?.fatherSpouse}
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
@@ -100,7 +100,7 @@ const PersonalDetails = ({ formData, handleChange, formErrors  }) => {
           <textarea
             name="correspondenceAddress"
             placeholder="Correspondence Address"
-            value={formData.correspondenceAddress}
+            value={formData?.correspondenceAddress}
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
             rows="2"
@@ -114,7 +114,7 @@ const PersonalDetails = ({ formData, handleChange, formErrors  }) => {
           <textarea
             name="permanentAddress"
             placeholder="Permanent Address"
-            value={formData.permanentAddress}
+            value={formData?.permanentAddress}
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
             rows="2"
@@ -128,7 +128,7 @@ const PersonalDetails = ({ formData, handleChange, formErrors  }) => {
           <textarea
             name="workingAddress"
             placeholder="Working Address"
-            value={formData.workingAddress}
+            value={formData?.workingAddress}
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
             rows="2"

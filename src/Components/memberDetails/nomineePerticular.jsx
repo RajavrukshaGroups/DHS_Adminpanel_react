@@ -11,7 +11,7 @@ function NomineePerticular({ formData, handleChange ,formErrors }) {
             type="text"
             name="nomineeName"
             placeholder="Nominee Name"
-            value={formData.nomineeName}
+            value={formData?.nomineeName}
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
@@ -24,7 +24,7 @@ function NomineePerticular({ formData, handleChange ,formErrors }) {
             type="number"
             name="nomineeAge"
             placeholder="Nominee Age"
-            value={formData.nomineeAge}
+            value={formData?.nomineeAge}
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
@@ -36,7 +36,7 @@ function NomineePerticular({ formData, handleChange ,formErrors }) {
             type="text"
             name="nomineeRelationship"
             placeholder="Nominee Relationship"
-            value={formData.nomineeRelationship}
+            value={formData?.nomineeRelationship}
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
@@ -48,7 +48,7 @@ function NomineePerticular({ formData, handleChange ,formErrors }) {
             type="text"
             name="nomineeAddress"
             placeholder="Nominee Address"
-            value={formData.nomineeAddress}
+            value={formData?.nomineeAddress}
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />

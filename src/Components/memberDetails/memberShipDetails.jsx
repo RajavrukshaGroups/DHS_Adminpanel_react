@@ -11,7 +11,7 @@ function MemberShipDetails({ formData, handleChange ,formErrors }) {
             type="text"
             name="recieptNo"
             placeholder="Receipt No"
-            value={formData.recieptNo}
+            value={formData?.recieptNo}
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
@@ -23,7 +23,7 @@ function MemberShipDetails({ formData, handleChange ,formErrors }) {
             type="date"
             name="date"
             placeholder="Date"
-            value={formData.date}
+            value={formData?.date}
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
@@ -35,7 +35,7 @@ function MemberShipDetails({ formData, handleChange ,formErrors }) {
             type="number" 
             name="numberOfShares"
             placeholder="No of Shares"
-            value={formData.numberOfShares}
+            value={formData?.numberOfShares}
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
@@ -48,7 +48,7 @@ function MemberShipDetails({ formData, handleChange ,formErrors }) {
             type="number"
             name="shareFee"
             placeholder="Share Fee"
-            value={formData.shareFee}
+            value={formData?.shareFee}
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
@@ -60,7 +60,7 @@ function MemberShipDetails({ formData, handleChange ,formErrors }) {
             type="number"
             name="memberShipFee"
             placeholder="Membership Fee"
-            value={formData.memberShipFee}
+            value={formData?.memberShipFee}
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
@@ -72,7 +72,7 @@ function MemberShipDetails({ formData, handleChange ,formErrors }) {
             type="number"
             name="applicationFee"
             placeholder="Application Fee"
-            value={formData.applicationFee}
+            value={formData?.applicationFee}
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
@@ -84,7 +84,7 @@ function MemberShipDetails({ formData, handleChange ,formErrors }) {
             type="number"
             name="adminissionFee"
             placeholder="Admission Fee"
-            value={formData.adminissionFee}
+            value={formData?.adminissionFee}
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
@@ -96,7 +96,7 @@ function MemberShipDetails({ formData, handleChange ,formErrors }) {
             type="number"
             name="miscellaneousExpenses"
             placeholder="Miscellaneous Expenses"
-            value={formData.miscellaneousExpenses}
+            value={formData?.miscellaneousExpenses}
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />

@@ -6,8 +6,6 @@ export default function SiteBookingConfirmation({ member, onBack }) {
    return (
    <div className="mt-5 max-w-4xl mx-auto border border-gray-300 shadow-sm bg-white">
         <img src="https://adminpanel.defencehousingsociety.com/img/letterheader.jpg" alt="" />
-        
-     
       {/* Document reference numbers */}
       <div className="flex justify-between px-6 py-3 border-b border-gray-300 text-sm">
         <div>DHS/DHD/{userId?.ReceiptNo || "XXXX"}/2024-2025</div>
@@ -72,10 +70,7 @@ export default function SiteBookingConfirmation({ member, onBack }) {
           Back to List
         </button>
       </div>
-
       <img src="https://adminpanel.defencehousingsociety.com/img/footerSign.jpg" alt="" />
-
-      
     </div>
   )
 }

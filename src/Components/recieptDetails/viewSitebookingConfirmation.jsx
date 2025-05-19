@@ -2,10 +2,13 @@ import React, { useEffect, useState } from "react";
 import axiosInstance from "../../api/interceptors";
 import SiteBookingConfirmation from "../memberDetails/siteBookingConfirmation"; // Import the confirmation component
 import { FaEye } from "react-icons/fa";
-import { FaFileAlt } from "react-icons/fa";
+import { FaFileAlt,FaEdit } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+
 function ViewSitebookingConfirmation() {
   const [memberDetails, setMemberDetails] = useState([]);
   const [selectedMember, setSelectedMember] = useState(null);
+  const navigate =useNavigate()
 
   useEffect(() => {
     const fetchAffidavits = async () => {
@@ -29,6 +32,7 @@ function ViewSitebookingConfirmation() {
       console.error("Error fetching confirmation letter", error);
     }
   };
+  
 
   if (selectedMember) {
     return (
@@ -88,6 +92,13 @@ function ViewSitebookingConfirmation() {
                       >
                         <FaFileAlt className="text-black text-xl cursor-pointer hover:text-blue-700" />
                       </button>
+
+                           <button
+                            onClick={() => navigate(`/edit-confirmationletter/${member._id}`)} // Pass the member ID
+                            className="text-blue-600 hover:underline"
+                          >
+                            <FaEdit className="text-yellow-500 text-xl cursor-pointer hover:text-yellow-600" />
+                          </button>
                      </div>
                     </td>
                   </tr>

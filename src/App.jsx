@@ -230,13 +230,13 @@ function MainLayout({ sidebarOpen, setSidebarOpen }) {
               </PrivateRoute>
             }
           />
-             <Route
-          path="/edit-confirmationletter/:id"
-          element={
-              <PrivateRoute>
-                <EditConfirmationLetter/>
-              </PrivateRoute>
-               }
+          <Route
+           path="/edit-confirmationletter/:id"
+           element={
+           <PrivateRoute>
+             <EditConfirmationLetter/>
+           </PrivateRoute>
+            }
           />
         </Routes>
       </div>

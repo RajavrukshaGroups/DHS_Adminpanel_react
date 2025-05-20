@@ -12,7 +12,6 @@ function EditConfirmationLetter() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    
     const fetchMember = async () => {
       try {
         const response = await axiosInstance.get(`/receipt/get-affidavit/${id}`);

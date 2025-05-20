@@ -16,7 +16,7 @@ function ViewUserdetails() {
   const [errorMessage, setErrorMessage] = useState("");
 
   const navigate = useNavigate();
-
+  
   const fetchData = async (page = 1, search = "") => {
     try {
       const response = await axiosInstance.get(
@@ -43,7 +43,6 @@ function ViewUserdetails() {
 
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this member?")) return;
-
     try {
       await axiosInstance.delete(
         `http://localhost:3000/member/delete-member/${id}`
@@ -106,10 +105,13 @@ function ViewUserdetails() {
                   Payment History
                 </th>
                 <th className="border px-3 py-2 text-center">Status</th>
+                  
                 <th className="border px-3 py-2 text-center">
                   Additional Details
                 </th>
+
                 <th className="border px-3 py-2 text-center">Delete</th>
+                
                 <th className="border px-3 py-2 text-center">Edit</th>
               </tr>
             </thead>

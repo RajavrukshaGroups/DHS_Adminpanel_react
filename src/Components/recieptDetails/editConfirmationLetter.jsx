@@ -5,12 +5,14 @@ import { FaSpinner } from 'react-icons/fa';
 import { toast } from "react-hot-toast";
 
 function EditConfirmationLetter() {
+
   const { id } = useParams();
   const navigate = useNavigate();
   const [memberData, setMemberData] = useState({});
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    
     const fetchMember = async () => {
       try {
         const response = await axiosInstance.get(`/receipt/get-affidavit/${id}`);

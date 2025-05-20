@@ -48,6 +48,8 @@ const ViewReceiptHistory = () => {
     }
   };
 
+  console.log("receipts data", receiptData);
+
   useEffect(() => {
     if (!receiptLoading && receiptData.length > 0 && tableRef.current) {
       tableRef.current.scrollIntoView({ behavior: "smooth" });
@@ -70,12 +72,19 @@ const ViewReceiptHistory = () => {
     );
   }
 
-  const handleViewReceipt = (receiptId, paymentType) => {
-    window.open(
-      `http://localhost:3000/receipt/get-receipt-details/${receiptId}?paymentType=${paymentType}`,
-      "_blank"
-    );
+  // const handleViewReceipt = (receiptId, paymentType) => {
+  //   window.open(
+  //     `http://localhost:3000/receipt/get-receipt-details/${receiptId}?paymentType=${paymentType}`,
+  //     "_blank"
+  //   );
+  // };
+  const handleViewReceipt = (receiptId, paymentType, installmentNumber) => {
+    const url = `http://localhost:3000/receipt/get-receipt-details/${receiptId}?paymentType=${paymentType}${
+      installmentNumber ? `&installmentNumber=${installmentNumber}` : ""
+    }`;
+    window.open(url, "_blank");
   };
+
   return (
     <div className="max-w-5xl mx-auto p-6">
       {/* Member Info Card */}
@@ -208,8 +217,10 @@ const ViewReceiptHistory = () => {
                   receipt.payments.map((payment, j) => (
                     <tr key={`${receipt._id}-${j}`} className="text-sm">
                       <td className="px-3 py-2 border text-center">{j + 1}</td>
-                      <td className="px-3 py-2 border">
-                        {payment.paymentType}
+                      <td className="px-3 py-2 border capitalize">
+                        {payment.paymentType === "installments"
+                          ? payment.installmentNumber
+                          : payment.paymentType}
                       </td>
                       <td className="px-3 py-2 border capitalize">
                         {payment.paymentMode}
@@ -227,16 +238,23 @@ const ViewReceiptHistory = () => {
                         ₹{payment.amount.toLocaleString("en-IN")}/-
                       </td>
                       <td className="px-3 py-2 border">
-                        {new Date(payment.date).toLocaleDateString("en-GB")}
+                        {new Date(payment.date).toLocaleDateString("en-IN")}
                       </td>
-                      <td className="px-3 py-2 text-blue-600 text-lg">
+                      <td className="px-3 py-2 border text-blue-600 text-lg">
                         <div className="flex justify-center items-center gap-3 h-full">
                           <button
                             title="View"
+                            // onClick={() => {
+                            //   handleViewReceipt(
+                            //     receipt._id,
+                            //     payment.paymentType,
+                            //   );
+                            // }}
                             onClick={() => {
                               handleViewReceipt(
                                 receipt._id,
-                                payment.paymentType
+                                payment.paymentType,
+                                payment.installmentNumber
                               );
                             }}
                           >

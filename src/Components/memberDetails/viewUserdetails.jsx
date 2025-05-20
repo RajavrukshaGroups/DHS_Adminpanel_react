@@ -40,6 +40,26 @@ function ViewUserdetails() {
       }
     }
   };
+const handleCheckAndNavigate = async (id) => {
+  try {
+    const response = await axiosInstance.get(`/receipt/checkMembershipFee/${id}`);
+    console.log(response,'resssssssssssssssssssssssssssssssssssssssssssss');
+    
+    
+    if (response.feeAdded) {
+      console.log(response,'ressssssssssssssssssssssss');
+      
+      navigate(`/addconfirmationLetter/${id}`);
+    } else {
+      alert(response.message || "Membership fee condition not met.");
+    }
+
+  } catch (error) {
+    console.error("Error checking membership fee:", error);
+    alert("Something went wrong while checking the membership fee.");
+  }
+};
+
 
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this member?")) return;
@@ -177,14 +197,25 @@ function ViewUserdetails() {
                         </span>
                       </td>
 
-                      <td className="border px-3 py-2 text-center text-red-500">
+                       
+                      {/* <td className="border px-3 py-2 text-center text-red-500">
                         <Link
                           to={`/addconfirmationLetter/${member._id}`}
                           title="Add Confirmation Letter"
                         >
                           <IoIosAddCircleOutline className="text-2xl flex m-auto text-blue-500" />
                         </Link>
-                      </td>
+                      </td> */}
+
+                          <td className="border px-3 py-2 text-center text-red-500">
+                            <div
+                              onClick={() => handleCheckAndNavigate(member._id)}
+                              title="Add Confirmation Letter"
+                              className="cursor-pointer"
+                            >
+                              <IoIosAddCircleOutline className="text-2xl flex m-auto text-blue-500" />
+                            </div>
+                          </td>
 
                       <td className="border px-3 py-2 text-center text-red-500">
                         <button

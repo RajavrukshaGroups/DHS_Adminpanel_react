@@ -45,12 +45,6 @@ const ViewReceiptDetails = () => {
     setSearchTerm(value);
   }, 500);
 
-  // const handleViewReceipt = (receiptId, paymentType) => {
-  //   window.open(
-  //     `http://localhost:3000/receipt/get-receipt-details/${receiptId}?paymentType=${paymentType}`,
-  //     "_blank"
-  //   );
-  // };
   const handleViewReceipt = (receiptId, paymentType, installmentNumber) => {
     const url = `http://localhost:3000/receipt/get-receipt-details/${receiptId}?paymentType=${paymentType}${
       installmentNumber ? `&installmentNumber=${installmentNumber}` : ""
@@ -88,67 +82,74 @@ const ViewReceiptDetails = () => {
           </thead>
           <tbody>
             {receipts.length > 0 ? (
-              receipts.map((receipt, receiptIndex) =>
-                receipt.payments.map((payment, paymentIndex) => (
-                  <tr key={payment._id} className="text-center">
-                    <td className="px-4 py-2 border">
-                      {(currentPage - 1) * 10 + receiptIndex + 1}
-                    </td>
-                    <td className="px-4 py-2 border">
-                      {new Date(payment.date).toLocaleDateString("en-GB")}
-                    </td>
-                    <td className="px-4 py-2 border">{payment.receiptNo}</td>
-                    <td className="px-4 py-2 border">
-                      {receipt.member?.name}
-                      <br />
-                      Seniority ID: {receipt.member?.SeniorityID}
-                    </td>
-                    <td className="px-4 py-2 border capitalize">
-                      {receipt.member?.propertyDetails?.projectName}
-                    </td>
-                    <td className="px-4 py-2 border">
-                      ₹{Number(payment.amount).toLocaleString("en-IN")}/-
-                    </td>
-                    <td className="px-4 py-2 border capitalize">
-                      {payment.paymentType}
-                    </td>
-                    <td className="px-4 py-2 border capitalize">
-                      {payment.paymentMode}
-                    </td>
-                    <td
-                      className={`px-4 py-2 border font-semibold ${
-                        receipt.member?.isActive
-                          ? "text-green-600"
-                          : "text-red-600"
-                      }`}
-                    >
-                      {receipt.member?.isActive ? "Active" : "Inactive"}
-                    </td>
-                    <td className="px-4 py-2 border">
-                      <button
-                        className="text-blue-600 hover:underline"
-                        onClick={() =>
-                          handleViewReceipt(
-                            receipt._id,
-                            payment.paymentType,
-                            payment.installmentNumber
-                          )
-                        }
-                      >
-                        👁️
-                      </button>
-                    </td>
-                    <td className="px-4 py-2 border">
-                      <button className="text-red-600 hover:underline">
-                        🗑️
-                      </button>
-                    </td>
-                  </tr>
-                ))
-              )
+              (() => {
+                let serialCounter = (currentPage - 1) * 10;
+
+                return receipts.flatMap((receipt) =>
+                  receipt.payments.map((payment) => {
+                    serialCounter += 1;
+                    return (
+                      <tr key={payment._id} className="text-center">
+                        <td className="px-4 py-2 border">{serialCounter}</td>
+                        <td className="px-4 py-2 border">
+                          {new Date(payment.date).toLocaleDateString("en-GB")}
+                        </td>
+                        <td className="px-4 py-2 border">
+                          {payment.receiptNo}
+                        </td>
+                        <td className="px-4 py-2 border">
+                          {receipt.member?.name}
+                          <br />
+                          Seniority ID: {receipt.member?.SeniorityID}
+                        </td>
+                        <td className="px-4 py-2 border capitalize">
+                          {receipt.member?.propertyDetails?.projectName}
+                        </td>
+                        <td className="px-4 py-2 border">
+                          ₹{Number(payment.amount).toLocaleString("en-IN")}/-
+                        </td>
+                        <td className="px-4 py-2 border capitalize">
+                          {payment.paymentType}
+                        </td>
+                        <td className="px-4 py-2 border capitalize">
+                          {payment.paymentMode}
+                        </td>
+                        <td
+                          className={`px-4 py-2 border font-semibold ${
+                            receipt.member?.isActive
+                              ? "text-green-600"
+                              : "text-red-600"
+                          }`}
+                        >
+                          {receipt.member?.isActive ? "Active" : "Inactive"}
+                        </td>
+                        <td className="px-4 py-2 border">
+                          <button
+                            className="text-blue-600 hover:underline"
+                            onClick={() =>
+                              handleViewReceipt(
+                                receipt._id,
+                                payment.paymentType,
+                                payment.installmentNumber
+                              )
+                            }
+                          >
+                            👁️
+                          </button>
+                        </td>
+                        <td className="px-4 py-2 border">
+                          <button className="text-red-600 hover:underline">
+                            🗑️
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })
+                );
+              })()
             ) : (
               <tr>
-                <td colSpan="9" className="text-center py-4">
+                <td colSpan="11" className="text-center py-4">
                   No receipts found.
                 </td>
               </tr>

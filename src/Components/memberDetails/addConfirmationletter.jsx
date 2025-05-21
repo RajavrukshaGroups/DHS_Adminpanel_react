@@ -142,7 +142,7 @@ console.log(memberData,'memberdatasssssssssssssssssssssssss');
         <input
           name="Amount"
           type="text"
-          value={memberData?.totalPaidAmount || ""}
+          value={memberData?.siteDownPaymentAmount || ""}
           className="w-full border px-4 py-2 rounded-md"
         />
       </div>

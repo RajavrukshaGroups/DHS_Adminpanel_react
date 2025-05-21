@@ -40,12 +40,11 @@ function ViewUserdetails() {
       }
     }
   };
+  
 const handleCheckAndNavigate = async (id) => {
   try {
     const response = await axiosInstance.get(`/receipt/checkMembershipFee/${id}`);
     console.log(response,'resssssssssssssssssssssssssssssssssssssssssssss');
-    
-    
     if (response.feeAdded) {
       console.log(response,'ressssssssssssssssssssssss');
       
@@ -69,7 +68,6 @@ const handleCheckAndNavigate = async (id) => {
       );
       toast.success("Member deleted successfully");
 
-      // Refresh data for the current page
       fetchData(currentPage, searchTerm);
     } catch (error) {
       console.error("Error deleting member:", error);

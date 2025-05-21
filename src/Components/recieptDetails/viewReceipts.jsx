@@ -87,6 +87,7 @@ const ViewReceiptDetails = () => {
 
                 return receipts.flatMap((receipt) =>
                   receipt.payments.map((payment) => {
+                    console.log("payment1234", payment);
                     serialCounter += 1;
                     return (
                       <tr key={payment._id} className="text-center">
@@ -106,7 +107,17 @@ const ViewReceiptDetails = () => {
                           {receipt.member?.propertyDetails?.projectName}
                         </td>
                         <td className="px-4 py-2 border">
-                          ₹{Number(payment.amount).toLocaleString("en-IN")}/-
+                          ₹
+                          {payment.paymentType === "Membership Fee"
+                            ? Number(
+                                payment?.admissionFee +
+                                  payment?.applicationFee +
+                                  payment?.membershipFee +
+                                  payment?.miscellaneousExpenses +
+                                  payment?.shareFee
+                              ).toLocaleString("en-IN")
+                            : Number(payment.amount).toLocaleString("en-IN")}
+                          /-
                         </td>
                         <td className="px-4 py-2 border capitalize">
                           {payment.paymentType}

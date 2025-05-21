@@ -16,7 +16,7 @@ function ViewUserdetails() {
   const [errorMessage, setErrorMessage] = useState("");
 
   const navigate = useNavigate();
-
+  
   const fetchData = async (page = 1, search = "") => {
     try {
       const response = await axiosInstance.get(
@@ -40,17 +40,34 @@ function ViewUserdetails() {
       }
     }
   };
+  
+const handleCheckAndNavigate = async (id) => {
+  try {
+    const response = await axiosInstance.get(`/receipt/checkMembershipFee/${id}`);
+    console.log(response,'resssssssssssssssssssssssssssssssssssssssssssss');
+    if (response.feeAdded) {
+      console.log(response,'ressssssssssssssssssssssss');
+      
+      navigate(`/addconfirmationLetter/${id}`);
+    } else {
+      alert(response.message || "Membership fee condition not met.");
+    }
+
+  } catch (error) {
+    console.error("Error checking membership fee:", error);
+    alert("Something went wrong while checking the membership fee.");
+  }
+};
+
 
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this member?")) return;
-
     try {
       await axiosInstance.delete(
         `http://localhost:3000/member/delete-member/${id}`
       );
       toast.success("Member deleted successfully");
 
-      // Refresh data for the current page
       fetchData(currentPage, searchTerm);
     } catch (error) {
       console.error("Error deleting member:", error);
@@ -106,10 +123,13 @@ function ViewUserdetails() {
                   Payment History
                 </th>
                 <th className="border px-3 py-2 text-center">Status</th>
+                  
                 <th className="border px-3 py-2 text-center">
                   Additional Details
                 </th>
+
                 <th className="border px-3 py-2 text-center">Delete</th>
+                
                 <th className="border px-3 py-2 text-center">Edit</th>
               </tr>
             </thead>
@@ -175,14 +195,25 @@ function ViewUserdetails() {
                         </span>
                       </td>
 
-                      <td className="border px-3 py-2 text-center text-red-500">
+                       
+                      {/* <td className="border px-3 py-2 text-center text-red-500">
                         <Link
                           to={`/addconfirmationLetter/${member._id}`}
                           title="Add Confirmation Letter"
                         >
                           <IoIosAddCircleOutline className="text-2xl flex m-auto text-blue-500" />
                         </Link>
-                      </td>
+                      </td> */}
+
+                          <td className="border px-3 py-2 text-center text-red-500">
+                            <div
+                              onClick={() => handleCheckAndNavigate(member._id)}
+                              title="Add Confirmation Letter"
+                              className="cursor-pointer"
+                            >
+                              <IoIosAddCircleOutline className="text-2xl flex m-auto text-blue-500" />
+                            </div>
+                          </td>
 
                       <td className="border px-3 py-2 text-center text-red-500">
                         <button

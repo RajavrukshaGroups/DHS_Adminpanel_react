@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 
 function AddConfirmationletter() {
     const { id } = useParams();
+    console.log(id,'idddddddddddddddddddddddddddddd');
+    
     const [memberData, setMemberData] = useState({});
     const [loading, setLoading] = useState(false);
      const navigate = useNavigate();  

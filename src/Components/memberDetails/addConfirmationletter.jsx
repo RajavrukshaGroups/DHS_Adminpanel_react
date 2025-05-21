@@ -9,13 +9,15 @@ import { useNavigate } from "react-router-dom";
 function AddConfirmationletter() {
     const { id } = useParams();
     console.log(id,'idddddddddddddddddddddddddddddd');
-    
     const [memberData, setMemberData] = useState({});
     const [loading, setLoading] = useState(false);
      const navigate = useNavigate();  
   
-    useEffect(() => {
 
+console.log(memberData,'memberdatasssssssssssssssssssssssss');
+
+
+    useEffect(() => {
       const fetchMember = async () => {
         try {
           const response = await axiosInstance.get(`/member/get-confirmation/${id}`);
@@ -25,9 +27,7 @@ function AddConfirmationletter() {
           console.error("Error fetching member data:", error);
         }
       };
-
       fetchMember();
-
     }, [id]);
 
     const handleSubmit = async (e) => {
@@ -63,9 +63,7 @@ function AddConfirmationletter() {
   return (
     <div className="bg-white p-16 rounded-xl shadow-md mb-6 ">
     <h2 className="text-xl font-bold mb-4">AddConfirmation letter</h2>
-
     <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-
        <div>
           <label className="block font-medium mb-1">Member Name</label>
           <input
@@ -138,14 +136,13 @@ function AddConfirmationletter() {
             placeholder="Date"
             className="w-full border px-4 py-2 rounded-md"
             />
-
       </div>
       <div>
         <label className="block font-medium mb-1">Amount</label>
         <input
-         name="Amount"
+          name="Amount"
           type="text"
-          value={memberData?.Amount || ""}
+          value={memberData?.totalPaidAmount || ""}
           className="w-full border px-4 py-2 rounded-md"
         />
       </div>
@@ -260,16 +257,14 @@ function AddConfirmationletter() {
       <div>
         <label className="block font-medium mb-1">Upload Affidivate</label>
         <input
-        name="affidivate"
+          name="affidivate"
           type="file"
           placeholder="affidivate"
           className="w-full border px-4 py-2 rounded-md"
         />
       </div>
 
-      <div>
- 
-        </div>
+   
         <button
           type="submit"
           disabled={loading}

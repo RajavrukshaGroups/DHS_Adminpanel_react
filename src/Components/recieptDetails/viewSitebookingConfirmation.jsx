@@ -33,7 +33,6 @@ function ViewSitebookingConfirmation() {
     }
   };
   
-
   if (selectedMember) {
     return (
       <SiteBookingConfirmation member={selectedMember} onBack={() => setSelectedMember(null)} />
@@ -41,7 +40,6 @@ function ViewSitebookingConfirmation() {
   }
 
   return (
-
     <div className="flex justify-center min-h-screen bg-blue-50 px-4 py-6">
       <div className="w-full max-w-8xl bg-white rounded-lg shadow p-6">
         <h1 className="text-xl font-semibold mb-4 text-center">View Site Booking</h1>
@@ -92,11 +90,10 @@ function ViewSitebookingConfirmation() {
                       >
                         <FaFileAlt className="text-black text-xl cursor-pointer hover:text-blue-700" />
                       </button>
-
                            <button
                             onClick={() => navigate(`/edit-confirmationletter/${member._id}`)} // Pass the member ID
                             className="text-blue-600 hover:underline"
-                          >
+                              >
                             <FaEdit className="text-yellow-500 text-xl cursor-pointer hover:text-yellow-600" />
                           </button>
                      </div>

@@ -15,7 +15,7 @@ function ViewSitebookingConfirmation() {
     const fetchAffidavits = async () => {
       try {
         const res = await axiosInstance.get("/member/all");
-        console.log(res,'responsssssssssssssssssssssssssssssssssssssssssssssss')
+        console.log(res,'responssssssssssssssssss')
         setMemberDetails(res);
       } catch (error) {
         console.error("Error fetching data", error);
@@ -52,7 +52,7 @@ function ViewSitebookingConfirmation() {
                 <th className="border px-3 py-2 text-center">S.No</th>
                 <th className="border px-3 py-2 text-center">Member Details</th>
                 <th className="border px-3 py-2 text-center">Project Address</th>
-                <th className="border px-3 py-2 text-center">Cheque/DD/UTR No</th>
+                <th className="border px-3 py-2 text-center">MembershipNo</th>
                 {/* <th className="border px-3 py-2 text-center">Duration</th> */}
                 <th className="border px-3 py-2 text-center">Confirmation No.</th>
                 <th className="border px-3 py-2 text-center">Total Amount</th>
@@ -77,7 +77,7 @@ function ViewSitebookingConfirmation() {
                       <p>{member.userId?.contactAddress}</p>
                     </td>
                     <td className="border px-3 py-2 text-center">{member.projectAddress}</td>
-                    <td className="border px-3 py-2 text-center">{member.chequeNo}</td>
+                    <td className="border px-3 py-2 text-center">{member.userId.MembershipNo}</td>
                     {/* <td className="border px-3 py-2 text-center">{member.duration}</td> */}
                    <td className="border px-3 py-2 text-center">
                           {member.userId.ConfirmationLetterNo || 'No Receipt'}

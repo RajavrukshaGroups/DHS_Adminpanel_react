@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../../api/interceptors";
-import SiteBookingConfirmation from "../memberDetails/siteBookingConfirmation"; // Import the confirmation component
+import SiteBookingConfirmation from "../memberDetails/siteBookingConfirmation"; 
+// Import the confirmation component
 import { FaEye } from "react-icons/fa";
 import { FaFileAlt,FaEdit } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
@@ -14,6 +15,7 @@ function ViewSitebookingConfirmation() {
     const fetchAffidavits = async () => {
       try {
         const res = await axiosInstance.get("/member/all");
+        console.log(res,'responsssssssssssssssssssssssssssssssssssssssssssssss')
         setMemberDetails(res);
       } catch (error) {
         console.error("Error fetching data", error);
@@ -52,7 +54,7 @@ function ViewSitebookingConfirmation() {
                 <th className="border px-3 py-2 text-center">Project Address</th>
                 <th className="border px-3 py-2 text-center">Cheque/DD/UTR No</th>
                 {/* <th className="border px-3 py-2 text-center">Duration</th> */}
-                <th className="border px-3 py-2 text-center">Receipt No.</th>
+                <th className="border px-3 py-2 text-center">Confirmation No.</th>
                 <th className="border px-3 py-2 text-center">Total Amount</th>
                 <th className="border px-3 py-2 text-center">Affidavit</th>
               </tr>
@@ -69,7 +71,7 @@ function ViewSitebookingConfirmation() {
                   <tr key={member._id}>
                     <td className="border px-3 py-2 text-center">{index + 1}</td>
                     <td className="border px-3 py-2 text-center">
-                      <p>{member.userId?.name}</p>
+                <p>{`${member.userId?.saluation} ${member.userId?.name}`}</p>
                       <p>{member.userId?.mobileNumber}</p>
                       <p>{member.userId?.email}</p>
                       <p>{member.userId?.contactAddress}</p>
@@ -77,8 +79,12 @@ function ViewSitebookingConfirmation() {
                     <td className="border px-3 py-2 text-center">{member.projectAddress}</td>
                     <td className="border px-3 py-2 text-center">{member.chequeNo}</td>
                     {/* <td className="border px-3 py-2 text-center">{member.duration}</td> */}
-                    <td className="border px-3 py-2 text-center">{member.userId?.ReceiptNo}</td>
-                    <td className="border px-3 py-2 text-center">₹{member.userId?.Amount}</td>
+                   <td className="border px-3 py-2 text-center">
+                          {member.userId.ConfirmationLetterNo || 'No Receipt'}
+                        </td>
+                        <td className="border px-3 py-2 text-center">
+                          ₹{member?.totalPaidAmount || 0}
+                        </td>
                     <td className="border px-3 py-2 text-center">
                      <div className="flex justify-center">
                      <a href={member.affidavitUrl} target="_blank" rel="noopener noreferrer" className="text-black underline">
@@ -86,15 +92,14 @@ function ViewSitebookingConfirmation() {
                       </a>
                       <button
                         onClick={() => handleViewConfirmation(member.userId._id)}  // ✅ correct usage if userId is an object
-                        className="text-black underline"
-                      >
+                        className="text-black underline" >
                         <FaFileAlt className="text-black text-xl cursor-pointer hover:text-blue-700" />
                       </button>
+
                            <button
                             onClick={() => navigate(`/edit-confirmationletter/${member._id}`)} // Pass the member ID
-                            className="text-blue-600 hover:underline"
-                              >
-                            <FaEdit className="text-yellow-500 text-xl cursor-pointer hover:text-yellow-600" />
+                            className="text-blue-600  hover:underline" >
+                            <FaEdit className="text-black text-xl cursor-pointer hover:text-black" />
                           </button>
                      </div>
                     </td>

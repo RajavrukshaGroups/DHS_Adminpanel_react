@@ -138,6 +138,25 @@ const MemberFormWrapper = () => {
         });
     }
   }, [id]);
+    useEffect(() => {
+    const totalAmount =
+      Number(formData.shareFee || 0) +
+      Number(formData.memberShipFee || 0) +
+      Number(formData.applicationFee || 0) +
+      Number(formData.adminissionFee || 0) +
+      Number(formData.miscellaneousExpenses || 0);
+
+    setFormData((prevData) => ({
+      ...prevData,
+      amount: totalAmount.toString(),
+    }));
+  }, [
+    formData.shareFee,
+    formData.memberShipFee,
+    formData.applicationFee,
+    formData.adminissionFee,
+    formData.miscellaneousExpenses,
+  ]);
   
 
   const validatePersonalDetails = (data) => {

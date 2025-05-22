@@ -97,10 +97,11 @@ function ViewSitebookingConfirmation() {
                       </button>
 
                            <button
-                            onClick={() => navigate(`/edit-confirmationletter/${member._id}`)} // Pass the member ID
+                            onClick={() => navigate(`/edit-confirmationletter/${member.userId._id}`)} // Pass the member ID
                             className="text-blue-600  hover:underline" >
                             <FaEdit className="text-black text-xl cursor-pointer hover:text-black" />
                           </button>
+
                      </div>
                     </td>
                   </tr>

@@ -7,20 +7,22 @@ import { toast } from "react-hot-toast";
 function EditConfirmationLetter() {
 
   const { id } = useParams();
+  console.log(id,'iddddddddddddddddddddddddddddddddddddddddd');
   const navigate = useNavigate();
   const [memberData, setMemberData] = useState({});
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const fetchMember = async () => {
-      try {
-        const response = await axiosInstance.get(`/receipt/get-affidavit/${id}`);
-        setMemberData(response);
-      } catch (error) {
-        console.error("Error fetching member data:", error);
-      }
-    };
+useEffect(() => {
 
+ const fetchMember = async () => {
+  try {
+    const response = await axiosInstance.get(`/member/get-affidavit/${id}`);
+    console.log(response,'incoming response')
+    setMemberData(response); // use response.data instead of just response
+  } catch (error) {
+    console.error("Error fetching member data:", error);
+  }
+};
     fetchMember();
   }, [id]);
 

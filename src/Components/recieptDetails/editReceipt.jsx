@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 
 const EditReceipt = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [receiptsData, setReceiptsData] = useState(null);
   const [membersData, setMemberData] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const [formData, setFormData] = useState({
-    recieptNo: "",
+    receiptNo: "",
     date: "",
     paymentType: "",
     paymentMode: "",
     bankName: "",
     branchName: "",
     amount: "",
-    installment: "",
+    installmentNumber: "",
     chequeNumber: "",
     transactionId: "",
     ddNumber: "",
@@ -26,12 +27,14 @@ const EditReceipt = () => {
     membershipFee: "",
     miscellaneousExpenses: "",
     shareFee: "",
+    numberOfShares: "",
   });
 
   console.log("receipts data", receiptsData);
   console.log("members data", membersData);
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     const fetchReceipts = async () => {
       try {
         const response = await axios.get(
@@ -49,17 +52,23 @@ const EditReceipt = () => {
 
           // Initialize form fields
           setFormData({
-            recieptNo: payment.receiptNo || "",
+            receiptNo: payment.receiptNo || "",
             date: payment.date ? payment.date.substring(0, 10) : "",
             paymentType: payment.paymentType || "",
             paymentMode: payment.paymentMode || "",
             bankName: payment.bankName || "",
             branchName: payment.branchName || "",
             amount: payment.amount || "",
-            installment: payment.installmentNumber || "",
+            installmentNumber: payment.installmentNumber || "",
             chequeNumber: payment.chequeNumber || "",
             transactionId: payment.transactionId || "",
             ddNumber: payment.ddNumber || "",
+            numberOfShares: payment.numberOfShares || "",
+            shareFee: payment.shareFee || "",
+            membershipFee: payment.membershipFee || "",
+            applicationFee: payment.applicationFee || "",
+            admissionFee: payment.admissionFee || "",
+            miscellaneousExpenses: payment.miscellaneousExpenses || "",
           });
 
           setLoading(false);
@@ -73,6 +82,36 @@ const EditReceipt = () => {
 
     fetchReceipts();
   }, [id]);
+
+  useEffect(() => {
+    if (formData.paymentType === "Membership Fee") {
+      const {
+        shareFee,
+        membershipFee,
+        applicationFee,
+        admissionFee,
+        miscellaneousExpenses,
+      } = formData;
+      const total =
+        (parseFloat(shareFee) || 0) +
+        (parseFloat(membershipFee) || 0) +
+        (parseFloat(applicationFee) || 0) +
+        (parseFloat(admissionFee) || 0) +
+        (parseFloat(miscellaneousExpenses) || 0);
+
+      setFormData((prev) => ({
+        ...prev,
+        amount: total,
+      }));
+    }
+  }, [
+    formData.shareFee,
+    formData.membershipFee,
+    formData.applicationFee,
+    formData.admissionFee,
+    formData.miscellaneousExpenses,
+    formData.paymentType,
+  ]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -89,13 +128,33 @@ const EditReceipt = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(
-        `http://localhost:3000/member/add-receipt/${id}`,
+      const response = await axios.put(
+        `http://localhost:3000/member/edit-receipt/${membersData._id}?paymentId=${receiptsData._id}`,
         formData
       );
 
       if (response.status === 200) {
         toast.success("Receipt added successfully");
+        setFormData({
+          receiptNo: "",
+          date: "",
+          paymentMode: "",
+          paymentType: "",
+          bankName: "",
+          branchName: "",
+          amount: "",
+          installmentNumber: "",
+          chequeNumber: "",
+          transactionId: "",
+          ddNumber: "",
+          admissionFee: "",
+          applicationFee: "",
+          membershipFee: "",
+          miscellaneousExpenses: "",
+          shareFee: "",
+          numberOfShares: "",
+        });
+        navigate(`/view-history/${membersData._id}`);
       } else {
         toast.error("Something went wrong while adding receipt");
       }
@@ -137,8 +196,10 @@ const EditReceipt = () => {
               <label className="block mb-1">Receipt NO :</label>
               <input
                 type="text"
-                name="recieptNo"
-                value={formData.recieptNo}
+                // name="recieptNo"
+                // value={formData.recieptNo}
+                name="receiptNo"
+                value={formData.receiptNo}
                 onChange={handleChange}
                 className="w-full border rounded px-3 py-2"
                 required
@@ -204,43 +265,171 @@ const EditReceipt = () => {
                 required
               >
                 <option value="">Select Payment Mode</option>
-                <option value="Cash">Cash</option>
+                <option value="cash">Cash</option>
                 <option value="cheque">Cheque</option>
-                <option value="Netbanking">NetBanking/UPI</option>
+                <option value="netbanking">NetBanking/UPI</option>
                 <option value="dd">DD</option>
               </select>
             </div>
-            <div>
-              <label className="block mb-1">Bank Name :</label>
-              <input
-                type="text"
-                name="bankName"
-                value={formData.bankName}
-                onChange={handleChange}
-                className="w-full border rounded px-3 py-2"
-              />
-            </div>
-            <div>
-              <label className="block mb-1">Branch Name :</label>
-              <input
-                type="text"
-                name="branchName"
-                value={formData.branchName}
-                onChange={handleChange}
-                className="w-full border rounded px-3 py-2"
-              />
-            </div>
+
+            {formData.paymentMode !== "cash" && (
+              <>
+                <div>
+                  <label className="block mb-1">Bank Name :</label>
+                  <input
+                    type="text"
+                    name="bankName"
+                    value={formData.bankName}
+                    onChange={handleChange}
+                    className="w-full border rounded px-3 py-2"
+                  />
+                </div>
+                <div>
+                  <label className="block mb-1">Branch Name :</label>
+                  <input
+                    type="text"
+                    name="branchName"
+                    value={formData.branchName}
+                    onChange={handleChange}
+                    className="w-full border rounded px-3 py-2"
+                  />
+                </div>
+
+                {/* Conditional payment fields */}
+                {formData.paymentMode === "cheque" && (
+                  <div>
+                    <label className="block mb-1">Cheque Number:</label>
+                    <input
+                      type="text"
+                      name="chequeNumber"
+                      value={formData.chequeNumber}
+                      onChange={handleChange}
+                      className="w-full border rounded px-3 py-2"
+                    />
+                  </div>
+                )}
+                {formData.paymentMode === "netbanking" && (
+                  <div>
+                    <label className="block mb-1">Transaction ID:</label>
+                    <input
+                      type="text"
+                      name="transactionId"
+                      value={formData.transactionId}
+                      onChange={handleChange}
+                      className="w-full border rounded px-3 py-2"
+                    />
+                  </div>
+                )}
+                {formData.paymentMode === "dd" && (
+                  <div>
+                    <label className="block mb-1">DD Number:</label>
+                    <input
+                      type="text"
+                      name="ddNumber"
+                      value={formData.ddNumber}
+                      onChange={handleChange}
+                      className="w-full border rounded px-3 py-2"
+                    />
+                  </div>
+                )}
+              </>
+            )}
+
+            {formData.paymentType === "Membership Fee" && (
+              <>
+                <div>
+                  <label className="block mb-1">No. of Shares:</label>
+                  <input
+                    type="number"
+                    name="numberOfShares"
+                    value={formData.numberOfShares}
+                    onChange={handleChange}
+                    className="w-full border rounded px-3 py-2"
+                  />
+                </div>
+                <div>
+                  <label className="block mb-1">Share Fee:</label>
+                  <input
+                    type="number"
+                    name="shareFee"
+                    value={formData.shareFee}
+                    onChange={handleChange}
+                    className="w-full border rounded px-3 py-2"
+                  />
+                </div>
+                <div>
+                  <label className="block mb-1">Membership Fee:</label>
+                  <input
+                    type="number"
+                    name="membershipFee"
+                    value={formData.membershipFee}
+                    onChange={handleChange}
+                    className="w-full border rounded px-3 py-2"
+                  />
+                </div>
+                <div>
+                  <label className="block mb-1">Application Fee:</label>
+                  <input
+                    type="number"
+                    name="applicationFee"
+                    value={formData.applicationFee}
+                    onChange={handleChange}
+                    className="w-full border rounded px-3 py-2"
+                  />
+                </div>
+                <div>
+                  <label className="block mb-1">Admission Fee:</label>
+                  <input
+                    type="number"
+                    name="admissionFee"
+                    value={formData.admissionFee}
+                    onChange={handleChange}
+                    className="w-full border rounded px-3 py-2"
+                  />
+                </div>
+                <div>
+                  <label className="block mb-1">Miscellaneous Expenses:</label>
+                  <input
+                    type="number"
+                    name="miscellaneousExpenses"
+                    value={formData.miscellaneousExpenses}
+                    onChange={handleChange}
+                    className="w-full border rounded px-3 py-2"
+                  />
+                </div>
+              </>
+            )}
+
+            {formData.paymentType === "installments" && (
+              <div>
+                <label className="block mb-1">Installment:</label>
+                <select
+                  name="installmentNumber"
+                  value={formData.installmentNumber}
+                  onChange={handleChange}
+                  className="w-full border rounded px-3 py-2"
+                  required
+                >
+                  <option value="">Select Installment</option>
+                  <option value="firstInstallment">First installment</option>
+                  <option value="secondInstallment">Second installment</option>
+                  <option value="thirdInstallment">Third installment</option>
+                </select>
+              </div>
+            )}
             <div>
               <label className="block mb-1">Amount :</label>
               <input
-                type="text"
+                type="number"
                 name="amount"
                 value={formData.amount}
                 onChange={handleChange}
-                className="w-full border rounded px-3 py-2"
+                readOnly={formData.paymentType === "Membership Fee"}
+                className={`w-full border rounded px-3 py-2 ${
+                  formData.paymentType === "Membership Fee" ? "bg-gray-100" : ""
+                }`}
               />
             </div>
-            {/* You can add more fields here if needed */}
           </div>
         </div>
 

@@ -21,6 +21,11 @@ const EditReceipt = () => {
     chequeNumber: "",
     transactionId: "",
     ddNumber: "",
+    admissionFee: "",
+    applicationFee: "",
+    membershipFee: "",
+    miscellaneousExpenses: "",
+    shareFee: "",
   });
 
   console.log("receipts data", receiptsData);
@@ -201,9 +206,39 @@ const EditReceipt = () => {
                 <option value="">Select Payment Mode</option>
                 <option value="Cash">Cash</option>
                 <option value="cheque">Cheque</option>
-                <option value="netbanking">NetBanking/UPI</option>
-                <option value="DD">DD</option>
+                <option value="Netbanking">NetBanking/UPI</option>
+                <option value="dd">DD</option>
               </select>
+            </div>
+            <div>
+              <label className="block mb-1">Bank Name :</label>
+              <input
+                type="text"
+                name="bankName"
+                value={formData.bankName}
+                onChange={handleChange}
+                className="w-full border rounded px-3 py-2"
+              />
+            </div>
+            <div>
+              <label className="block mb-1">Branch Name :</label>
+              <input
+                type="text"
+                name="branchName"
+                value={formData.branchName}
+                onChange={handleChange}
+                className="w-full border rounded px-3 py-2"
+              />
+            </div>
+            <div>
+              <label className="block mb-1">Amount :</label>
+              <input
+                type="text"
+                name="amount"
+                value={formData.amount}
+                onChange={handleChange}
+                className="w-full border rounded px-3 py-2"
+              />
             </div>
             {/* You can add more fields here if needed */}
           </div>

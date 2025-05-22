@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { FaEye, FaEdit, FaTrashAlt } from "react-icons/fa";
 
 const ViewReceiptHistory = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [membersData, setMemberData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -83,6 +84,13 @@ const ViewReceiptHistory = () => {
       installmentNumber ? `&installmentNumber=${installmentNumber}` : ""
     }`;
     window.open(url, "_blank");
+  };
+
+  const handleEditReceipt = (receiptId, paymentType, installmentNumber) => {
+    const url = `/edit-receipt/${receiptId}?paymentType=${paymentType}${
+      installmentNumber ? `&installmentNumber=${installmentNumber}` : ""
+    }`;
+    navigate(url); // Navigates in the same tab
   };
 
   return (
@@ -235,7 +243,17 @@ const ViewReceiptHistory = () => {
                           "-"}
                       </td>
                       <td className="px-3 py-2 border">
-                        ₹{payment.amount.toLocaleString("en-IN")}/-
+                        {/* ₹{payment.amount.toLocaleString("en-IN")}/- */}₹
+                        {payment.paymentType === "Membership Fee"
+                          ? Number(
+                              payment?.admissionFee +
+                                payment?.applicationFee +
+                                payment?.membershipFee +
+                                payment?.miscellaneousExpenses +
+                                payment?.shareFee
+                            ).toLocaleString("en-IN")
+                          : Number(payment.amount).toLocaleString("en-IN")}
+                        /-
                       </td>
                       <td className="px-3 py-2 border">
                         {new Date(payment.date).toLocaleDateString("en-IN")}
@@ -260,7 +278,19 @@ const ViewReceiptHistory = () => {
                           >
                             <FaEye />
                           </button>
-                          <button title="Edit">
+                          <button
+                            title="Edit"
+                            // onClick={() => {
+                            //   window.location.href = `/edit-receipt/${id}`;
+                            // }}
+                            onClick={() => {
+                              handleEditReceipt(
+                                receipt._id,
+                                payment.paymentType,
+                                payment.installmentNumber
+                              );
+                            }}
+                          >
                             <FaEdit />
                           </button>
                           <button title="Delete">

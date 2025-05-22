@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 
 const AddReceipt = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [membersData, setMemberData] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -21,6 +22,8 @@ const AddReceipt = () => {
     transactionId: "",
     ddNumber: "",
   });
+
+  console.log("members data", membersData);
 
   useEffect(() => {
     const fetchMember = async () => {
@@ -63,6 +66,20 @@ const AddReceipt = () => {
 
       if (response.status === 200) {
         toast.success("Receipt added successfully");
+        setFormData({
+          recieptNo: "",
+          date: "",
+          paymentType: "",
+          paymentMode: "",
+          bankName: "",
+          branchName: "",
+          amount: "",
+          installment: "",
+          chequeNumber: "",
+          transactionId: "",
+          ddNumber: "",
+        });
+        navigate(`/view-history/${id}`);
       } else {
         toast.error("Something went wrong while adding receipt");
       }

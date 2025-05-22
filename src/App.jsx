@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { Toaster } from "react-hot-toast";
 import {
-  BrowserRouter as Router, Routes,Route, useLocation,} from "react-router-dom";
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 
 import AdminLogin from "./pages/adminLogin";
 import Dashboard from "./pages/dashboard";
@@ -25,7 +29,8 @@ import ViewSitebookingConfirmation from "./Components/recieptDetails/viewSiteboo
 import ViewReceiptDetails from "./Components/recieptDetails/viewReceipts";
 import ViewReceiptHistory from "./Components/memberDetails/viewHistory";
 import AddReceipt from "./Components/recieptDetails/addReceipt";
-import EditConfirmationLetter from "./Components/recieptDetails/editConfirmationLetter"
+import EditConfirmationLetter from "./Components/recieptDetails/editConfirmationLetter";
+import EditReceipt from "./Components/recieptDetails/editReceipt";
 function AppWrapper() {
   return (
     <Router>
@@ -96,7 +101,7 @@ function MainLayout({ sidebarOpen, setSidebarOpen }) {
             path="/viewProjects"
             element={
               <PrivateRoute>
-                <ViewProjects /> 
+                <ViewProjects />
               </PrivateRoute>
             }
           />
@@ -231,11 +236,19 @@ function MainLayout({ sidebarOpen, setSidebarOpen }) {
             }
           />
           <Route
-           path="/edit-confirmationletter/:id"
-           element={
-           <PrivateRoute>
-             <EditConfirmationLetter/>
-           </PrivateRoute>
+            path="/edit-receipt/:id"
+            element={
+              <PrivateRoute>
+                <EditReceipt />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/edit-confirmationletter/:id"
+            element={
+              <PrivateRoute>
+                <EditConfirmationLetter />
+              </PrivateRoute>
             }
           />
         </Routes>

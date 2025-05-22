@@ -131,14 +131,27 @@ useEffect(() => {
           />
         </div>
 
-        <div>
-          <label className="block font-medium mb-1">Upload New Affidavit (optional)</label>
-          <input
-            type="file"
-            name="affidivate"
-            className="w-full border px-4 py-2 rounded-md"
-          />
-        </div>
+             <div>
+  <label className="block font-medium mb-1">Upload New Affidavit (optional)</label>
+
+  {/* Preview of the previously uploaded affidavit */}
+  {memberData?.affidavitUrl && (
+    <div className="mb-2">
+      <img
+        src={memberData.affidavitUrl}
+        alt="Previous Affidavit"
+        className="w-52 h-auto rounded border"
+      />
+    </div>
+  )}
+
+  {/* File upload input */}
+  <input
+    type="file"
+    name="affidivate"
+    className="w-full border px-4 py-2 rounded-md"
+  />
+</div>
 
         <div className="col-span-2">
           <button

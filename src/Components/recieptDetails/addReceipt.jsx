@@ -25,7 +25,7 @@ const AddReceipt = () => {
     ddNumber: "",
   });
 
-  console.log("members dataeyyeyteyrttr", membersData);
+  console.log("members data", membersData);
 
   useEffect(() => {
     const fetchMember = async () => {

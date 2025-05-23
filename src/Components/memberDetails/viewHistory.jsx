@@ -12,6 +12,8 @@ const ViewReceiptHistory = () => {
   const [receiptData, setReceiptData] = useState([]);
   const [receiptLoading, setReceiptLoading] = useState(false);
   const tableRef = useRef(null); // Add this ref
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedReceipt, setSelectedReceipt] = useState(null);
 
   useEffect(() => {
     const fetchMember = async () => {
@@ -86,11 +88,35 @@ const ViewReceiptHistory = () => {
     window.open(url, "_blank");
   };
 
+  const confirmDelete = async () => {
+    try {
+      const { receiptId, paymentType, installmentNumber } = selectedReceipt;
+      await axios.delete(
+        `http://localhost:3000/member/delete-member-receipt-payment/${membersData._id}`,
+        {
+          data: { paymentType, installmentNumber },
+        }
+      );
+      toast.success("receipt deleted successfully");
+      setShowDeleteModal(false);
+      setSelectedReceipt(null);
+      fetchReceipts();
+    } catch (error) {
+      toast.error("failed to delete receipt");
+      console.error(error);
+    }
+  };
+
   const handleEditReceipt = (receiptId, paymentType, installmentNumber) => {
     const url = `/edit-receipt/${receiptId}?paymentType=${paymentType}${
       installmentNumber ? `&installmentNumber=${installmentNumber}` : ""
     }`;
     navigate(url); // Navigates in the same tab
+  };
+
+  const handleDeleteClick = (receiptId, paymentType, installmentNumber) => {
+    setSelectedReceipt({ receiptId, paymentType, installmentNumber });
+    setShowDeleteModal(true);
   };
 
   return (
@@ -293,8 +319,17 @@ const ViewReceiptHistory = () => {
                           >
                             <FaEdit />
                           </button>
-                          <button title="Delete">
-                            <FaTrashAlt className="text-red-500" />
+                          <button
+                            title="Delete"
+                            onClick={() =>
+                              handleDeleteClick(
+                                receipt._id,
+                                payment.paymentType,
+                                payment.installmentNumber
+                              )
+                            }
+                          >
+                            <FaTrashAlt className="text-red-500 hover:text-red-600" />
                           </button>
                         </div>
                       </td>
@@ -303,6 +338,30 @@ const ViewReceiptHistory = () => {
                 )}
               </tbody>
             </table>
+          </div>
+        </div>
+      )}
+      {showDeleteModal && (
+        <div className="fixed inset-0 z-50 bg-opacity-40 flex items-center justify-center">
+          <div className="bg-white p-6 rounded shadow-md w-full max-w-md">
+            <h2 className="text-lg font-semibold mb-4">Confirm Deletion</h2>
+            <p className="mb-6">
+              Are you sure you want to delete this receipt?
+            </p>
+            <div className="flex justify-end gap-4">
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+              >
+                Delete
+              </button>
+            </div>
           </div>
         </div>
       )}

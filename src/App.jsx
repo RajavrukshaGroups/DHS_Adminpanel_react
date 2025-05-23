@@ -31,6 +31,8 @@ import ViewReceiptHistory from "./Components/memberDetails/viewHistory";
 import AddReceipt from "./Components/recieptDetails/addReceipt";
 import EditConfirmationLetter from "./Components/recieptDetails/editConfirmationLetter";
 import EditReceipt from "./Components/recieptDetails/editReceipt";
+import PlotTransferForm from "./Components/plotDetails/plotTransferform";
+
 function AppWrapper() {
   return (
     <Router>
@@ -40,6 +42,7 @@ function AppWrapper() {
 }
 
 function App() {
+
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const location = useLocation();
   const isLoginPage = location.pathname === "/adminlogin";
@@ -251,6 +254,17 @@ function MainLayout({ sidebarOpen, setSidebarOpen }) {
               </PrivateRoute>
             }
           />
+
+          <Route
+            path="/plotTransferForm"
+            element={
+              <PrivateRoute>
+                <PlotTransferForm />
+              </PrivateRoute>
+            }
+          />
+
+
         </Routes>
       </div>
     </div>

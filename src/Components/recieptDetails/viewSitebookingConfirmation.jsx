@@ -10,12 +10,10 @@ function ViewSitebookingConfirmation() {
   const [memberDetails, setMemberDetails] = useState([]);
   const [selectedMember, setSelectedMember] = useState(null);
   const navigate =useNavigate()
-
   useEffect(() => {
     const fetchAffidavits = async () => {
       try {
         const res = await axiosInstance.get("/member/all");
-        console.log(res,'responssssssssssssssssss')
         setMemberDetails(res);
       } catch (error) {
         console.error("Error fetching data", error);
@@ -95,13 +93,11 @@ function ViewSitebookingConfirmation() {
                         className="text-black underline" >
                         <FaFileAlt className="text-black text-xl cursor-pointer hover:text-blue-700" />
                       </button>
-
                            <button
                             onClick={() => navigate(`/edit-confirmationletter/${member.userId._id}`)} // Pass the member ID
                             className="text-blue-600  hover:underline" >
                             <FaEdit className="text-black text-xl cursor-pointer hover:text-black" />
                           </button>
-
                      </div>
                     </td>
                   </tr>

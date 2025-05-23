@@ -36,6 +36,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
     // location.pathname.startsWith("/memberDetails")
     location.pathname.startsWith("/addmemberdetails")
   );
+  const [plotDetailsOpen, setPlotDetailsOpen] = useState(
+    // location.pathname.startsWith("/memberDetails")
+    location.pathname.startsWith("/addmemberdetails")
+  );
 
   return (
     <div className="relative">
@@ -243,6 +247,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                 </span>
                 {memberDetailsOpen ? <FaChevronUp /> : <FaChevronDown />}
               </button>
+             
               {recieptDetailsOpen && (
                 <div className="ml-8 mt-2 space-y-3 text-[15px]">
                   <Link
@@ -290,6 +295,44 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                   
                 </div>
               )}
+
+              {/* Recipt Details Menu */}
+              <button
+                onClick={() => setPlotDetailsOpen(!plotDetailsOpen)}
+                className={`flex items-center w-full px-4 py-3 rounded-lg ${
+                  location.pathname.startsWith("/addreferencedetails")
+                    ? "bg-blue-100 text-blue-700"
+                    : "text-black hover:bg-gray-100"
+                }`}
+              >
+                {/* <FaRegEye className="text-lg" /> */}
+                <FaUsers className="text-lg" />
+
+                <span className="ml-4 flex-grow text-left">
+                  Plot Details
+                </span>
+                {plotDetailsOpen ? <FaChevronUp /> : <FaChevronDown />}
+              </button>
+             
+              {plotDetailsOpen && (
+                <div className="ml-8 mt-2 space-y-3 text-[15px]">
+                  <Link
+                    to="/plotTransferForm"
+                    className={`flex items-center px-3 py-2 rounded-lg ${
+                      // location.pathname === "/addreferencedetails"
+                      location.pathname === "/viewsiteBooking"
+                        ? "bg-blue-100 text-blue-700"
+                        : "text-black hover:bg-gray-100"
+                    }`}
+                  >
+                    {/* <FaPlusCircle className="text-base" /> */}
+                    <FaUserPlus className="text-base" />
+                    <span className="ml-3">Plot Transfer Form</span>
+                  </Link>
+                  
+                </div>
+                
+              )}
             </nav>
           </div>
         </div>
@@ -301,7 +344,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
           onClick={() => setSidebarOpen(!sidebarOpen)}
           className={`transition-all duration-300 pt-4 w-8 p-1 mx-3 my-2 rounded-full focus:outline-none ${
             sidebarOpen ? "hover:bg-gray-200" : "hover:bg-gray-300"
-          }`}
+          }`} 
         >
           <svg
             viewBox="0 0 20 20"

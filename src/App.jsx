@@ -31,6 +31,8 @@ import ViewReceiptHistory from "./Components/memberDetails/viewHistory";
 import AddReceipt from "./Components/recieptDetails/addReceipt";
 import EditConfirmationLetter from "./Components/recieptDetails/editConfirmationLetter";
 import EditReceipt from "./Components/recieptDetails/editReceipt";
+import PlotTransferForm from "./Components/plotDetails/plotTransferform";
+
 import ShareCertificate from "./Components/shareCertification/shareCertification";
 function AppWrapper() {
   return (
@@ -41,6 +43,7 @@ function AppWrapper() {
 }
 
 function App() {
+
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const location = useLocation();
   const isLoginPage = location.pathname === "/adminlogin";
@@ -252,6 +255,17 @@ function MainLayout({ sidebarOpen, setSidebarOpen }) {
               </PrivateRoute>
             }
           />
+
+          <Route
+            path="/plotTransferForm"
+            element={
+              <PrivateRoute>
+                <PlotTransferForm />
+              </PrivateRoute>
+            }
+          />
+1
+
           <Route
             path="/view-share-certificate"
             element={

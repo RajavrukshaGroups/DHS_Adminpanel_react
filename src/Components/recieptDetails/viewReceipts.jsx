@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import debounce from "lodash.debounce";
+import toast from "react-hot-toast";
 
 const ViewReceiptDetails = () => {
   const [receipts, setReceipts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedReceipt, setSelectedReceipt] = useState(null);
+
+  console.log("receipts history", receipts);
 
   const fetchReceipts = async (page = 1, search = "") => {
     try {
@@ -50,6 +55,35 @@ const ViewReceiptDetails = () => {
       installmentNumber ? `&installmentNumber=${installmentNumber}` : ""
     }`;
     window.open(url, "_blank");
+  };
+
+  const confirmDelete = async () => {
+    try {
+      const { paymentType, installmentNumber, memberId } = selectedReceipt;
+      await axios.delete(
+        `http://localhost:3000/member/delete-member-receipt-payment/${memberId}`,
+        {
+          data: { paymentType, installmentNumber },
+        }
+      );
+      toast.success("receipt deleted successfully");
+      setShowDeleteModal(false);
+      setSelectedReceipt(null);
+      fetchReceipts();
+    } catch (error) {
+      toast.error("failed to delete receipt");
+      console.error(error);
+    }
+  };
+
+  const handleDeleteClick = (
+    receiptId,
+    paymentType,
+    installmentNumber,
+    memberId
+  ) => {
+    setSelectedReceipt({ receiptId, paymentType, installmentNumber, memberId });
+    setShowDeleteModal(true);
   };
 
   return (
@@ -149,7 +183,17 @@ const ViewReceiptDetails = () => {
                           </button>
                         </td>
                         <td className="px-4 py-2 border">
-                          <button className="text-red-600 hover:underline">
+                          <button
+                            className="text-red-600 hover:underline"
+                            onClick={() =>
+                              handleDeleteClick(
+                                receipt._id,
+                                payment.paymentType,
+                                payment.installmentNumber,
+                                receipt.member._id
+                              )
+                            }
+                          >
                             🗑️
                           </button>
                         </td>
@@ -168,6 +212,31 @@ const ViewReceiptDetails = () => {
           </tbody>
         </table>
       </div>
+
+      {showDeleteModal && (
+        <div className="fixed inset-0 z-50 bg-opacity-40 flex items-center justify-center">
+          <div className="bg-white p-6 rounded shadow-md w-full max-w-md">
+            <h2 className="text-lg font-semibold mb-4">Confirm Deletion</h2>
+            <p className="mb-6">
+              Are you sure you want to delete this receipt?
+            </p>
+            <div className="flex justify-end gap-4">
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Pagination Controls */}
       <div className="mt-6 flex justify-center items-center gap-3">

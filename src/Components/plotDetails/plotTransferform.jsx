@@ -99,7 +99,7 @@ const   PlotTransferForm=() =>{
               <label htmlFor="project" className="block font-medium text-gray-800">
                 Project
               </label>
-              <textarea type="text" readOnly id="project" value={memberData.propertyDetails.projectName} className="block border font-medium text-gray-800 p-2"/>
+              <textarea type="text" readOnly id="project" value={memberData?.propertyDetails.projectName} className="block border font-medium text-gray-800 p-2"/>
               {/* <select
                 id="project"
                 className="w-full rounded-md border border-gray-300 p-2"

@@ -33,6 +33,7 @@ import EditConfirmationLetter from "./Components/recieptDetails/editConfirmation
 import EditReceipt from "./Components/recieptDetails/editReceipt";
 import PlotTransferForm from "./Components/plotDetails/plotTransferform";
 
+import ShareCertificate from "./Components/shareCertification/shareCertification";
 function AppWrapper() {
   return (
     <Router>
@@ -263,8 +264,16 @@ function MainLayout({ sidebarOpen, setSidebarOpen }) {
               </PrivateRoute>
             }
           />
+1
 
-
+          <Route
+            path="/view-share-certificate"
+            element={
+              <PrivateRoute>
+                <ShareCertificate />
+              </PrivateRoute>
+            }
+          />
         </Routes>
       </div>
     </div>

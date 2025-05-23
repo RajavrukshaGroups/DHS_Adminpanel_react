@@ -278,6 +278,21 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
 
                     <span className="ml-3">View Receipts</span>
                   </Link>
+                  <Link
+                    to="/view-share-certificate"
+                    className={`flex items-center px-3 py-2 rounded-lg ${
+                      // location.pathname === "/addreferencedetails"
+                      location.pathname === "/view-share-certificate"
+                        ? "bg-blue-100 text-blue-700"
+                        : "text-black hover:bg-gray-100"
+                    }`}
+                  >
+                    {/* <FaPlusCircle className="text-base" /> */}
+                    <FaUserPlus className="text-base" />
+
+                    <span className="ml-3">View Share Certificate</span>
+                  </Link>
+                  
                 </div>
               )}
 

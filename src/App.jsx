@@ -31,6 +31,7 @@ import ViewReceiptHistory from "./Components/memberDetails/viewHistory";
 import AddReceipt from "./Components/recieptDetails/addReceipt";
 import EditConfirmationLetter from "./Components/recieptDetails/editConfirmationLetter";
 import EditReceipt from "./Components/recieptDetails/editReceipt";
+import ShareCertificate from "./Components/shareCertification/shareCertification";
 function AppWrapper() {
   return (
     <Router>
@@ -248,6 +249,14 @@ function MainLayout({ sidebarOpen, setSidebarOpen }) {
             element={
               <PrivateRoute>
                 <EditConfirmationLetter />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/view-share-certificate"
+            element={
+              <PrivateRoute>
+                <ShareCertificate />
               </PrivateRoute>
             }
           />

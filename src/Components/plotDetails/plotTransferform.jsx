@@ -5,7 +5,6 @@ import { FiSearch } from "react-icons/fi";
 
 
 const   PlotTransferForm=() =>{
-
   const [selectedId, setSelectedId] = useState("");
   const [memberData, setMemberData] = useState(null);
   const [toMember, setToMember] = useState({
@@ -82,9 +81,7 @@ const   PlotTransferForm=() =>{
               Back
             </button>
           </div>
-
           <h2 className="mb-6 text-2xl font-bold">Plot Transfer From</h2>
-
           <div className="grid gap-6 md:grid-cols-3">
           <div className="space-y-2">
             <label htmlFor="seniorityId" className="block font-medium text-gray-800">
@@ -96,7 +93,7 @@ const   PlotTransferForm=() =>{
             type="text"
             className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
             value={selectedId}
-            onChange={(e) => setSelectedId(e.target.value)} // allow typing
+            onChange={(e) => setSelectedId(e.target.value)}
             onKeyDown={(e) => {
                 if (e.key === "Enter") handleFetchMember();
             }}
@@ -117,7 +114,6 @@ const   PlotTransferForm=() =>{
               <label htmlFor="name" className="block font-medium text-gray-800">
                 Name
               </label>
-              {/* <input id="name" defaultValue="M D Sameer Patel" className="w-full border p-2" /> */}
             <input
                 id="name"
                 value={memberData?.name || ""}
@@ -139,19 +135,12 @@ const   PlotTransferForm=() =>{
                 />
             </div>
 
-           
             <div className="space-y-2">
               <label htmlFor="project" className="block font-medium text-gray-800">
                 Project
               </label>
               <textarea type="text" readOnly id="project" value={memberData?.propertyDetails.projectName} className="block border font-medium text-gray-800 p-2"/>
-              {/* <select
-                id="project"
-                className="w-full rounded-md border border-gray-300 p-2"
-                defaultValue="Defence Habitat - Tapasihalli"
-              > */}
-           
-              {/* </select> */}
+         
             </div>
 
             <div className="space-y-2">
@@ -171,11 +160,6 @@ const   PlotTransferForm=() =>{
             </div>
           </div>
         </div>
-
-
-
-
-
 
 
 

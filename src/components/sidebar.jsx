@@ -16,6 +16,7 @@ import {
   FaTasks,
   FaFolderOpen,
   FaUsersCog,
+  FaFileAlt,
 } from "react-icons/fa";
 import { RiUserSettingsLine } from "react-icons/ri";
 import { FaUsersSlash } from "react-icons/fa";
@@ -247,7 +248,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                 </span>
                 {memberDetailsOpen ? <FaChevronUp /> : <FaChevronDown />}
               </button>
-             
+
               {recieptDetailsOpen && (
                 <div className="ml-8 mt-2 space-y-3 text-[15px]">
                   <Link
@@ -288,11 +289,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     }`}
                   >
                     {/* <FaPlusCircle className="text-base" /> */}
-                    <FaUserPlus className="text-base" />
+                    <FaFileAlt className="text-base" />
 
                     <span className="ml-3">View Share Certificate</span>
                   </Link>
-                  
                 </div>
               )}
 
@@ -308,12 +308,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                 {/* <FaRegEye className="text-lg" /> */}
                 <FaUsers className="text-lg" />
 
-                <span className="ml-4 flex-grow text-left">
-                  Plot Details
-                </span>
+                <span className="ml-4 flex-grow text-left">Plot Details</span>
                 {plotDetailsOpen ? <FaChevronUp /> : <FaChevronDown />}
               </button>
-             
+
               {plotDetailsOpen && (
                 <div className="ml-8 mt-2 space-y-3 text-[15px]">
                   <Link
@@ -329,9 +327,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     <FaUserPlus className="text-base" />
                     <span className="ml-3">Plot Transfer Form</span>
                   </Link>
-                  
                 </div>
-                
               )}
             </nav>
           </div>
@@ -344,7 +340,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
           onClick={() => setSidebarOpen(!sidebarOpen)}
           className={`transition-all duration-300 pt-4 w-8 p-1 mx-3 my-2 rounded-full focus:outline-none ${
             sidebarOpen ? "hover:bg-gray-200" : "hover:bg-gray-300"
-          }`} 
+          }`}
         >
           <svg
             viewBox="0 0 20 20"

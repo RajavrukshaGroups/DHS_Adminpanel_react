@@ -58,7 +58,7 @@ const ShareCertificate = () => {
         <div className="mb-4">
           <input
             type="text"
-            placeholder="enter receipt no, name, seniority ID, or project"
+            placeholder="enter name"
             className="border px-4 py-2 w-full md:w-96 rounded"
             onChange={(e) => debouncedSearch(e.target.value)}
           />
@@ -79,49 +79,52 @@ const ShareCertificate = () => {
               (() => {
                 let serialCounter = (currentPage - 1) * 10;
 
-                return receipts.flatMap((receipt) =>
-                  receipt.payments.map((payment) => {
-                    console.log("payment1234", payment);
-                    serialCounter += 1;
-                    return (
-                      <tr key={payment._id} className="text-center">
-                        <td className="px-4 py-2 border">{serialCounter}</td>
-                        <td className="px-4 py-2 border">
-                          {receipt.member?.name}
-                          {/* Seniority ID: {receipt.member?.SeniorityID} */}
-                        </td>
-                        <td className="px-4 py-2 border">
-                          {receipt.member?.email}
-                          {/* Seniority ID: {receipt.member?.SeniorityID} */}
-                        </td>
-                        <td className="px-4 py-2 border">
-                          {receipt.member?.mobileNumber}
-                          {/* Seniority ID: {receipt.member?.SeniorityID} */}
-                        </td>
-                        <td className="px-4 py-2 border">
-                          {payment?.shareFee}
-                          {/* Seniority ID: {receipt.member?.SeniorityID} */}
-                        </td>
-                        <td className="px-4 py-2 border">
-                          <button
-                            className="text-blue-600 hover:underline"
-                            // onClick={() =>
-                            //   handleViewReceipt(
-                            //     receipt._id,
-                            //     payment.paymentType,
-                            //     payment.installmentNumber
-                            //   )
-                            // }
-                            onClick={() => {
-                              handleShareCertificate(receipt._id);
-                            }}
-                          >
-                            👁️
-                          </button>
-                        </td>
-                      </tr>
-                    );
-                  })
+                const filteredReceipts = receipts.filter((receipt) =>
+                  receipt.payments?.some(
+                    (payment) => payment.shareFee && payment.shareFee > 0
+                  )
+                );
+
+                return filteredReceipts.flatMap((receipt) =>
+                  receipt.payments
+                    .filter(
+                      (payment) => payment.shareFee && payment.shareFee > 0
+                    )
+                    .map((payment) => {
+                      // console.log("payment1234", payment);
+                      serialCounter += 1;
+                      return (
+                        <tr key={payment._id} className="text-center">
+                          <td className="px-4 py-2 border">{serialCounter}</td>
+                          <td className="px-4 py-2 border">
+                            {receipt.member?.name}
+                            {/* Seniority ID: {receipt.member?.SeniorityID} */}
+                          </td>
+                          <td className="px-4 py-2 border">
+                            {receipt.member?.email}
+                            {/* Seniority ID: {receipt.member?.SeniorityID} */}
+                          </td>
+                          <td className="px-4 py-2 border">
+                            {receipt.member?.mobileNumber}
+                            {/* Seniority ID: {receipt.member?.SeniorityID} */}
+                          </td>
+                          <td className="px-4 py-2 border">
+                            {payment?.shareFee}
+                            {/* Seniority ID: {receipt.member?.SeniorityID} */}
+                          </td>
+                          <td className="px-4 py-2 border">
+                            <button
+                              className="text-blue-600 hover:underline"
+                              onClick={() => {
+                                handleShareCertificate(receipt._id);
+                              }}
+                            >
+                              👁️
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })
                 );
               })()
             ) : (

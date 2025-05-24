@@ -7,6 +7,8 @@ import { FiSearch } from "react-icons/fi";
 const   PlotTransferForm=() =>{
   const [selectedId, setSelectedId] = useState("");
   const [memberData, setMemberData] = useState(null);
+  const [memberPhoto, setMemberPhoto] = useState(null);
+const [memberSign, setMemberSign] = useState(null);
   const [toMember, setToMember] = useState({
       name: "",
       email: "",
@@ -16,14 +18,65 @@ const   PlotTransferForm=() =>{
       transferDate: "",
     });
 
-    const handleSubmit = async () => {
+const handleFileChange = (e) => {
+  const { name, files } = e.target;
+  if (name === "memberPhoto") {
+    setMemberPhoto(files[0]);
+  } else if (name === "memberSign") {
+    setMemberSign(files[0]);
+  }
+};
+
+//     const handleSubmit = async () => {
+//   if (!memberData || !toMember.name || !toMember.mobileNumber) {
+//     alert("Please fill all required fields.");
+//     return;
+//   }
+
+//   const payload = {
+//     fromMember: {
+//       seniorityId: selectedId,
+//       name: memberData.name,
+//       email: memberData.email,
+//       projectName: memberData.propertyDetails?.projectName || "",
+//       propertySize:
+//         memberData.propertyDetails?.length && memberData.propertyDetails?.breadth
+//           ? `${memberData.propertyDetails.length}X${memberData.propertyDetails.breadth}`
+//           : "",
+//     },
+//     toMember: {
+//       name: toMember.name,
+//       email: toMember.email,
+//       mobile: toMember.mobile,
+//       address: toMember.address,
+//     },
+//     reason: toMember.reason,
+//     transferDate: toMember.transferDate,
+//   };
+
+//   try {
+//     // const res = await axiosInstance.post("/plot/plot-transfer", payload);
+//       const res=  await axiosInstance.post('/api/transfer/create-transfer', payload, {
+//        headers: { 'Content-Type': 'multipart/form-data' },
+//      });
+//     alert("Plot transferred successfully.");
+//     console.log(res);
+//   } catch (err) {
+//     alert("Transfer failed.");
+//     console.error(err);
+//   }
+// };
+const handleSubmit = async () => {
   if (!memberData || !toMember.name || !toMember.mobileNumber) {
     alert("Please fill all required fields.");
     return;
   }
 
-  const payload = {
-    fromMember: {
+  const formData = new FormData();
+
+  formData.append(
+    "fromMember",
+    JSON.stringify({
       seniorityId: selectedId,
       name: memberData.name,
       email: memberData.email,
@@ -32,19 +85,34 @@ const   PlotTransferForm=() =>{
         memberData.propertyDetails?.length && memberData.propertyDetails?.breadth
           ? `${memberData.propertyDetails.length}X${memberData.propertyDetails.breadth}`
           : "",
-    },
-    toMember: {
-      name: toMember.name,
-      email: toMember.email,
-      mobile: toMember.mobile,
-      address: toMember.address,
-    },
-    reason: toMember.reason,
-    transferDate: toMember.transferDate,
-  };
+    })
+  );
+
+formData.append(
+  "toMember",
+  JSON.stringify({
+    name: toMember.name,
+    email: toMember.email,
+    mobile: toMember.mobileNumber, // <-- FIXED
+    address: toMember.address,
+  })
+);
+
+  formData.append("reason", toMember.reason);
+  formData.append("transferDate", toMember.transferDate);
+
+  if (memberPhoto) formData.append("memberPhoto", memberPhoto);
+  if (memberSign) formData.append("memberSign", memberSign);
 
   try {
-    const res = await axiosInstance.post("/plot/plot-transfer", payload);
+      // Log formData entries
+  for (let pair of formData.entries()) {
+    console.log(pair[0] + ": ", pair[1]);
+  }
+    const res = await axiosInstance.post("/plot/create-transfer", formData, {
+      
+      headers: { "Content-Type": "multipart/form-data" },
+    });
     alert("Plot transferred successfully.");
     console.log(res);
   } catch (err) {
@@ -52,6 +120,7 @@ const   PlotTransferForm=() =>{
     console.error(err);
   }
 };
+
   
  const handleFetchMember = async () => {
   if (!selectedId) {
@@ -249,7 +318,35 @@ const   PlotTransferForm=() =>{
               onChange={(e) => setToMember({ ...toMember, reason: e.target.value })}
             />
           </div>
+
         </div>
+
+         <div className="mb-6">
+              <label className="block mb-2 text-sm font-medium text-gray-700">
+                Member Photo
+              </label>
+              <input
+                type="file"
+                name="memberPhoto"
+                accept="image/*"
+                onChange={handleFileChange}
+                className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 p-2"
+              />
+            </div>
+
+            <div className="mb-6">
+              <label className="block mb-2 text-sm font-medium text-gray-700">
+                Member Signature
+              </label>
+              <input
+                type="file"
+                name="memberSign"
+                accept="image/*"
+                onChange={handleFileChange}
+                className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 p-2"
+              />
+            </div>
+
 
         <div className="mt-6">
          <button

@@ -34,6 +34,7 @@ import EditReceipt from "./Components/recieptDetails/editReceipt";
 import PlotTransferForm from "./Components/plotDetails/plotTransferform";
 
 import ShareCertificate from "./Components/shareCertification/shareCertification";
+import PlotTransferhistory from "./Components/plotDetails/plotTransferhistory";
 function AppWrapper() {
   return (
     <Router>
@@ -271,6 +272,14 @@ function MainLayout({ sidebarOpen, setSidebarOpen }) {
             element={
               <PrivateRoute>
                 <ShareCertificate />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/plotTransferhistory"
+            element={
+              <PrivateRoute>
+                <PlotTransferhistory />
               </PrivateRoute>
             }
           />

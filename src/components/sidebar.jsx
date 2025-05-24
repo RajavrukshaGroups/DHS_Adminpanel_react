@@ -338,7 +338,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                   >
                     {/* <FaPlusCircle className="text-base" /> */}
                     <FaUserPlus className="text-base" />
-                    <span className="ml-3">Plot Transfer Form</span>
+                    <span className="ml-3">View Transferred Plot History</span>
                   </Link>
                 </div>
               )}

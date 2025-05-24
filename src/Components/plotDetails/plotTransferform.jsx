@@ -5,9 +5,54 @@ import { FiSearch } from "react-icons/fi";
 
 
 const   PlotTransferForm=() =>{
-  const [seniorityIds, setSeniorityIds] = useState([]);
+
   const [selectedId, setSelectedId] = useState("");
   const [memberData, setMemberData] = useState(null);
+  const [toMember, setToMember] = useState({
+      name: "",
+      email: "",
+      mobile: "",
+      address: "",
+      reason: "",
+      transferDate: "",
+    });
+
+    const handleSubmit = async () => {
+  if (!memberData || !toMember.name || !toMember.mobileNumber) {
+    alert("Please fill all required fields.");
+    return;
+  }
+
+  const payload = {
+    fromMember: {
+      seniorityId: selectedId,
+      name: memberData.name,
+      email: memberData.email,
+      projectName: memberData.propertyDetails?.projectName || "",
+      propertySize:
+        memberData.propertyDetails?.length && memberData.propertyDetails?.breadth
+          ? `${memberData.propertyDetails.length}X${memberData.propertyDetails.breadth}`
+          : "",
+    },
+    toMember: {
+      name: toMember.name,
+      email: toMember.email,
+      mobile: toMember.mobile,
+      address: toMember.address,
+    },
+    reason: toMember.reason,
+    transferDate: toMember.transferDate,
+  };
+
+  try {
+    const res = await axiosInstance.post("/plot/plot-transfer", payload);
+    alert("Plot transferred successfully.");
+    console.log(res);
+  } catch (err) {
+    alert("Transfer failed.");
+    console.error(err);
+  }
+};
   
  const handleFetchMember = async () => {
   if (!selectedId) {
@@ -127,65 +172,111 @@ const   PlotTransferForm=() =>{
           </div>
         </div>
 
+
+
+
+
+
+
+
         {/* To Section */}
-        <div className="rounded-lg bg-white p-6 shadow-sm">
-          <h2 className="mb-6 text-2xl font-bold">Plot Transfer To</h2>
+         <div className="rounded-lg bg-white p-6 shadow-sm">
+        <h2 className="mb-6 text-2xl font-bold">Plot Transfer To</h2>
 
-          <div className="grid gap-6 md:grid-cols-3">
-            <div className="space-y-2">
-              <label htmlFor="memberName" className="block font-medium text-gray-800">
-                Member Name
-              </label>
-              <input id="memberName" placeholder="Enter Member Name" className="w-full border p-2" />
-            </div>
+        <div className="grid gap-6 md:grid-cols-3">
+          <div className="space-y-2">
+            <label htmlFor="memberName" className="block font-medium text-gray-800">
+              Member Name
+            </label>
+            <input
+              id="memberName"
+              placeholder="Enter Member Name"
+              className="w-full border p-2"
+              value={toMember.name}
+              onChange={(e) => setToMember({ ...toMember, name: e.target.value })}
+            />
+          </div>
 
-            <div className="space-y-2">
-              <label htmlFor="transferDate" className="block font-medium text-gray-800">
-                Transfer Date
-              </label>
-              <div className="relative">
-                <input id="transferDate" placeholder="dd-mm-yyyy" className="w-full border p-2" />
-                <Calendar className="absolute right-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-500" />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <label htmlFor="mobileNumber" className="block font-medium text-gray-800">
-                Mobile Number
-              </label>
-              <input id="mobileNumber" placeholder="Enter mobile number" className="w-full border p-2" />
-            </div>
-
-            <div className="space-y-2">
-              <label htmlFor="toEmail" className="block font-medium text-gray-800">
-                Email
-              </label>
-              <input id="toEmail" type="email" placeholder="Enter Email ID" className="w-full border p-2" />
-            </div>
-
-            <div className="space-y-2 md:col-span-2">
-              <label htmlFor="address" className="block font-medium text-gray-800">
-                Residence/Contact Address
-              </label>
-              <textarea
-                id="address"
-                placeholder="Enter residence/contact address"
-                className="h-24 w-full resize-none border p-2"
+          <div className="space-y-2">
+            <label htmlFor="transferDate" className="block font-medium text-gray-800">
+              Transfer Date
+            </label>
+            <div className="relative">
+              <input
+                id="transferDate"
+                type="date"
+                className="w-full border p-2"
+                value={toMember.transferDate}
+                onChange={(e) => setToMember({ ...toMember, transferDate: e.target.value })}
               />
-            </div>
-
-            <div className="space-y-2 md:col-span-3">
-              <label htmlFor="reason" className="block font-medium text-gray-800">
-                Reason
-              </label>
-              <textarea id="reason" placeholder="Enter the reason" className="h-24 w-full resize-none border p-2" />
+              <Calendar className="absolute right-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-500" />
             </div>
           </div>
 
-          <div className="mt-6">
-            <button className="bg-blue-500 px-6 py-2 text-white hover:bg-blue-600">Submit</button>
+          <div className="space-y-2">
+            <label htmlFor="mobileNumber" className="block font-medium text-gray-800">
+              Mobile Number
+            </label>
+            <input
+              id="mobileNumber"
+              placeholder="Enter mobile number"
+              className="w-full border p-2"
+              value={toMember.mobileNumber}
+              onChange={(e) => setToMember({ ...toMember, mobileNumber: e.target.value })}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label htmlFor="toEmail" className="block font-medium text-gray-800">
+              Email
+            </label>
+            <input
+              id="toEmail"
+              type="email"
+              placeholder="Enter Email ID"
+              className="w-full border p-2"
+              value={toMember.email}
+              onChange={(e) => setToMember({ ...toMember, email: e.target.value })}
+            />
+          </div>
+
+          <div className="space-y-2 md:col-span-2">
+            <label htmlFor="address" className="block font-medium text-gray-800">
+              Residence/Contact Address
+            </label>
+            <textarea
+              id="address"
+              placeholder="Enter residence/contact address"
+              className="h-24 w-full resize-none border p-2"
+              value={toMember.address}
+              onChange={(e) => setToMember({ ...toMember, address: e.target.value })}
+            />
+          </div>
+
+          <div className="space-y-2 md:col-span-3">
+            <label htmlFor="reason" className="block font-medium text-gray-800">
+              Reason
+            </label>
+            <textarea
+              id="reason"
+              placeholder="Enter the reason"
+              className="h-24 w-full resize-none border p-2"
+              value={toMember.reason}
+              onChange={(e) => setToMember({ ...toMember, reason: e.target.value })}
+            />
           </div>
         </div>
+
+        <div className="mt-6">
+         <button
+          className="bg-blue-500 px-6 py-2 text-white hover:bg-blue-600"
+          onClick={handleSubmit}
+        >
+          Submit
+        </button>
+        </div>
+      </div>
+      
       </div>
     </div>
   )

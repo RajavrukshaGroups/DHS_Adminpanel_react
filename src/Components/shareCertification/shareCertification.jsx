@@ -46,6 +46,11 @@ const ShareCertificate = () => {
     setSearchTerm(value);
   }, 500);
 
+  const handleShareCertificate = (receiptId) => {
+    const url = `http://localhost:3000/receipt/get-share-certificate/${receiptId}`;
+    window.open(url, "_blank");
+  };
+
   return (
     <div className="flex flex-col items-center min-h-screen bg-blue-50 px-4 py-6">
       <h1 className="text-2xl font-bold mb-4">View Share Certificates</h1>
@@ -66,7 +71,7 @@ const ShareCertificate = () => {
               <th className="p-2 border text-center">Member Email</th>
               <th className="p-2 border text-center">Member Mobile</th>
               <th className="p-2 border text-center">Share Amount</th>
-              <th className="p-2 border text-center">Action</th>
+              <th className="p-2 border text-center">View</th>
             </tr>
           </thead>
           <tbody>
@@ -107,6 +112,9 @@ const ShareCertificate = () => {
                             //     payment.installmentNumber
                             //   )
                             // }
+                            onClick={() => {
+                              handleShareCertificate(receipt._id);
+                            }}
                           >
                             👁️
                           </button>

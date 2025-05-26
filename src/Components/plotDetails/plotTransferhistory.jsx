@@ -18,10 +18,10 @@ useEffect(() => {
           limit: rowsPerPage
         }
       });
-      console.log(res.data,'responses are coming ')
-      setTransferData(res.data); // 'data' because response is { success, data, totalPages, currentPage }
+      console.log(res,'responses are coming ')
+      setTransferData(res);
     } catch (error) {
-      console.error("Error fetching transfer history:", error);
+      console.error("Error fetching transfer history:", error)
     }
   };
 
@@ -29,16 +29,13 @@ useEffect(() => {
 }, [searchTerm, currentPage]);
 
   const filteredData = transferData.filter((item) => {
-    const from = item.fromMember || {};
-    const to = item.toMember || {};
-    return (
-      from.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      from.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      from.SeniorityID?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      to.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      to.email?.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  });
+  return (
+    item.fromMemberName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    item.fromMemberEmail?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    item.toMemberName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    item.toMemberEmail?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+});
 
   const totalPages = Math.ceil(filteredData.length / rowsPerPage);
   const currentPageData = filteredData.slice(
@@ -76,47 +73,51 @@ useEffect(() => {
                 <th className="border px-3 py-2 text-center">Date</th>
               </tr>
             </thead>
-            <tbody>
-              {currentPageData.length === 0 ? (
-                <tr>
-                  <td colSpan="8" className="text-center py-4 text-gray-500">
-                    No transfer data found.
-                  </td>
-                </tr>
-              ) : (
-                currentPageData.map((item, index) => (
-                  <tr key={item._id}>
-                    <td className="border px-3 py-2 text-center">
-                      {(currentPage - 1) * rowsPerPage + index + 1}
-                    </td>
-                    <td className="border px-3 py-2 text-center">
-                      {item.fromMember?.name || "N/A"}
-                    </td>
-                    <td className="border px-3 py-2 text-center">
-                      {item.toMember?.name || "N/A"}
-                    </td>
-                    <td className="border px-3 py-2 text-center">
-                      {item.fromMember?.propertyDetails?.projectName || "N/A"}
-                    </td>
-                    <td className="border px-3 py-2 text-center">
-                      {item.fromMember?.SeniorityID || "N/A"}
-                    </td>
-                    <td className="border px-3 py-2 text-center">
-                      {new Date(item.transferDate).toLocaleDateString()}
-                    </td>
-                    <td className="border px-3 py-2 text-center">
-                      {item.reason}
-                    </td>
-                    <td className="border px-3 py-2 text-center">
-                      {new Date(item.createdAt).toLocaleDateString()}
+           <tbody>
+                {currentPageData.length === 0 ? (
+                  <tr>
+                    <td colSpan="8" className="text-center py-4 text-gray-500">
+                      No transfer data found.
                     </td>
                   </tr>
-                ))
-              )}
-            </tbody>
+                ) : (
+                  currentPageData.map((item, index) => (
+                    <tr key={index}>
+                      <td className="border px-3 py-2 text-center">
+                        {(currentPage - 1) * rowsPerPage + index + 1}
+                      </td>
+                      <td className="border px-3 py-2 text-center">
+                        {item.fromMemberName || "N/A"}
+                      </td>
+                      <td className="border px-3 py-2 text-center">
+                        {item.toMemberName || "N/A"}
+                      </td>
+                      <td className="border px-3 py-2 text-center">
+                        {item.projectName || "N/A"}
+                      </td>
+                      <td className="border px-3 py-2 text-center">
+                        {item.SeniorityID || "N/A"}
+
+                        {/* Seniority ID field not available in response now */}
+                       
+                      </td>
+                      <td className="border px-3 py-2 text-center">
+                       {new Date().toLocaleDateString()}
+                      </td>
+                      <td className="border px-3 py-2 text-center">
+                        {/* Reason not available in backend yet */}
+                        {item.transferReason || "N/A"}
+
+                      </td>
+                      <td className="border px-3 py-2 text-center">
+                        {new Date().toLocaleDateString()} {/* fallback if createdAt not available */}
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
           </table>
         </div>
-
         {filteredData.length > 0 && (
           <div className="flex justify-center mt-6 gap-4">
             <button
@@ -132,8 +133,7 @@ useEffect(() => {
             <button
               disabled={currentPage === totalPages}
               onClick={() => setCurrentPage((prev) => prev + 1)}
-              className="bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded disabled:opacity-50"
-            >
+              className="bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded disabled:opacity-50" >
               Next
             </button>
           </div>

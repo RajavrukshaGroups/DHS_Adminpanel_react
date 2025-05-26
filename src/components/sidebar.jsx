@@ -318,7 +318,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     to="/plotTransferForm"
                     className={`flex items-center px-3 py-2 rounded-lg ${
                       // location.pathname === "/addreferencedetails"
-                      location.pathname === "/viewsiteBooking"
+                      location.pathname === "/plotTransferForm"
                         ? "bg-blue-100 text-blue-700"
                         : "text-black hover:bg-gray-100"
                     }`}
@@ -331,7 +331,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     to="/plotTransferhistory"
                     className={`flex items-center px-3 py-2 rounded-lg ${
                       // location.pathname === "/addreferencedetails"
-                      location.pathname === "/viewsiteBooking"
+                      location.pathname === "/plotTransferhistory"
                         ? "bg-blue-100 text-blue-700"
                         : "text-black hover:bg-gray-100"
                     }`}

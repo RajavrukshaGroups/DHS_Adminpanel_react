@@ -8,8 +8,8 @@ const AddReceipt = () => {
   const navigate = useNavigate();
   const [membersData, setMemberData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [usedPaymentTypes, setUsedPaymentTypes] = useState([]);
-  const [usedInstallments, setUsedInstallments] = useState([]);
+  // const [usedPaymentTypes, setUsedPaymentTypes] = useState([]);
+  // const [usedInstallments, setUsedInstallments] = useState([]);
 
   const [formData, setFormData] = useState({
     recieptNo: "",
@@ -46,25 +46,25 @@ const AddReceipt = () => {
     fetchMember();
   }, [id]);
 
-  useEffect(() => {
-    const fetchUsedPaymentTypes = async () => {
-      try {
-        const res = await axios.get(
-          `http://localhost:3000/member/check-payment-type-duplicates/${id}`
-        );
-        const types = res.data.paymentTypes || [];
-        setUsedPaymentTypes(types.map((t) => t.paymentType));
-        setUsedInstallments(
-          types
-            .filter((t) => t.paymentType === "installments")
-            .map((t) => t.installmentNumber)
-        );
-      } catch (err) {
-        console.error("Failed to fetch used payment types", err);
-      }
-    };
-    if (id) fetchUsedPaymentTypes();
-  }, [id]);
+  // useEffect(() => {
+  //   const fetchUsedPaymentTypes = async () => {
+  //     try {
+  //       const res = await axios.get(
+  //         `http://localhost:3000/member/check-payment-type-duplicates/${id}`
+  //       );
+  //       const types = res.data.paymentTypes || [];
+  //       setUsedPaymentTypes(types.map((t) => t.paymentType));
+  //       setUsedInstallments(
+  //         types
+  //           .filter((t) => t.paymentType === "installments")
+  //           .map((t) => t.installmentNumber)
+  //       );
+  //     } catch (err) {
+  //       console.error("Failed to fetch used payment types", err);
+  //     }
+  //   };
+  //   if (id) fetchUsedPaymentTypes();
+  // }, [id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -183,24 +183,14 @@ const AddReceipt = () => {
           {/* Payment Type & Mode */}
           <div>
             <label className="block mb-1">Payment Type:</label>
-            {/* <select
-              name="paymentType"
-              value={formData.paymentType}
-              onChange={handleChange}
-              className="w-full border rounded px-3 py-2"
-            >
-              <option value="">Choose Payment Type</option>
-              <option value="siteAdvance">Site Advance</option>
-              <option value="siteDownPayment">Site Down Payment</option>
-              <option value="installments">Installments</option>
-            </select> */}
             <select
               name="paymentType"
               value={formData.paymentType}
               onChange={handleChange}
               className="w-full border rounded px-3 py-2"
+              required
             >
-              <option value="">Choose Payment Type</option>
+              {/* <option value="">Choose Payment Type</option>
               <option
                 value="siteAdvance"
                 disabled={usedPaymentTypes.includes("siteAdvance")}
@@ -222,7 +212,11 @@ const AddReceipt = () => {
               >
                 Installments{" "}
                 {usedInstallments.length >= 3 && "(All Installments Used)"}
-              </option>
+              </option> */}
+              <option value="">Choose Payment Type</option>
+              <option value="siteAdvance">Site Advance</option>
+              <option value="siteDownPayment">Site Down Payment</option>
+              <option value="installments">Installments</option>
             </select>
           </div>
 
@@ -347,27 +341,27 @@ const AddReceipt = () => {
                 <option value="">Choose Installment</option>
                 <option
                   value="firstInstallment"
-                  disabled={usedInstallments.includes("firstInstallment")}
+                  // disabled={usedInstallments.includes("firstInstallment")}
                 >
                   First Installment{" "}
-                  {usedInstallments.includes("firstInstallment") &&
-                    "(Already Added)"}
+                  {/* {usedInstallments.includes("firstInstallment") &&
+                    "(Already Added)"} */}
                 </option>
                 <option
                   value="secondInstallment"
-                  disabled={usedInstallments.includes("secondInstallment")}
+                  // disabled={usedInstallments.includes("secondInstallment")}
                 >
                   Second Installment{" "}
-                  {usedInstallments.includes("secondInstallment") &&
-                    "(Already Added)"}
+                  {/* {usedInstallments.includes("secondInstallment") &&
+                    "(Already Added)"} */}
                 </option>
                 <option
                   value="thirdInstallment"
-                  disabled={usedInstallments.includes("thirdInstallment")}
+                  // disabled={usedInstallments.includes("thirdInstallment")}
                 >
                   Third Installment{" "}
-                  {usedInstallments.includes("thirdInstallment") &&
-                    "(Already Added)"}
+                  {/* {usedInstallments.includes("thirdInstallment") &&
+                    "(Already Added)"} */}
                 </option>
               </select>
             </div>

@@ -15,6 +15,8 @@ const ViewReceiptHistory = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedReceipt, setSelectedReceipt] = useState(null);
 
+  console.log("receipts data", receiptData);
+
   useEffect(() => {
     const fetchMember = async () => {
       try {
@@ -75,16 +77,14 @@ const ViewReceiptHistory = () => {
     );
   }
 
-  // const handleViewReceipt = (receiptId, paymentType) => {
-  //   window.open(
-  //     `http://localhost:3000/receipt/get-receipt-details/${receiptId}?paymentType=${paymentType}`,
-  //     "_blank"
-  //   );
+  // const handleViewReceipt = (receiptId, paymentType, installmentNumber) => {
+  //   const url = `http://localhost:3000/receipt/get-receipt-details/${receiptId}?paymentType=${paymentType}${
+  //     installmentNumber ? `&installmentNumber=${installmentNumber}` : ""
+  //   }`;
+  //   window.open(url, "_blank");
   // };
-  const handleViewReceipt = (receiptId, paymentType, installmentNumber) => {
-    const url = `http://localhost:3000/receipt/get-receipt-details/${receiptId}?paymentType=${paymentType}${
-      installmentNumber ? `&installmentNumber=${installmentNumber}` : ""
-    }`;
+  const handleViewReceipt = (receiptId, paymentId) => {
+    const url = `http://localhost:3000/receipt/get-receipt-details/${receiptId}?paymentId=${paymentId}`;
     window.open(url, "_blank");
   };
 
@@ -107,11 +107,15 @@ const ViewReceiptHistory = () => {
     }
   };
 
-  const handleEditReceipt = (receiptId, paymentType, installmentNumber) => {
-    const url = `/edit-receipt/${receiptId}?paymentType=${paymentType}${
-      installmentNumber ? `&installmentNumber=${installmentNumber}` : ""
-    }`;
-    navigate(url); // Navigates in the same tab
+  // const handleEditReceipt = (receiptId, paymentType, installmentNumber) => {
+  //   const url = `/edit-receipt/${receiptId}?paymentType=${paymentType}${
+  //     installmentNumber ? `&installmentNumber=${installmentNumber}` : ""
+  //   }`;
+  //   navigate(url); // Navigates in the same tab
+  // };
+  const handleEditReceipt = (receiptId, paymentId) => {
+    const url = `/edit-receipt/${receiptId}?paymentId=${paymentId}`;
+    navigate(url);
   };
 
   const handleDeleteClick = (receiptId, paymentType, installmentNumber) => {
@@ -292,14 +296,11 @@ const ViewReceiptHistory = () => {
                             //   handleViewReceipt(
                             //     receipt._id,
                             //     payment.paymentType,
+                            //     payment.installmentNumber
                             //   );
                             // }}
                             onClick={() => {
-                              handleViewReceipt(
-                                receipt._id,
-                                payment.paymentType,
-                                payment.installmentNumber
-                              );
+                              handleViewReceipt(receipt._id, payment._id);
                             }}
                           >
                             <FaEye />
@@ -307,14 +308,14 @@ const ViewReceiptHistory = () => {
                           <button
                             title="Edit"
                             // onClick={() => {
-                            //   window.location.href = `/edit-receipt/${id}`;
+                            //   handleEditReceipt(
+                            //     receipt._id,
+                            //     payment.paymentType,
+                            //     payment.installmentNumber
+                            //   );
                             // }}
                             onClick={() => {
-                              handleEditReceipt(
-                                receipt._id,
-                                payment.paymentType,
-                                payment.installmentNumber
-                              );
+                              handleEditReceipt(receipt._id, payment._id);
                             }}
                           >
                             <FaEdit />

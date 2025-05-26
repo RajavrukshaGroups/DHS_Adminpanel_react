@@ -33,6 +33,56 @@ const EditReceipt = () => {
   console.log("receipts data", receiptsData);
   console.log("members data", membersData);
 
+  // useEffect(() => {
+  //   window.scrollTo({ top: 0, behavior: "smooth" });
+  //   const fetchReceipts = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         `http://localhost:3000/receipt/edit-receipt/payment-history/${id}${window.location.search}`
+  //       );
+
+  //       setTimeout(() => {
+  //         const { payment, member } = response.data;
+
+  //         // Set payment data
+  //         setReceiptsData(payment);
+
+  //         // Set member data
+  //         setMemberData(member);
+
+  //         // Initialize form fields
+  //         setFormData({
+  //           receiptNo: payment.receiptNo || "",
+  //           date: payment.date ? payment.date.substring(0, 10) : "",
+  //           paymentType: payment.paymentType || "",
+  //           paymentMode: payment.paymentMode || "",
+  //           bankName: payment.bankName || "",
+  //           branchName: payment.branchName || "",
+  //           amount: payment.amount || "",
+  //           installmentNumber: payment.installmentNumber || "",
+  //           chequeNumber: payment.chequeNumber || "",
+  //           transactionId: payment.transactionId || "",
+  //           ddNumber: payment.ddNumber || "",
+  //           numberOfShares: payment.numberOfShares || "",
+  //           shareFee: payment.shareFee || "",
+  //           membershipFee: payment.membershipFee || "",
+  //           applicationFee: payment.applicationFee || "",
+  //           admissionFee: payment.admissionFee || "",
+  //           miscellaneousExpenses: payment.miscellaneousExpenses || "",
+  //         });
+
+  //         setLoading(false);
+  //       }, 500);
+  //     } catch (error) {
+  //       console.error("failed to fetch member", error);
+  //       toast.error("failed to fetch member details");
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchReceipts();
+  // }, [id]);
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     const fetchReceipts = async () => {

@@ -35,6 +35,7 @@ import PlotTransferForm from "./Components/plotDetails/plotTransferform";
 
 import ShareCertificate from "./Components/shareCertification/shareCertification";
 import PlotTransferhistory from "./Components/plotDetails/plotTransferhistory";
+import ExtraChargeFormDetails from "./Components/ExtraCharge/extraChargeFormDetails";
 function AppWrapper() {
   return (
     <Router>
@@ -44,7 +45,6 @@ function AppWrapper() {
 }
 
 function App() {
-
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const location = useLocation();
   const isLoginPage = location.pathname === "/adminlogin";
@@ -84,7 +84,6 @@ function MainLayout({ sidebarOpen, setSidebarOpen }) {
       >
         <Routes>
           <Route path="/adminlogin" element={<AdminLogin />} />
-
           <Route
             path="/"
             element={
@@ -93,7 +92,6 @@ function MainLayout({ sidebarOpen, setSidebarOpen }) {
               </PrivateRoute>
             }
           />
-
           <Route
             path="/projectLand"
             element={
@@ -134,7 +132,6 @@ function MainLayout({ sidebarOpen, setSidebarOpen }) {
               </PrivateRoute>
             }
           />
-
           <Route
             path="/viewprojectstatus"
             element={
@@ -215,7 +212,6 @@ function MainLayout({ sidebarOpen, setSidebarOpen }) {
               </PrivateRoute>
             }
           />
-
           <Route
             path="/edit-member/:id"
             element={
@@ -256,7 +252,6 @@ function MainLayout({ sidebarOpen, setSidebarOpen }) {
               </PrivateRoute>
             }
           />
-
           <Route
             path="/plotTransferForm"
             element={
@@ -265,8 +260,7 @@ function MainLayout({ sidebarOpen, setSidebarOpen }) {
               </PrivateRoute>
             }
           />
-1
-
+          1
           <Route
             path="/view-share-certificate"
             element={
@@ -280,6 +274,14 @@ function MainLayout({ sidebarOpen, setSidebarOpen }) {
             element={
               <PrivateRoute>
                 <PlotTransferhistory />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/extrachargeform"
+            element={
+              <PrivateRoute>
+                <ExtraChargeFormDetails />
               </PrivateRoute>
             }
           />

@@ -1,10 +1,12 @@
-import { ArrowLeft, Calendar } from "lucide-react"
+import { ArrowLeft, Calendar } from "lucide-react";
 import axiosInstance from "../../api/interceptors";
 import { useState,useEffect } from "react";
 import { FiSearch } from "react-icons/fi";
+import ClipLoader from "react-spinners/ClipLoader";
 
+const   PlotTransferForm=() => {
+  const [loading, setLoading] = useState(false);
 
-const   PlotTransferForm=() =>{
   const [selectedId, setSelectedId] = useState("");
   const [memberData, setMemberData] = useState(null);
   const [memberPhoto, setMemberPhoto] = useState(null);
@@ -27,53 +29,14 @@ const handleFileChange = (e) => {
   }
 };
 
-//     const handleSubmit = async () => {
-//   if (!memberData || !toMember.name || !toMember.mobileNumber) {
-//     alert("Please fill all required fields.");
-//     return;
-//   }
-
-//   const payload = {
-//     fromMember: {
-//       seniorityId: selectedId,
-//       name: memberData.name,
-//       email: memberData.email,
-//       projectName: memberData.propertyDetails?.projectName || "",
-//       propertySize:
-//         memberData.propertyDetails?.length && memberData.propertyDetails?.breadth
-//           ? `${memberData.propertyDetails.length}X${memberData.propertyDetails.breadth}`
-//           : "",
-//     },
-//     toMember: {
-//       name: toMember.name,
-//       email: toMember.email,
-//       mobile: toMember.mobile,
-//       address: toMember.address,
-//     },
-//     reason: toMember.reason,
-//     transferDate: toMember.transferDate,
-//   };
-
-//   try {
-//     // const res = await axiosInstance.post("/plot/plot-transfer", payload);
-//       const res=  await axiosInstance.post('/api/transfer/create-transfer', payload, {
-//        headers: { 'Content-Type': 'multipart/form-data' },
-//      });
-//     alert("Plot transferred successfully.");
-//     console.log(res);
-//   } catch (err) {
-//     alert("Transfer failed.");
-//     console.error(err);
-//   }
-// };
 const handleSubmit = async () => {
+    setLoading(true); // Start loader
+
   if (!memberData || !toMember.name || !toMember.mobileNumber) {
     alert("Please fill all required fields.");
     return;
   }
-
   const formData = new FormData();
-
   formData.append(
     "fromMember",
     JSON.stringify({
@@ -100,7 +63,6 @@ formData.append(
 
   formData.append("reason", toMember.reason);
   formData.append("transferDate", toMember.transferDate);
-
   if (memberPhoto) formData.append("memberPhoto", memberPhoto);
   if (memberSign) formData.append("memberSign", memberSign);
 
@@ -118,6 +80,8 @@ formData.append(
   } catch (err) {
     alert("Transfer failed.");
     console.error(err);
+  } finally {
+    setLoading(false); // Stop loader
   }
 };
 
@@ -151,6 +115,12 @@ formData.append(
             </button>
           </div>
           <h2 className="mb-6 text-2xl font-bold">Plot Transfer From</h2>
+            {loading && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/20">
+                <ClipLoader color="#36d7b7" size={60} />
+              </div>
+            )}
+
           <div className="grid gap-6 md:grid-cols-3">
           <div className="space-y-2">
             <label htmlFor="seniorityId" className="block font-medium text-gray-800">
@@ -229,9 +199,6 @@ formData.append(
             </div>
           </div>
         </div>
-
-
-
         {/* To Section */}
          <div className="rounded-lg bg-white p-6 shadow-sm">
         <h2 className="mb-6 text-2xl font-bold">Plot Transfer To</h2>
@@ -357,7 +324,6 @@ formData.append(
         </button>
         </div>
       </div>
-      
       </div>
     </div>
   )

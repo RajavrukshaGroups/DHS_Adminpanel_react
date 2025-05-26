@@ -42,6 +42,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
     location.pathname.startsWith("/addmemberdetails")
   );
 
+  const [extraChargeFormOpen, setExtraChargeFormOpen] = useState(
+    location.pathname.startsWith("/extrachargeformdetails")
+  );
+
   return (
     <div className="relative">
       {/* Sidebar */}
@@ -58,7 +62,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
             </div>
 
             {/* Navigation */}
-            <nav className="px-4 py-6 space-y-5 text-[16px] font-medium">
+            <nav
+              className="px-4 py-6 text-[16px] font-medium"
+              style={{ marginTop: "-1rem" }}
+            >
               {/* Dashboard Link */}
               <Link
                 to="/"
@@ -244,7 +251,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                 <FaUsers className="text-lg" />
 
                 <span className="ml-4 flex-grow text-left">
-                  Reciept Details
+                  Receipt Details
                 </span>
                 {memberDetailsOpen ? <FaChevronUp /> : <FaChevronDown />}
               </button>
@@ -339,6 +346,48 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     {/* <FaPlusCircle className="text-base" /> */}
                     <FaUserPlus className="text-base" />
                     <span className="ml-3">Plot Transfer Form</span>
+                  </Link>
+                </div>
+              )}
+
+              {/* Extra Charge Form Menu */}
+              <button
+                onClick={() => setExtraChargeFormOpen(!extraChargeFormOpen)}
+                className={`flex items-center w-full px-4 py-3 rounded-lg ${
+                  location.pathname.startsWith("/extrachargeformdetails")
+                    ? "bg-blue-100 text-blue-700"
+                    : "text-black hover:bg-gray-100"
+                }`}
+              >
+                <FaFileAlt className="text-lg" />
+                <span className="ml-4 flex-grow text-left">Extra Charges</span>
+                {extraChargeFormOpen ? <FaChevronUp /> : <FaChevronDown />}
+              </button>
+
+              {/* Extra Charge Form Submenu */}
+              {extraChargeFormOpen && (
+                <div className="ml-8 mt-2 space-y-3 text-[15px]">
+                  <Link
+                    to="/extrachargeform"
+                    className={`flex items-center px-3 py-2 rounded-lg ${
+                      location.pathname === "/extrachargeform"
+                        ? "bg-blue-100 text-blue-700"
+                        : "text-black hover:bg-gray-100"
+                    }`}
+                  >
+                    <FaPlusCircle className="text-base" />
+                    <span className="ml-3">Add Extra Charges</span>
+                  </Link>
+                  <Link
+                    to="/viewextracharges"
+                    className={`flex items-center px-3 py-2 rounded-lg ${
+                      location.pathname === "/viewextracharges"
+                        ? "bg-blue-100 text-blue-700"
+                        : "text-black hover:bg-gray-100"
+                    }`}
+                  >
+                    <FaListAlt className="text-base" />
+                    <span className="ml-3">View Extra Charges</span>
                   </Link>
                 </div>
               )}

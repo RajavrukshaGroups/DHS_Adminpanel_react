@@ -50,10 +50,15 @@ const ViewReceiptDetails = () => {
     setSearchTerm(value);
   }, 500);
 
-  const handleViewReceipt = (receiptId, paymentType, installmentNumber) => {
-    const url = `http://localhost:3000/receipt/get-receipt-details/${receiptId}?paymentType=${paymentType}${
-      installmentNumber ? `&installmentNumber=${installmentNumber}` : ""
-    }`;
+  // const handleViewReceipt = (receiptId, paymentType, installmentNumber) => {
+  //   const url = `http://localhost:3000/receipt/get-receipt-details/${receiptId}?paymentType=${paymentType}${
+  //     installmentNumber ? `&installmentNumber=${installmentNumber}` : ""
+  //   }`;
+  //   window.open(url, "_blank");
+  // };
+
+  const handleViewReceipt = (receiptId, paymentId) => {
+    const url = `http://localhost:3000/receipt/get-receipt-details/${receiptId}?paymentId=${paymentId}`;
     window.open(url, "_blank");
   };
 
@@ -172,11 +177,12 @@ const ViewReceiptDetails = () => {
                           <button
                             className="text-blue-600 hover:underline"
                             onClick={() =>
-                              handleViewReceipt(
-                                receipt._id,
-                                payment.paymentType,
-                                payment.installmentNumber
-                              )
+                              // handleViewReceipt(
+                              //   receipt._id,
+                              //   payment.paymentType,
+                              //   payment.installmentNumber
+                              // )
+                              handleViewReceipt(receipt._id, payment._id)
                             }
                           >
                             👁️

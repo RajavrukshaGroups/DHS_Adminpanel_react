@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Select from "react-select";
+import toast from "react-hot-toast";
 
 const ExtraChargeFormDetails = () => {
   const [seniorityId, setSeniorityId] = useState(null);
@@ -8,15 +9,19 @@ const ExtraChargeFormDetails = () => {
   const [seniorityIdOptions, setSeniorityIdOptions] = useState([]);
   const [memberData, setMemberData] = useState(null);
 
-  const [paymentMode, setPaymentMode] = useState(""); // NEW
-  const [paymentType, setPaymentType] = useState("Extra Charge");
-  const [otherCharges, setOtherCharges] = useState("");
-  const [formFields, setFormFields] = useState({
+  console.log("members data", memberData);
+
+  const [formData, setFormData] = useState({
+    recieptNo: "",
+    date: "",
+    paymentMode: "",
+    paymentType: "Extra Charge",
     chequeNumber: "",
     bankName: "",
     branchName: "",
     transactionId: "",
     ddNumber: "",
+    otherCharges: "",
     amount: "",
   });
 
@@ -37,7 +42,6 @@ const ExtraChargeFormDetails = () => {
         console.error("Failed to fetch Seniority IDs:", error);
       }
     };
-
     fetchSeniorityIds();
   }, []);
 
@@ -67,14 +71,77 @@ const ExtraChargeFormDetails = () => {
     setShowForm(false);
     setSeniorityId(null);
     setMemberData(null);
+    setFormData({
+      recieptNo: "",
+      date: "",
+      paymentType: "Extra Charge",
+      paymentMode: "",
+      chequeNumber: "",
+      bankName: "",
+      branchName: "",
+      transactionId: "",
+      ddNumber: "",
+      otherCharges: "",
+      amount: "",
+    });
   };
 
-  return (
-    <>
-      <div className="max-w-4xl mx-auto mt-10 p-8 bg-white shadow-md rounded-lg">
-        <h1 className="text-2xl font-bold mb-6 text-center">User Details</h1>
+  const handleInputChange = (field) => (e) => {
+    setFormData({ ...formData, [field]: e.target.value });
+  };
 
-        {/* Searchable Seniority ID */}
+  const handleFormSubmit = async () => {
+    const { recieptNo, date, paymentMode, paymentType, otherCharges, amount } =
+      formData;
+
+    if (
+      !recieptNo ||
+      !date ||
+      !paymentMode ||
+      !paymentType ||
+      !otherCharges ||
+      !amount
+    ) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+
+    const payload = {
+      seniorityId: seniorityId?.value,
+      memberId: memberData?._id,
+      name: memberData?.name,
+      mobileNumber: memberData?.mobileNumber,
+      email: memberData?.email,
+      address: memberData?.permanentAddress,
+      ...formData,
+    };
+
+    try {
+      const response = await axios.post(
+        `http://localhost:3000/member/add-receipt/${memberData._id}`,
+        payload
+      );
+      if (response.status === 200) {
+        // alert("Extra Charge submitted successfully!");
+        toast.success("Extra charge receipt added successfully");
+        handleCancel();
+      } else {
+        // alert("Failed to submit extra charge.");
+        toast.error("failed to submit extra charge receipt");
+      }
+    } catch (error) {
+      console.error("Submit error:", error);
+      toast.error("Error submitting extra charge.");
+    }
+  };
+
+  const paymentMode = formData.paymentMode;
+
+  return (
+    <div className="max-w-4xl mx-auto mt-10">
+      {/* Seniority ID Search Section */}
+      <div className="p-8 bg-white shadow-md rounded-lg">
+        <h1 className="text-2xl font-bold mb-6 text-center">User Details</h1>
         <div className="mb-4">
           <label className="block font-semibold mb-2">
             Enter or Select Seniority ID
@@ -91,14 +158,12 @@ const ExtraChargeFormDetails = () => {
                 noOptionsMessage={() => "No match found"}
               />
             </div>
-
             <button
               onClick={handleSubmitSeniority}
               className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
             >
               Enter
             </button>
-
             {showForm && (
               <button
                 onClick={handleCancel}
@@ -110,92 +175,59 @@ const ExtraChargeFormDetails = () => {
           </div>
         </div>
 
-        {/* Conditional Member Info */}
         {showForm && memberData && (
           <div className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block font-semibold mb-1">Name</label>
-                <input
-                  type="text"
-                  value={memberData.name || ""}
-                  readOnly
-                  className="w-full border border-gray-300 rounded-md px-4 py-2 bg-gray-100"
-                />
-              </div>
-              <div>
-                <label className="block font-semibold mb-1">
-                  Mobile Number
-                </label>
-                <input
-                  type="text"
-                  value={memberData.mobileNumber || ""}
-                  readOnly
-                  className="w-full border border-gray-300 rounded-md px-4 py-2 bg-gray-100"
-                />
-              </div>
-              <div>
-                <label className="block font-semibold mb-1">Email ID</label>
-                <input
-                  type="email"
-                  value={memberData.email || ""}
-                  readOnly
-                  className="w-full border border-gray-300 rounded-md px-4 py-2 bg-gray-100"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block font-semibold mb-1">
-                Residence/Contact Address
-              </label>
-              <input
-                type="text"
-                value={memberData.permanentAddress || ""}
+              <InputField label="Name" value={memberData.name} readOnly />
+              <InputField
+                label="Mobile Number"
+                value={memberData.mobileNumber}
                 readOnly
-                className="w-full border border-gray-300 rounded-md px-4 py-2 bg-gray-100"
               />
+              <InputField label="Email ID" value={memberData.email} readOnly />
             </div>
+            <InputField
+              label="Residence/Contact Address"
+              value={memberData.permanentAddress}
+              readOnly
+            />
           </div>
         )}
       </div>
 
       {/* Extra Charges Form */}
-      <div className="max-w-4xl mx-auto mt-10 p-8 bg-white shadow-md rounded-lg">
-        <h1 className="text-2xl font-bold mb-6 text-center">
-          Extra Charges Details
-        </h1>
+      {showForm && (
+        <div className="mt-10 p-8 bg-white shadow-md rounded-lg">
+          <h1 className="text-2xl font-bold mb-6 text-center">
+            Extra Charges Details
+          </h1>
 
-        {showForm && (
-          <>
-            <div className="mb-4">
-              <label className="block font-semibold mb-1">Payment Type</label>
-              <input
-                type="text"
-                value={paymentType}
-                // onChange={(e) => setPaymentType(e.target.value)}
-                className="w-full border px-4 py-2 rounded"
-                // placeholder="enter here"
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block font-semibold mb-1">
-                Reason for Extra Charge
-              </label>
-              <input
-                type="text"
-                value={otherCharges}
-                onChange={(e) => setOtherCharges(e.target.value)}
-                className="w-full border px-4 py-2 rounded"
-                placeholder="enter here"
-              />
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <InputField
+              label="Receipt No"
+              value={formData.recieptNo}
+              onChange={handleInputChange("recieptNo")}
+            />
+            <InputField
+              label="Date"
+              type="date"
+              value={formData.date}
+              onChange={handleInputChange("date")}
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <InputField
+              label="Payment Type"
+              value={formData.paymentType}
+              readOnly
+            />
             <div className="mb-4">
               <label className="block font-semibold mb-1">Payment Mode</label>
               <select
                 className="w-full border px-4 py-2 rounded"
-                value={paymentMode}
-                onChange={(e) => setPaymentMode(e.target.value)}
+                value={formData.paymentMode}
+                onChange={handleInputChange("paymentMode")}
               >
                 <option value="">Select</option>
                 <option value="cash">Cash</option>
@@ -204,187 +236,127 @@ const ExtraChargeFormDetails = () => {
                 <option value="dd">DD</option>
               </select>
             </div>
+          </div>
 
-            {/* Conditional Fields */}
-            {paymentMode === "cheque" && (
-              <>
-                <div className="mb-4">
-                  <label className="block font-semibold mb-1">
-                    Cheque Number
-                  </label>
-                  <input
-                    type="text"
-                    value={formFields.chequeNumber}
-                    onChange={(e) =>
-                      setFormFields({
-                        ...formFields,
-                        chequeNumber: e.target.value,
-                      })
-                    }
-                    className="w-full border px-4 py-2 rounded"
-                  />
-                </div>
-                <div className="mb-4">
-                  <label className="block font-semibold mb-1">Bank Name</label>
-                  <input
-                    type="text"
-                    value={formFields.bankName}
-                    onChange={(e) =>
-                      setFormFields({
-                        ...formFields,
-                        bankName: e.target.value,
-                      })
-                    }
-                    className="w-full border px-4 py-2 rounded"
-                  />
-                </div>
-                <div className="mb-4">
-                  <label className="block font-semibold mb-1">
-                    Branch Name
-                  </label>
-                  <input
-                    type="text"
-                    value={formFields.branchName}
-                    onChange={(e) =>
-                      setFormFields({
-                        ...formFields,
-                        branchName: e.target.value,
-                      })
-                    }
-                    className="w-full border px-4 py-2 rounded"
-                  />
-                </div>
-              </>
-            )}
-
-            {paymentMode === "netbanking" && (
-              <>
-                <div className="mb-4">
-                  <label className="block font-semibold mb-1">
-                    Transaction Id
-                  </label>
-                  <input
-                    type="text"
-                    value={formFields.transactionId}
-                    onChange={(e) =>
-                      setFormFields({
-                        ...formFields,
-                        transactionId: e.target.value,
-                      })
-                    }
-                    className="w-full border px-4 py-2 rounded"
-                  />
-                </div>
-                <div className="mb-4">
-                  <label className="block font-semibold mb-1">Bank Name</label>
-                  <input
-                    type="text"
-                    value={formFields.bankName}
-                    onChange={(e) =>
-                      setFormFields({
-                        ...formFields,
-                        bankName: e.target.value,
-                      })
-                    }
-                    className="w-full border px-4 py-2 rounded"
-                  />
-                </div>
-                <div className="mb-4">
-                  <label className="block font-semibold mb-1">
-                    Branch Name
-                  </label>
-                  <input
-                    type="text"
-                    value={formFields.branchName}
-                    onChange={(e) =>
-                      setFormFields({
-                        ...formFields,
-                        branchName: e.target.value,
-                      })
-                    }
-                    className="w-full border px-4 py-2 rounded"
-                  />
-                </div>
-              </>
-            )}
-
-            {paymentMode === "dd" && (
-              <>
-                <div className="mb-4">
-                  <label className="block font-semibold mb-1">DD Number</label>
-                  <input
-                    type="text"
-                    value={formFields.ddNumber}
-                    onChange={(e) =>
-                      setFormFields({
-                        ...formFields,
-                        ddNumber: e.target.value,
-                      })
-                    }
-                    className="w-full border px-4 py-2 rounded"
-                  />
-                </div>
-                <div className="mb-4">
-                  <label className="block font-semibold mb-1">Bank Name</label>
-                  <input
-                    type="text"
-                    value={formFields.bankName}
-                    onChange={(e) =>
-                      setFormFields({
-                        ...formFields,
-                        bankName: e.target.value,
-                      })
-                    }
-                    className="w-full border px-4 py-2 rounded"
-                  />
-                </div>
-                <div className="mb-4">
-                  <label className="block font-semibold mb-1">
-                    Branch Name
-                  </label>
-                  <input
-                    type="text"
-                    value={formFields.branchName}
-                    onChange={(e) =>
-                      setFormFields({
-                        ...formFields,
-                        branchName: e.target.value,
-                      })
-                    }
-                    className="w-full border px-4 py-2 rounded"
-                  />
-                </div>
-              </>
-            )}
-
-            <div className="mb-4">
-              <label className="block font-semibold mb-1">Amount</label>
-              <input
-                type="number"
-                value={formFields.amount}
-                onChange={(e) =>
-                  setFormFields({
-                    ...formFields,
-                    amount: e.target.value,
-                  })
-                }
-                className="w-full border px-4 py-2 rounded"
-                placeholder="Enter amount"
-                min="0"
+          {/* Conditional Fields */}
+          {paymentMode === "cheque" && (
+            <>
+              <InputField
+                label="Cheque Number"
+                value={formData.chequeNumber}
+                onChange={handleInputChange("chequeNumber")}
               />
-            </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <InputField
+                  label="Bank Name"
+                  value={formData.bankName}
+                  onChange={handleInputChange("bankName")}
+                />
+                <InputField
+                  label="Branch Name"
+                  value={formData.branchName}
+                  onChange={handleInputChange("branchName")}
+                />
+              </div>
+            </>
+          )}
 
-            {/* Submit Button */}
-            <div className="text-center mt-6">
-              <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded">
-                Submit Extra Charge
-              </button>
-            </div>
-          </>
-        )}
-      </div>
-    </>
+          {paymentMode === "netbanking" && (
+            <>
+              <InputField
+                label="Transaction ID"
+                value={formData.transactionId}
+                onChange={handleInputChange("transactionId")}
+              />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <InputField
+                  label="Bank Name"
+                  value={formData.bankName}
+                  onChange={handleInputChange("bankName")}
+                />
+                <InputField
+                  label="Branch Name"
+                  value={formData.branchName}
+                  onChange={handleInputChange("branchName")}
+                />
+              </div>
+            </>
+          )}
+
+          {paymentMode === "dd" && (
+            <>
+              <InputField
+                label="DD Number"
+                value={formData.ddNumber}
+                onChange={handleInputChange("ddNumber")}
+              />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <InputField
+                  label="Bank Name"
+                  value={formData.bankName}
+                  onChange={handleInputChange("bankName")}
+                />
+                <InputField
+                  label="Branch Name"
+                  value={formData.branchName}
+                  onChange={handleInputChange("branchName")}
+                />
+              </div>
+            </>
+          )}
+
+          <InputField
+            label="Amount"
+            value={formData.amount}
+            onChange={handleInputChange("amount")}
+          />
+
+          <div className="mb-4">
+            <label className="block font-semibold mb-1">
+              Reason for Extra Charge
+            </label>
+            <textarea
+              value={formData.otherCharges}
+              onChange={handleInputChange("otherCharges")}
+              className="w-full border px-4 py-2 rounded resize-none"
+              rows={4}
+              placeholder="Enter reason here..."
+            />
+          </div>
+
+          <div className="text-center mt-6">
+            <button
+              onClick={handleFormSubmit}
+              className="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
+            >
+              Submit Extra Charge
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
+
+const InputField = ({
+  label,
+  type = "text",
+  value,
+  onChange,
+  readOnly = false,
+}) => (
+  <div className="mb-4">
+    <label className="block font-semibold mb-1">{label}</label>
+    <input
+      type={type}
+      value={value}
+      onChange={onChange}
+      readOnly={readOnly}
+      className={`w-full border px-4 py-2 rounded ${
+        readOnly ? "bg-gray-100" : ""
+      }`}
+    />
+  </div>
+);
 
 export default ExtraChargeFormDetails;

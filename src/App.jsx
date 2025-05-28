@@ -7,6 +7,7 @@ import {
   useLocation,
 } from "react-router-dom";
 
+
 import AdminLogin from "./pages/adminLogin";
 import Dashboard from "./pages/dashboard";
 import Sidebar from "./pages/sidebar";
@@ -38,6 +39,7 @@ import PlotTransferhistory from "./Components/plotDetails/plotTransferhistory";
 import ExtraChargeFormDetails from "./Components/ExtraCharge/extraChargeFormDetails";
 import PlotCancellationForm from "./Components/plotDetails/plotCancelationForm";
 import ViewExtraCharge from "./Components/ExtraCharge/viewExtraCharge";
+import CancelledMembersTable from "./Components/plotDetails/plotCancelledList"
 function AppWrapper() {
   return (
     <Router>
@@ -300,6 +302,14 @@ function MainLayout({ sidebarOpen, setSidebarOpen }) {
             element={
               <PrivateRoute>
                 <ViewExtraCharge />
+              </PrivateRoute>
+            }
+          />
+           <Route
+            path="/PlotCancelledList"
+            element={
+              <PrivateRoute>
+                <CancelledMembersTable />
               </PrivateRoute>
             }
           />

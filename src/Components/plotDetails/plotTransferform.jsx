@@ -3,6 +3,8 @@ import axiosInstance from "../../api/interceptors";
 import { useState,useEffect } from "react";
 import { FiSearch } from "react-icons/fi";
 import ClipLoader from "react-spinners/ClipLoader";
+import toast from "react-hot-toast";
+
 
 const   PlotTransferForm= () => {
   const [loading, setLoading] = useState(false);
@@ -31,7 +33,7 @@ const handleFileChange = (e) => {
 const handleSubmit = async () => {
     setLoading(true);
   if (!memberData || !toMember.name || !toMember.mobileNumber) {
-    alert("Please fill all required fields.");
+    toast.error("Please fill all required fields.");
     return;
   }
   const formData = new FormData();
@@ -71,10 +73,10 @@ formData.append(
     const res = await axiosInstance.post("/plot/create-transfer", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
-    alert("Plot transferred successfully.");
+    toast.success("Plot transferred successfully.");
     console.log(res);
   } catch (err) {
-    alert("Transfer failed.");
+    toast.error("Transfer failed.");
     console.error(err);
   } finally {
     setLoading(false); 
@@ -83,7 +85,7 @@ formData.append(
 
  const handleFetchMember = async () => {
   if (!selectedId) {
-    alert("Please enter a Seniority ID.");
+    toast.error("Please enter a Seniority ID.");
     return;
   }
 
@@ -93,7 +95,7 @@ formData.append(
     setMemberData(response);
   } catch (error) {
     console.error("Error fetching member:", error);
-    alert("Member not found or error occurred.");
+    toast.error("Member not found or error occurred.");
     setMemberData(null);
   }
 };

@@ -16,7 +16,6 @@ const PlotCancellationForm = () => {
   });
 
 
-
   const handleFetchMember = async () => {
     if (!selectedId) {
       alert("Please enter a Seniority ID.");

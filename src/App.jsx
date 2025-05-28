@@ -37,6 +37,7 @@ import ShareCertificate from "./Components/shareCertification/shareCertification
 import PlotTransferhistory from "./Components/plotDetails/plotTransferhistory";
 import ExtraChargeFormDetails from "./Components/ExtraCharge/extraChargeFormDetails";
 import ViewExtraCharge from "./Components/ExtraCharge/viewExtraCharge";
+import EditExtraCharge from "./Components/ExtraCharge/editExtraCharge";
 function AppWrapper() {
   return (
     <Router>
@@ -291,6 +292,14 @@ function MainLayout({ sidebarOpen, setSidebarOpen }) {
             element={
               <PrivateRoute>
                 <ViewExtraCharge />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/edit-extra-charge/:paymentId"
+            element={
+              <PrivateRoute>
+                <EditExtraCharge />
               </PrivateRoute>
             }
           />

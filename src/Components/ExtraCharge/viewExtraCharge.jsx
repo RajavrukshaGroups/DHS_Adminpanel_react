@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FaEdit, FaEye } from "react-icons/fa";
 
 const ViewExtraCharge = () => {
+  const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -148,7 +150,12 @@ const ViewExtraCharge = () => {
                     </button>
                   </td>
                   <td className="border p-2 text-center">
-                    <FaEdit className="text-blue-600 cursor-pointer inline-block" />
+                    <FaEdit
+                      className="text-blue-600 cursor-pointer inline-block"
+                      onClick={() =>
+                        navigate(`/edit-extra-charge/${item.paymentId}`)
+                      }
+                    />
                   </td>
                 </tr>
               ))

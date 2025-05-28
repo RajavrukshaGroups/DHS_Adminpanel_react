@@ -59,11 +59,13 @@ const ExtraChargeFormDetails = () => {
       } else {
         setShowForm(false);
         setMemberData(null);
-        alert("No member found with the selected Seniority ID.");
+        // alert("No member found with the selected Seniority ID.");
+        toast.error("No member found with the selected Seniority ID.")
       }
     } catch (error) {
       console.error("Error fetching member info:", error);
-      alert("Server error while fetching member info.");
+      toast.error("Server error while fetching member info.")
+      // alert("Server error while fetching member info.");
     }
   };
 
@@ -102,7 +104,8 @@ const ExtraChargeFormDetails = () => {
       !otherCharges ||
       !amount
     ) {
-      alert("Please fill in all required fields.");
+      toast.error("Please fill in all required fields.")
+      // alert("Please fill in all required fields.");
       return;
     }
 
@@ -199,7 +202,7 @@ const ExtraChargeFormDetails = () => {
       {showForm && (
         <div className="mt-10 p-8 bg-white shadow-md rounded-lg">
           <h1 className="text-2xl font-bold mb-6 text-center">
-            Extra Charges Details
+            Extra Charge Details
           </h1>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

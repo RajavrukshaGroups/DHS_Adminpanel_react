@@ -1,230 +1,224 @@
-import React, { useState } from 'react';
+import { ArrowLeft, Calendar } from "lucide-react";
+import axiosInstance from "../../api/interceptors";
+import { useState, useEffect } from "react";
+import { FiSearch } from "react-icons/fi";
+import ClipLoader from "react-spinners/ClipLoader";
 
 const PlotCancellationForm = () => {
-  const [formData, setFormData] = useState({
-    seniorityId: '',
-    name: '',
-    email: '',
-    mobileNumber: '',
-    projectLoad: '',
-    propertySize: '',
-    cancellationDate: '',
-    reason: '',
-    transactionId: '',
-    cancellationLetter: null,
+  const [loading, setLoading] = useState(false);
+  const [selectedId, setSelectedId] = useState("");
+  const [memberData, setMemberData] = useState(null);
+  const [cancelLetter, setCancelLetter] = useState(null);
+  const [cancelData, setCancelData] = useState({
+    reason: "",
+    cancellationDate: "",
+    remarks: ""
   });
 
 
-const handleFetchMember = async () => {
-  if (!selectedId) {
-    alert("Please enter a Seniority ID.");
+
+  const handleFetchMember = async () => {
+    if (!selectedId) {
+      alert("Please enter a Seniority ID.");
+      return;
+    }
+    try {
+      const response = await axiosInstance.get(`/plot/getMemberBySeniorityID/${selectedId}`);
+      setMemberData(response);
+    } catch (error) {
+      console.error("Error fetching member:", error);
+      alert("Member not found or error occurred.");
+      setMemberData(null);
+    }
+  };
+
+  const handleDocumentUpload = (e) => {
+  const file = e.target.files[0];
+  setCancelLetter(file);
+};
+
+  const handleSubmit = async () => {
+  setLoading(true);
+  if (!memberData || !cancelData.reason || !cancelData.cancellationDate) {
+    alert("Please fill all required fields.");
     return;
   }
 
+  const formData = new FormData();
+  formData.append("cancelLetter", cancelLetter); // ✅ file
+  formData.append("reason", cancelData.reason);
+  formData.append("cancellationDate", cancelData.cancellationDate);
+  formData.append("remarks", cancelData.remarks);
+
+  formData.append("member", JSON.stringify({
+    seniorityId: selectedId,
+    name: memberData.name,
+    email: memberData.email,
+    projectName: memberData.propertyDetails?.projectName || "",
+    propertySize:
+      memberData.propertyDetails?.length && memberData.propertyDetails?.breadth
+        ? `${memberData.propertyDetails.length}X${memberData.propertyDetails.breadth}`
+        : ""
+  }));
+
   try {
-    const response = await axiosInstance.get(`/plot/getMemberBySeniorityID/${selectedId}`);
-    console.log(response,'new responseeeeeeeeeeeeee')
-    setMemberData(response);
-  } catch (error) {
-    console.error("Error fetching member:", error);
-    alert("Member not found or error occurred.");
-    setMemberData(null);
+
+    const res = await axiosInstance.post("/plot/plot-cancel", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    alert("Plot cancellation successful.");
+    console.log(res);
+  } catch (err) {
+    alert("Cancellation failed.");
+    console.error(err);
+  } finally {
+    setLoading(false);
   }
 };
 
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0] || null;
-    setFormData(prev => ({
-      ...prev,
-      cancellationLetter: file
-    }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Form submitted:', formData);
-    // Handle form submission logic here
-  };
-
   return (
-    <div style={{}} className="min-h-screen bg-slate-100 p-4 flex items-center justify-center">
-      <div className="w-full max-w-6xl bg-white rounded-lg shadow-lg p-8">
-        <h1 className="text-2xl font-normal text-gray-800 mb-8">Plot Cancellation Form</h1>
-        
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* First Row */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div className="min-h-screen bg-gray-50 p-4 md:p-6">
+      {/* <div className="mx-auto max-w-5xl space-y-6"> */}
+      <div className="w-full max-w-6xl bg-white rounded-lg shadow-lg p-8 space-y-10">
+
+        <div className="rounded-lg bg-white p-6 shadow-sm">
+          <div className="mb-4">
+            <button className="flex items-center text-lg font-medium">
+              <ArrowLeft className="mr-2 h-5 w-5" />
+              Back
+            </button>
+          </div>
+          <h2 className="text-2xl font-normal text-gray-800 mb-8">
+          Plot Cancellation Form</h2>
+          {loading && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/20">
+              <ClipLoader color="#36d7b7" size={60} />
+            </div>
+          )}
+          <div className="grid gap-6 md:grid-cols-3">
             <div className="space-y-2">
               <label htmlFor="seniorityId" className="block text-sm font-medium text-gray-700">
                 Seniority ID
               </label>
-              <input
-                id="seniorityId"
-                name="seniorityId"
-                type="text"
-                placeholder="Enter Seniority ID"
-                value={formData.seniorityId}
-                onChange={handleInputChange}
-                className="w-full h-12 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
+              <div className="flex items-center space-x-2">
+                <input
+                  id="seniorityId"
+                  type="text"
+                  className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
+                  value={selectedId}
+                  onChange={(e) => setSelectedId(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") handleFetchMember();
+                  }}
+                  placeholder="Enter Seniority ID"
+                />
+                <button
+                  type="button"
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-2 py-1 rounded"
+                  onClick={handleFetchMember}
+                  title="Fetch Member"
+                >
+                  <FiSearch className="w-5 h-5" />
+                </button>
+              </div>
             </div>
-            <div className="space-y-2">
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                Name
-              </label>
-              <input
-                id="name"
-                name="name"
-                type="text"
-                placeholder="Enter Name"
-                value={formData.name}
-                onChange={handleInputChange}
-                className="w-full h-12 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-            </div>
-            <div className="space-y-2">
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Email
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="Enter Email ID"
-                value={formData.email}
-                onChange={handleInputChange}
-                className="w-full h-12 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-            </div>
-          </div>
 
-          {/* Second Row */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="space-y-2">
-              <label htmlFor="mobileNumber" className="block text-sm font-medium text-gray-700">
-                Mobile Number
-              </label>
+              <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
+              <input id="name" value={memberData?.name || ""} readOnly className="w-full h-12 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+ />
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+              <input id="email" type="email" value={memberData?.email || ""} readOnly className="w-full h-12 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+ />
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="project" className="block text-sm font-medium text-gray-700">Project</label>
               <input
-                id="mobileNumber"
-                name="mobileNumber"
-                type="tel"
-                placeholder="Enter mobile number"
-                value={formData.mobileNumber}
-                onChange={handleInputChange}
+                id="project"
+                value={memberData?.propertyDetails?.projectName || ""}
+                readOnly
                 className="w-full h-12 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+
               />
             </div>
+
             <div className="space-y-2">
-              <label htmlFor="projectLoad" className="block text-sm font-medium text-gray-700">
-                Project Load
-              </label>
-              <input
-                id="projectLoad"
-                name="projectLoad"
-                type="text"
-                placeholder=""
-                value={formData.projectLoad}
-                onChange={handleInputChange}
-                className="w-full h-12 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-            </div>
-            <div className="space-y-2">
-              <label htmlFor="propertySize" className="block text-sm font-medium text-gray-700">
-                Property Size
-              </label>
+              <label htmlFor="propertySize" className="block text-sm font-medium text-gray-700">Property Size</label>
               <input
                 id="propertySize"
-                name="propertySize"
-                type="text"
-                placeholder="Enter the plot Size"
-                value={formData.propertySize}
-                onChange={handleInputChange}
+                value={
+                  memberData?.propertyDetails?.length && memberData?.propertyDetails?.breadth
+                    ? `${memberData.propertyDetails.length}X${memberData.propertyDetails.breadth}`
+                    : ""
+                }
+                readOnly
                 className="w-full h-12 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+
               />
             </div>
           </div>
+        </div>
 
-          {/* Third Row */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="rounded-lg bg-white p-6 shadow-sm">
+          <h2 className="text-2xl font-normal text-gray-800 mb-8">
+Cancellation Details</h2>
+          <div className="grid gap-6 md:grid-cols-2">
             <div className="space-y-2">
               <label htmlFor="cancellationDate" className="block text-sm font-medium text-gray-700">
-                Date of Cancellation Confirmed
+                Cancellation Date
               </label>
-              <input
-                id="cancellationDate"
-                name="cancellationDate"
-                type="date"
-                value={formData.cancellationDate}
-                onChange={handleInputChange}
-                className="w-full h-12 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
+              <div className="relative">
+                <input
+                  id="cancellationDate"
+                  type="date"
+                  className="w-full h-12 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+
+                  value={cancelData.cancellationDate}
+                  onChange={(e) => setCancelData({ ...cancelData, cancellationDate: e.target.value })}
+                />
+                <Calendar className="absolute right-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-500" />
+              </div>
             </div>
+
             <div className="space-y-2">
-              <label htmlFor="reason" className="block text-sm font-medium text-gray-700">
-                Reason For Cancellation
-              </label>
+              <label htmlFor="reason" className="block text-sm font-medium text-gray-700">Reason for Cancellation</label>
               <textarea
                 id="reason"
-                name="reason"
-                placeholder="Enter the Reason For Cancellation"
-                value={formData.reason}
-                onChange={handleInputChange}
-                rows={5}
-                className="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                placeholder="Enter reason"
+                className="w-full h-24 border p-2"
+                value={cancelData.reason}
+                onChange={(e) => setCancelData({ ...cancelData, reason: e.target.value })}
               />
+            </div>
+
+            <div className="space-y-2  md:col-span-2">
+              <label htmlFor="remarks" className="block text-sm font-medium text-gray-700">Remarks</label>
+              <textarea
+                id="remarks"
+                placeholder="Enter any remarks"
+                className="w-full h-24 border p-2"
+                value={cancelData.remarks}
+                onChange={(e) => setCancelData({ ...cancelData, remarks: e.target.value })}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">Upload Cancellation Letter</label>
+              <input type="file" name="memberPhoto" accept="document/*" onChange={handleDocumentUpload} />
             </div>
           </div>
 
-          {/* Fourth Row */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <label htmlFor="transactionId" className="block text-sm font-medium text-gray-700">
-                Cheque Number /Transaction ID /DD Number
-              </label>
-              <input
-                id="transactionId"
-                name="transactionId"
-                type="text"
-                placeholder="Enter Transaction ID"
-                value={formData.transactionId}
-                onChange={handleInputChange}
-                className="w-full h-12 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-            </div>
-            <div className="space-y-2">
-              <label htmlFor="cancellationLetter" className="block text-sm font-medium text-gray-700">
-                Upload Cancellation Letter
-              </label>
-              <input
-                id="cancellationLetter"
-                name="cancellationLetter"
-                type="file"
-                onChange={handleFileChange}
-                accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                className="w-full h-12 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-gray-50 file:text-gray-700 hover:file:bg-gray-100"
-              />
-            </div>
-          </div>
-
-          {/* Submit Button */}
-          <div className="pt-4">
-            <button
-              type="submit"
-              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-md font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-            >
-              Submit
-            </button>
-          </div>
-        </form>
+          <button
+            onClick={handleSubmit}
+            className="mt-6 bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded"
+          >
+            Cancel Plot
+          </button>
+        </div>
       </div>
     </div>
   );

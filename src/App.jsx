@@ -37,6 +37,7 @@ import ShareCertificate from "./Components/shareCertification/shareCertification
 import PlotTransferhistory from "./Components/plotDetails/plotTransferhistory";
 import ExtraChargeFormDetails from "./Components/ExtraCharge/extraChargeFormDetails";
 import PlotCancellationForm from "./Components/plotDetails/plotCancelationForm";
+import ViewExtraCharge from "./Components/ExtraCharge/viewExtraCharge";
 function AppWrapper() {
   return (
     <Router>
@@ -291,6 +292,14 @@ function MainLayout({ sidebarOpen, setSidebarOpen }) {
             element={
               <PrivateRoute>
                 <PlotCancellationForm />
+              </PrivateRoute>
+            }
+          />
+           <Route
+            path="/viewextracharges"
+            element={
+              <PrivateRoute>
+                <ViewExtraCharge />
               </PrivateRoute>
             }
           />

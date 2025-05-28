@@ -4,9 +4,8 @@ import { useState,useEffect } from "react";
 import { FiSearch } from "react-icons/fi";
 import ClipLoader from "react-spinners/ClipLoader";
 
-const   PlotTransferForm=() => {
+const   PlotTransferForm= () => {
   const [loading, setLoading] = useState(false);
-
   const [selectedId, setSelectedId] = useState("");
   const [memberData, setMemberData] = useState(null);
   const [memberPhoto, setMemberPhoto] = useState(null);
@@ -30,8 +29,7 @@ const handleFileChange = (e) => {
 };
 
 const handleSubmit = async () => {
-    setLoading(true); // Start loader
-
+    setLoading(true);
   if (!memberData || !toMember.name || !toMember.mobileNumber) {
     alert("Please fill all required fields.");
     return;
@@ -56,7 +54,7 @@ formData.append(
   JSON.stringify({
     name: toMember.name,
     email: toMember.email,
-    mobile: toMember.mobileNumber, // <-- FIXED
+    mobile: toMember.mobileNumber,
     address: toMember.address,
   })
 );
@@ -65,14 +63,12 @@ formData.append(
   formData.append("transferDate", toMember.transferDate);
   if (memberPhoto) formData.append("memberPhoto", memberPhoto);
   if (memberSign) formData.append("memberSign", memberSign);
-
   try {
       // Log formData entries
   for (let pair of formData.entries()) {
     console.log(pair[0] + ": ", pair[1]);
   }
     const res = await axiosInstance.post("/plot/create-transfer", formData, {
-      
       headers: { "Content-Type": "multipart/form-data" },
     });
     alert("Plot transferred successfully.");
@@ -81,11 +77,10 @@ formData.append(
     alert("Transfer failed.");
     console.error(err);
   } finally {
-    setLoading(false); // Stop loader
+    setLoading(false); 
   }
 };
 
-  
  const handleFetchMember = async () => {
   if (!selectedId) {
     alert("Please enter a Seniority ID.");

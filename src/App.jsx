@@ -36,6 +36,7 @@ import PlotTransferForm from "./Components/plotDetails/plotTransferform";
 import ShareCertificate from "./Components/shareCertification/shareCertification";
 import PlotTransferhistory from "./Components/plotDetails/plotTransferhistory";
 import ExtraChargeFormDetails from "./Components/ExtraCharge/extraChargeFormDetails";
+import PlotCancellationForm from "./Components/plotDetails/plotCancelationForm";
 import ViewExtraCharge from "./Components/ExtraCharge/viewExtraCharge";
 function AppWrapper() {
   return (
@@ -287,6 +288,14 @@ function MainLayout({ sidebarOpen, setSidebarOpen }) {
             }
           />
           <Route
+            path="/plotCancelationForm"
+            element={
+              <PrivateRoute>
+                <PlotCancellationForm />
+              </PrivateRoute>
+            }
+          />
+           <Route
             path="/viewextracharges"
             element={
               <PrivateRoute>

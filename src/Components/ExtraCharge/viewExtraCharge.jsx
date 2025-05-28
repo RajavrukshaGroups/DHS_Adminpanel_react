@@ -7,8 +7,12 @@ const ViewExtraCharge = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const fetchData = async (pageNum = 1, searchQuery = "") => {
+    setLoading(true);
+    const startTime = Date.now();
+
     try {
       const res = await axios.get(
         `http://localhost:3000/receipt/collect-all-extrachargehistory`,
@@ -20,27 +24,41 @@ const ViewExtraCharge = () => {
           },
         }
       );
-      setData(res.data.data);
-      setTotalPages(res.data.totalPages);
-      setPage(res.data.page);
+
+      // Enforce a minimum delay of 500ms
+      const elapsed = Date.now() - startTime;
+      const remaining = Math.max(0, 500 - elapsed);
+      setTimeout(() => {
+        setData(res.data.data);
+        setTotalPages(res.data.totalPages);
+        setPage(res.data.page);
+        setLoading(false);
+      }, remaining);
     } catch (err) {
       console.error("Error fetching data", err);
+      setTimeout(() => {
+        setData([]); // reset data on error
+        setLoading(false);
+      }, 500); // show spinner for at least 500ms on error too
     }
   };
 
   useEffect(() => {
-    const delayDebounce = setTimeout(() => {
-      if (search) {
-        // if user is searching, reset to page 1
-        setPage(1);
-        fetchData(1, search);
-      } else {
-        fetchData(page, search);
-      }
-    }, 500); // debounce time
+    fetchData(1);
+  }, []);
 
+  useEffect(() => {
+    const delayDebounce = setTimeout(() => {
+      fetchData(1, search);
+    }, 500);
     return () => clearTimeout(delayDebounce);
-  }, [search, page]);
+  }, [search]);
+
+  useEffect(() => {
+    if (!search) {
+      fetchData(page);
+    }
+  }, [page]);
 
   const formatDate = (dateStr) => new Date(dateStr).toLocaleDateString("en-GB");
 
@@ -80,7 +98,15 @@ const ViewExtraCharge = () => {
             </tr>
           </thead>
           <tbody>
-            {data.length > 0 ? (
+            {loading ? (
+              <tr>
+                <td colSpan="10" className="text-center py-6">
+                  <div className="flex justify-center">
+                    <div className="w-8 h-8 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
+                  </div>
+                </td>
+              </tr>
+            ) : data.length > 0 ? (
               data.map((item, index) => (
                 <tr key={item.paymentId}>
                   <td className="border p-2 text-center">
@@ -118,11 +144,11 @@ const ViewExtraCharge = () => {
                         handleViewReceipt(item.receiptId, item.paymentId)
                       }
                     >
-                      <FaEye className="text-blue-600 cursor-pointer inline-block text-center" />
+                      <FaEye className="text-blue-600 cursor-pointer inline-block" />
                     </button>
                   </td>
                   <td className="border p-2 text-center">
-                    <FaEdit className="text-blue-600 cursor-pointer inline-block text-center" />
+                    <FaEdit className="text-blue-600 cursor-pointer inline-block" />
                   </td>
                 </tr>
               ))
@@ -143,12 +169,7 @@ const ViewExtraCharge = () => {
       {/* Pagination Controls */}
       <div className="flex justify-center items-center gap-4 mt-4">
         <button
-          onClick={() => {
-            if (page > 1) {
-              const newPage = page - 1;
-              setPage(newPage);
-            }
-          }}
+          onClick={() => page > 1 && setPage(page - 1)}
           disabled={page === 1}
           className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
         >
@@ -158,12 +179,7 @@ const ViewExtraCharge = () => {
           Page {page} of {totalPages}
         </span>
         <button
-          onClick={() => {
-            if (page < totalPages) {
-              const newPage = page + 1;
-              setPage(newPage);
-            }
-          }}
+          onClick={() => page < totalPages && setPage(page + 1)}
           disabled={page === totalPages}
           className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
         >

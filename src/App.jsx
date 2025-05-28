@@ -40,6 +40,7 @@ import ExtraChargeFormDetails from "./Components/ExtraCharge/extraChargeFormDeta
 import PlotCancellationForm from "./Components/plotDetails/plotCancelationForm";
 import ViewExtraCharge from "./Components/ExtraCharge/viewExtraCharge";
 import CancelledMembersTable from "./Components/plotDetails/plotCancelledList"
+import EditExtraCharge from "./Components/ExtraCharge/editExtraCharge";
 function AppWrapper() {
   return (
     <Router>
@@ -302,6 +303,14 @@ function MainLayout({ sidebarOpen, setSidebarOpen }) {
             element={
               <PrivateRoute>
                 <ViewExtraCharge />
+              </PrivateRoute>
+            }
+          />
+           <Route
+            path="/edit-extra-charge/:paymentId"
+            element={
+              <PrivateRoute>
+                <EditExtraCharge />
               </PrivateRoute>
             }
           />

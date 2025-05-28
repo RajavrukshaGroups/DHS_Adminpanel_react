@@ -3,6 +3,7 @@ import axiosInstance from "../../api/interceptors";
 import { useState, useEffect } from "react";
 import { FiSearch } from "react-icons/fi";
 import ClipLoader from "react-spinners/ClipLoader";
+import toast from "react-hot-toast";
 
 const PlotCancellationForm = () => {
   const [loading, setLoading] = useState(false);
@@ -18,7 +19,7 @@ const PlotCancellationForm = () => {
 
   const handleFetchMember = async () => {
     if (!selectedId) {
-      alert("Please enter a Seniority ID.");
+      toast.error("Please enter a Seniority ID.");
       return;
     }
     try {
@@ -26,7 +27,7 @@ const PlotCancellationForm = () => {
       setMemberData(response);
     } catch (error) {
       console.error("Error fetching member:", error);
-      alert("Member not found or error occurred.");
+      toast.error("Member not found or error occurred.");
       setMemberData(null);
     }
   };
@@ -39,7 +40,7 @@ const PlotCancellationForm = () => {
   const handleSubmit = async () => {
   setLoading(true);
   if (!memberData || !cancelData.reason || !cancelData.cancellationDate) {
-    alert("Please fill all required fields.");
+    toast.error("Please fill all required fields.");
     return;
   }
 
@@ -65,10 +66,10 @@ const PlotCancellationForm = () => {
     const res = await axiosInstance.post("/plot/plot-cancel", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
-    alert("Plot cancellation successful.");
+    toast.success("Plot cancellation successful.");
     console.log(res);
   } catch (err) {
-    alert("Cancellation failed.");
+    toast.error("Cancellation failed.");
     console.error(err);
   } finally {
     setLoading(false);

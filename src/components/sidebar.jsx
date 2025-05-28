@@ -360,6 +360,19 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     <FaUserPlus className="text-base" />
                     <span className="ml-3"> Plot Cancellation Form</span>
                   </Link>
+                  <Link
+                    to="/PlotCancelledList"
+                    className={`flex items-center px-3 py-2 rounded-lg ${
+                      // location.pathname === "/addreferencedetails"
+                      location.pathname === "/plotCancelationForm"
+                        ? "bg-blue-100 text-blue-700"
+                        : "text-black hover:bg-gray-100"
+                    }`}
+                  >
+                    {/* <FaPlusCircle className="text-base" /> */}
+                    <FaUserPlus className="text-base" />
+                    <span className="ml-3"> Plot Cancellation History</span>
+                  </Link>
                 </div>
               )}
 

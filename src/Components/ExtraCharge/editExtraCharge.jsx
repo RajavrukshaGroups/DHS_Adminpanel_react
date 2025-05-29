@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 
 const EditExtraCharge = () => {
+  const navigate = useNavigate();
   const { paymentId } = useParams();
   const [formData, setFormData] = useState({
     recieptNo: "",
     date: "",
     paymentMode: "",
-    paymentType: "Extra Charge",
+    paymentType: "",
     chequeNumber: "",
     bankName: "",
     branchName: "",
@@ -17,20 +18,19 @@ const EditExtraCharge = () => {
     ddNumber: "",
     otherCharges: "",
     amount: "",
+    name: "",
+    SeniorityID: "",
+    projectName: "",
+    propertySize: "",
   });
 
-  //   console.log("formdata123", formData);
-
   useEffect(() => {
-    const fetchData = async () => {
+    async function fetchData() {
       try {
         const res = await axios.get(
           `http://localhost:3000/receipt/get-extra-charge-by-paymentid/${paymentId}`
         );
         const data = res.data;
-
-        console.log("data-edit", data);
-
         setFormData({
           recieptNo: data.data.payment.receiptNo || "",
           date: data.data.payment.date?.slice(0, 10) || "",
@@ -43,13 +43,18 @@ const EditExtraCharge = () => {
           ddNumber: data.data.payment.ddNumber || "",
           otherCharges: data.data.payment.otherCharges || "",
           amount: data.data.payment.amount?.toString() || "",
+          name: data.data.member.name || "",
+          SeniorityID: data.data.member?.SeniorityID || "",
+          projectName: data.data.member?.propertyDetails?.projectName || "",
+          propertySize:
+            `${data.data.member?.propertyDetails?.length} X ${data.data.member?.propertyDetails?.breadth}` ||
+            "",
         });
       } catch (error) {
         console.error("Failed to fetch extra charge:", error);
         toast.error("Failed to fetch extra charge details.");
       }
-    };
-
+    }
     fetchData();
   }, [paymentId]);
 
@@ -57,45 +62,255 @@ const EditExtraCharge = () => {
     setFormData((prev) => ({ ...prev, [field]: e.target.value }));
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.put(
+        `http://localhost:3000/receipt/update-extra-charge-receipt/${paymentId}`,
+        formData
+      );
+      toast.success("receipt updated successfully");
+      console.log("updated:", response.data);
+      setTimeout(() => {
+        navigate("/viewextracharges"); // or wherever you want
+      }, 1500);
+    } catch (err) {
+      console.error("error updating receipt:", err);
+      toast.error("failed to update receipt");
+    }
+  };
+
   return (
-    <div className="p-4">
-      <h2 className="text-xl font-bold mb-4 text-center">Edit Extra Charge</h2>
-      <form className="grid grid-cols-1 gap-4 max-w-md mx-auto">
-        <input
-          type="text"
-          placeholder="Receipt No"
-          value={formData.recieptNo}
-          onChange={handleInputChange("recieptNo")}
-          className="border p-2"
-        />
-        <input
-          type="date"
-          value={formData.date}
-          onChange={handleInputChange("date")}
-          className="border p-2"
-        />
-        <input
-          type="text"
-          placeholder="Payment Mode"
-          value={formData.paymentMode}
-          onChange={handleInputChange("paymentMode")}
-          className="border p-2"
-        />
-        <input
-          type="text"
-          placeholder="Payment Mode"
-          value={formData.paymentType}
-          onChange={handleInputChange("paymentType")}
-          className="border p-2"
-        />
-        {/* Add other fields here similarly */}
-        <button
-          type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded"
-        >
-          Update
-        </button>
-      </form>
+    <div className="max-w-4xl mx-auto mt-10">
+      <div className="p-8 bg-white shadow-md rounded-lg">
+        <h1 className="text-2xl font-bold mb-6 text-center">
+          Edit Extra Charge
+        </h1>
+
+        <form className="grid gap-6" onSubmit={handleSubmit}>
+          {/* Receipt No & Date */}
+          <div className="grid grid-cols-2 gap-6">
+            <div>
+              <label className="block mb-2 font-medium text-gray-700">
+                Receipt No
+              </label>
+              <input
+                type="text"
+                value={formData.recieptNo}
+                onChange={handleInputChange("recieptNo")}
+                className="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+              />
+            </div>
+            <div>
+              <label className="block mb-2 font-medium text-gray-700">
+                Date
+              </label>
+              <input
+                type="date"
+                value={formData.date}
+                onChange={handleInputChange("date")}
+                className="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+              />
+            </div>
+          </div>
+
+          {/* Name & Seniority ID */}
+          <div className="grid grid-cols-2 gap-6">
+            <div>
+              <label className="block mb-2 font-medium text-gray-700">
+                Name
+              </label>
+              <input
+                type="text"
+                value={formData.name}
+                readOnly
+                className="bg-gray-100 border border-gray-300 rounded-md p-2 w-full"
+              />
+            </div>
+            <div>
+              <label className="block mb-2 font-medium text-gray-700">
+                Seniority ID
+              </label>
+              <input
+                type="text"
+                value={formData.SeniorityID}
+                readOnly
+                className="bg-gray-100 border border-gray-300 rounded-md p-2 w-full"
+              />
+            </div>
+          </div>
+
+          {/* Project Name & Property Size */}
+          <div className="grid grid-cols-2 gap-6">
+            <div>
+              <label className="block mb-2 font-medium text-gray-700">
+                Project Name
+              </label>
+              <input
+                type="text"
+                value={formData.projectName}
+                readOnly
+                className="bg-gray-100 border border-gray-300 rounded-md p-2 w-full"
+              />
+            </div>
+            <div>
+              <label className="block mb-2 font-medium text-gray-700">
+                Property Size
+              </label>
+              <input
+                type="text"
+                value={formData.propertySize}
+                readOnly
+                className="bg-gray-100 border border-gray-300 rounded-md p-2 w-full"
+              />
+            </div>
+          </div>
+
+          {/* Payment Mode & Type */}
+          <div className="grid grid-cols-2 gap-6">
+            <div>
+              <label className="block mb-2 font-medium text-gray-700">
+                Payment Mode
+              </label>
+              <select
+                value={formData.paymentMode}
+                onChange={handleInputChange("paymentMode")}
+                className="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+              >
+                <option value="">Select Payment Mode</option>
+                <option value="cash">Cash</option>
+                <option value="cheque">Cheque</option>
+                <option value="dd">DD</option>
+                <option value="netbanking">Netbanking/UPI</option>
+              </select>
+            </div>
+            <div>
+              <label className="block mb-2 font-medium text-gray-700">
+                Payment Type
+              </label>
+              <input
+                type="text"
+                value={formData.paymentType}
+                readOnly
+                className="bg-gray-100 border border-gray-300 rounded-md p-2 w-full"
+              />
+            </div>
+          </div>
+
+          {/* Conditional Inputs Based on Payment Mode */}
+          {(formData.paymentMode === "cheque" ||
+            formData.paymentMode === "dd" ||
+            formData.paymentMode === "netbanking") && (
+            <>
+              {formData.paymentMode === "cheque" && (
+                <div className="grid grid-cols-1 gap-6">
+                  <div>
+                    <label className="block mb-2 font-medium text-gray-700">
+                      Cheque Number
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.chequeNumber}
+                      onChange={handleInputChange("chequeNumber")}
+                      className="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    />
+                  </div>
+                </div>
+              )}
+              {formData.paymentMode === "dd" && (
+                <div className="grid grid-cols-1 gap-6">
+                  <div>
+                    <label className="block mb-2 font-medium text-gray-700">
+                      DD Number
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.ddNumber}
+                      onChange={handleInputChange("ddNumber")}
+                      className="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    />
+                  </div>
+                </div>
+              )}
+              {formData.paymentMode === "netbanking" && (
+                <div className="grid grid-cols-1 gap-6">
+                  <div>
+                    <label className="block mb-2 font-medium text-gray-700">
+                      Transaction ID
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.transactionId}
+                      onChange={handleInputChange("transactionId")}
+                      className="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Bank and Branch for all these payment modes */}
+              <div className="grid grid-cols-2 gap-6">
+                <div>
+                  <label className="block mb-2 font-medium text-gray-700">
+                    Bank Name
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.bankName}
+                    onChange={handleInputChange("bankName")}
+                    className="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  />
+                </div>
+                <div>
+                  <label className="block mb-2 font-medium text-gray-700">
+                    Branch Name
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.branchName}
+                    onChange={handleInputChange("branchName")}
+                    className="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  />
+                </div>
+              </div>
+            </>
+          )}
+
+          {/* Other Charges */}
+          <div>
+            <label className="block mb-2 font-medium text-gray-700">
+              Other Charges
+            </label>
+            <textarea
+              value={formData.otherCharges}
+              onChange={handleInputChange("otherCharges")}
+              className="border border-gray-300 rounded-md p-2 w-full min-h-[100px] focus:outline-none focus:ring-2 focus:ring-blue-400"
+              placeholder="Enter details for other charges..."
+            />
+          </div>
+
+          {/* Amount */}
+          <div>
+            <label className="block mb-2 font-medium text-gray-700">
+              Amount
+            </label>
+            <input
+              type="text"
+              value={formData.amount}
+              onChange={handleInputChange("amount")}
+              className="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-md px-6 py-2 mt-6 transition"
+          >
+            Update
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

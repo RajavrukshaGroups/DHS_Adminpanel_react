@@ -60,11 +60,11 @@ const ExtraChargeFormDetails = () => {
         setShowForm(false);
         setMemberData(null);
         // alert("No member found with the selected Seniority ID.");
-        toast.error("No member found with the selected Seniority ID.")
+        toast.error("No member found with the selected Seniority ID.");
       }
     } catch (error) {
       console.error("Error fetching member info:", error);
-      toast.error("Server error while fetching member info.")
+      toast.error("Server error while fetching member info.");
       // alert("Server error while fetching member info.");
     }
   };
@@ -104,7 +104,7 @@ const ExtraChargeFormDetails = () => {
       !otherCharges ||
       !amount
     ) {
-      toast.error("Please fill in all required fields.")
+      toast.error("Please fill in all required fields.");
       // alert("Please fill in all required fields.");
       return;
     }
@@ -141,202 +141,208 @@ const ExtraChargeFormDetails = () => {
   const paymentMode = formData.paymentMode;
 
   return (
-    <div className="max-w-4xl mx-auto mt-10">
-      {/* Seniority ID Search Section */}
-      <div className="p-8 bg-white shadow-md rounded-lg">
-        <h1 className="text-2xl font-bold mb-6 text-center">User Details</h1>
-        <div className="mb-4">
-          <label className="block font-semibold mb-2">
-            Enter or Select Seniority ID
-          </label>
-          <div className="flex gap-2 items-center">
-            <div className="flex-grow">
-              <Select
-                options={seniorityIdOptions}
-                value={seniorityId}
-                onChange={setSeniorityId}
-                placeholder="Search or select Seniority ID"
-                isClearable
-                className="text-sm"
-                noOptionsMessage={() => "No match found"}
-              />
-            </div>
-            <button
-              onClick={handleSubmitSeniority}
-              className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-            >
-              Enter
-            </button>
-            {showForm && (
+    <div className="min-h-screen bg-blue-100 p-6">
+      <div className="max-w-4xl mx-auto mt-10">
+        {/* Seniority ID Search Section */}
+        <div className="p-8 bg-white shadow-md rounded-lg">
+          <h1 className="text-2xl font-bold mb-6 text-center">User Details</h1>
+          <div className="mb-4">
+            <label className="block font-semibold mb-2">
+              Enter or Select Seniority ID
+            </label>
+            <div className="flex gap-2 items-center">
+              <div className="flex-grow">
+                <Select
+                  options={seniorityIdOptions}
+                  value={seniorityId}
+                  onChange={setSeniorityId}
+                  placeholder="Search or select Seniority ID"
+                  isClearable
+                  className="text-sm"
+                  noOptionsMessage={() => "No match found"}
+                />
+              </div>
               <button
-                onClick={handleCancel}
-                className="px-6 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+                onClick={handleSubmitSeniority}
+                className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
               >
-                Cancel
+                Enter
               </button>
-            )}
+              {showForm && (
+                <button
+                  onClick={handleCancel}
+                  className="px-6 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+                >
+                  Cancel
+                </button>
+              )}
+            </div>
           </div>
-        </div>
 
-        {showForm && memberData && (
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <InputField label="Name" value={memberData.name} readOnly />
+          {showForm && memberData && (
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <InputField label="Name" value={memberData.name} readOnly />
+                <InputField
+                  label="Mobile Number"
+                  value={memberData.mobileNumber}
+                  readOnly
+                />
+                <InputField
+                  label="Email ID"
+                  value={memberData.email}
+                  readOnly
+                />
+              </div>
               <InputField
-                label="Mobile Number"
-                value={memberData.mobileNumber}
+                label="Residence/Contact Address"
+                value={memberData.permanentAddress}
                 readOnly
               />
-              <InputField label="Email ID" value={memberData.email} readOnly />
             </div>
+          )}
+        </div>
+
+        {/* Extra Charges Form */}
+        {showForm && (
+          <div className="mt-10 p-8 bg-white shadow-md rounded-lg">
+            <h1 className="text-2xl font-bold mb-6 text-center">
+              Extra Charge Details
+            </h1>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <InputField
+                label="Receipt No"
+                value={formData.recieptNo}
+                onChange={handleInputChange("recieptNo")}
+              />
+              <InputField
+                label="Date"
+                type="date"
+                value={formData.date}
+                onChange={handleInputChange("date")}
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <InputField
+                label="Payment Type"
+                value={formData.paymentType}
+                readOnly
+              />
+              <div className="mb-4">
+                <label className="block font-semibold mb-1">Payment Mode</label>
+                <select
+                  className="w-full border px-4 py-2 rounded"
+                  value={formData.paymentMode}
+                  onChange={handleInputChange("paymentMode")}
+                >
+                  <option value="">Select</option>
+                  <option value="cash">Cash</option>
+                  <option value="cheque">Cheque</option>
+                  <option value="netbanking">Netbanking / UPI</option>
+                  <option value="dd">DD</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Conditional Fields */}
+            {paymentMode === "cheque" && (
+              <>
+                <InputField
+                  label="Cheque Number"
+                  value={formData.chequeNumber}
+                  onChange={handleInputChange("chequeNumber")}
+                />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <InputField
+                    label="Bank Name"
+                    value={formData.bankName}
+                    onChange={handleInputChange("bankName")}
+                  />
+                  <InputField
+                    label="Branch Name"
+                    value={formData.branchName}
+                    onChange={handleInputChange("branchName")}
+                  />
+                </div>
+              </>
+            )}
+
+            {paymentMode === "netbanking" && (
+              <>
+                <InputField
+                  label="Transaction ID"
+                  value={formData.transactionId}
+                  onChange={handleInputChange("transactionId")}
+                />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <InputField
+                    label="Bank Name"
+                    value={formData.bankName}
+                    onChange={handleInputChange("bankName")}
+                  />
+                  <InputField
+                    label="Branch Name"
+                    value={formData.branchName}
+                    onChange={handleInputChange("branchName")}
+                  />
+                </div>
+              </>
+            )}
+
+            {paymentMode === "dd" && (
+              <>
+                <InputField
+                  label="DD Number"
+                  value={formData.ddNumber}
+                  onChange={handleInputChange("ddNumber")}
+                />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <InputField
+                    label="Bank Name"
+                    value={formData.bankName}
+                    onChange={handleInputChange("bankName")}
+                  />
+                  <InputField
+                    label="Branch Name"
+                    value={formData.branchName}
+                    onChange={handleInputChange("branchName")}
+                  />
+                </div>
+              </>
+            )}
+
             <InputField
-              label="Residence/Contact Address"
-              value={memberData.permanentAddress}
-              readOnly
+              label="Amount"
+              value={formData.amount}
+              onChange={handleInputChange("amount")}
             />
+
+            <div className="mb-4">
+              <label className="block font-semibold mb-1">
+                Reason for Extra Charge
+              </label>
+              <textarea
+                value={formData.otherCharges}
+                onChange={handleInputChange("otherCharges")}
+                className="w-full border px-4 py-2 rounded resize-none"
+                rows={4}
+                placeholder="Enter reason here..."
+              />
+            </div>
+
+            <div className="text-center mt-6">
+              <button
+                onClick={handleFormSubmit}
+                className="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
+              >
+                Submit Extra Charge
+              </button>
+            </div>
           </div>
         )}
       </div>
-
-      {/* Extra Charges Form */}
-      {showForm && (
-        <div className="mt-10 p-8 bg-white shadow-md rounded-lg">
-          <h1 className="text-2xl font-bold mb-6 text-center">
-            Extra Charge Details
-          </h1>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <InputField
-              label="Receipt No"
-              value={formData.recieptNo}
-              onChange={handleInputChange("recieptNo")}
-            />
-            <InputField
-              label="Date"
-              type="date"
-              value={formData.date}
-              onChange={handleInputChange("date")}
-            />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <InputField
-              label="Payment Type"
-              value={formData.paymentType}
-              readOnly
-            />
-            <div className="mb-4">
-              <label className="block font-semibold mb-1">Payment Mode</label>
-              <select
-                className="w-full border px-4 py-2 rounded"
-                value={formData.paymentMode}
-                onChange={handleInputChange("paymentMode")}
-              >
-                <option value="">Select</option>
-                <option value="cash">Cash</option>
-                <option value="cheque">Cheque</option>
-                <option value="netbanking">Netbanking / UPI</option>
-                <option value="dd">DD</option>
-              </select>
-            </div>
-          </div>
-
-          {/* Conditional Fields */}
-          {paymentMode === "cheque" && (
-            <>
-              <InputField
-                label="Cheque Number"
-                value={formData.chequeNumber}
-                onChange={handleInputChange("chequeNumber")}
-              />
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <InputField
-                  label="Bank Name"
-                  value={formData.bankName}
-                  onChange={handleInputChange("bankName")}
-                />
-                <InputField
-                  label="Branch Name"
-                  value={formData.branchName}
-                  onChange={handleInputChange("branchName")}
-                />
-              </div>
-            </>
-          )}
-
-          {paymentMode === "netbanking" && (
-            <>
-              <InputField
-                label="Transaction ID"
-                value={formData.transactionId}
-                onChange={handleInputChange("transactionId")}
-              />
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <InputField
-                  label="Bank Name"
-                  value={formData.bankName}
-                  onChange={handleInputChange("bankName")}
-                />
-                <InputField
-                  label="Branch Name"
-                  value={formData.branchName}
-                  onChange={handleInputChange("branchName")}
-                />
-              </div>
-            </>
-          )}
-
-          {paymentMode === "dd" && (
-            <>
-              <InputField
-                label="DD Number"
-                value={formData.ddNumber}
-                onChange={handleInputChange("ddNumber")}
-              />
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <InputField
-                  label="Bank Name"
-                  value={formData.bankName}
-                  onChange={handleInputChange("bankName")}
-                />
-                <InputField
-                  label="Branch Name"
-                  value={formData.branchName}
-                  onChange={handleInputChange("branchName")}
-                />
-              </div>
-            </>
-          )}
-
-          <InputField
-            label="Amount"
-            value={formData.amount}
-            onChange={handleInputChange("amount")}
-          />
-
-          <div className="mb-4">
-            <label className="block font-semibold mb-1">
-              Reason for Extra Charge
-            </label>
-            <textarea
-              value={formData.otherCharges}
-              onChange={handleInputChange("otherCharges")}
-              className="w-full border px-4 py-2 rounded resize-none"
-              rows={4}
-              placeholder="Enter reason here..."
-            />
-          </div>
-
-          <div className="text-center mt-6">
-            <button
-              onClick={handleFormSubmit}
-              className="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
-            >
-              Submit Extra Charge
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

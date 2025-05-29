@@ -240,14 +240,14 @@ const ViewReceiptHistory = () => {
             <table className="min-w-full border border-gray-300">
               <thead>
                 <tr className="bg-gray-100 text-sm font-medium text-gray-700">
-                  <th className="px-3 py-2 border">S.No</th>
-                  <th className="px-3 py-2 border">Payment Type</th>
-                  <th className="px-3 py-2 border">Payment Mode</th>
-                  <th className="px-3 py-2 border">Bank</th>
-                  <th className="px-3 py-2 border">Ref / Cheque / DD No</th>
-                  <th className="px-3 py-2 border">Amount</th>
-                  <th className="px-3 py-2 border">Date</th>
-                  <th className="px-3 py-2 border">Action</th>
+                  <th className="px-3 py-2 border text-center">S.No</th>
+                  <th className="px-3 py-2 border text-center">Payment Type</th>
+                  <th className="px-3 py-2 border text-center">Payment Mode</th>
+                  <th className="px-3 py-2 border text-center">Bank</th>
+                  <th className="px-3 py-2 border text-center">Ref / Cheque / DD No</th>
+                  <th className="px-3 py-2 border text-center">Amount</th>
+                  <th className="px-3 py-2 border text-center">Date</th>
+                  <th className="px-3 py-2 border text-center">Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -255,24 +255,24 @@ const ViewReceiptHistory = () => {
                   receipt.payments.map((payment, j) => (
                     <tr key={`${receipt._id}-${j}`} className="text-sm">
                       <td className="px-3 py-2 border text-center">{j + 1}</td>
-                      <td className="px-3 py-2 border capitalize">
+                      <td className="px-3 py-2 border capitalize text-center">
                         {payment.paymentType === "installments"
                           ? payment.installmentNumber
                           : payment.paymentType}
                       </td>
-                      <td className="px-3 py-2 border capitalize">
+                      <td className="px-3 py-2 border capitalize text-center">
                         {payment.paymentMode}
                       </td>
-                      <td className="px-3 py-2 border">
+                      <td className="px-3 py-2 border text-center">
                         {payment.bankName || "-"}
                       </td>
-                      <td className="px-3 py-2 border">
+                      <td className="px-3 py-2 border text-center">
                         {payment.transactionId ||
                           payment.chequeNumber ||
                           payment.ddNumber ||
                           "-"}
                       </td>
-                      <td className="px-3 py-2 border">
+                      <td className="px-3 py-2 border text-center">
                         {/* ₹{payment.amount.toLocaleString("en-IN")}/- */}₹
                         {payment.paymentType === "Membership Fee"
                           ? Number(
@@ -285,10 +285,10 @@ const ViewReceiptHistory = () => {
                           : Number(payment.amount).toLocaleString("en-IN")}
                         /-
                       </td>
-                      <td className="px-3 py-2 border">
+                      <td className="px-3 py-2 border text-center">
                         {new Date(payment.date).toLocaleDateString("en-IN")}
                       </td>
-                      <td className="px-3 py-2 border text-blue-600 text-lg">
+                      <td className="px-3 py-2 border text-blue-600 text-lg text-center">
                         <div className="flex justify-center items-center gap-3 h-full">
                           <button
                             title="View"

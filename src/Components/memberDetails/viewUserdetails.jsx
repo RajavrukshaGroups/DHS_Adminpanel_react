@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { FaEye } from 'react-icons/fa';
-import { FaEdit, FaTrashAlt } from 'react-icons/fa';
+import { FaEye } from "react-icons/fa";
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 
 function ViewUserdetails() {
   const [memberDetails, setMemberDetails] = useState([]);
@@ -16,7 +16,7 @@ function ViewUserdetails() {
   const [errorMessage, setErrorMessage] = useState("");
 
   const navigate = useNavigate();
-  
+
   const fetchData = async (page = 1, search = "") => {
     try {
       const response = await axiosInstance.get(
@@ -40,25 +40,25 @@ function ViewUserdetails() {
       }
     }
   };
-  
-const handleCheckAndNavigate = async (id) => {
-  try {
-    const response = await axiosInstance.get(`/receipt/checkMembershipFee/${id}`);
-    console.log(response,'resssssssssssssssssssssssssssssssssssssssssssss');
-    if (response.feeAdded) {
-      console.log(response,'ressssssssssssssssssssssss');
-      
-      navigate(`/addconfirmationLetter/${id}`);
-    } else {
-      alert(response.message || "Membership fee condition not met.");
+
+  const handleCheckAndNavigate = async (id) => {
+    try {
+      const response = await axiosInstance.get(
+        `/receipt/checkMembershipFee/${id}`
+      );
+      console.log(response, "resssssssssssssssssssssssssssssssssssssssssssss");
+      if (response.feeAdded) {
+        console.log(response, "ressssssssssssssssssssssss");
+
+        navigate(`/addconfirmationLetter/${id}`);
+      } else {
+        alert(response.message || "Membership fee condition not met.");
+      }
+    } catch (error) {
+      console.error("Error checking membership fee:", error);
+      alert("Something went wrong while checking the membership fee.");
     }
-
-  } catch (error) {
-    console.error("Error checking membership fee:", error);
-    alert("Something went wrong while checking the membership fee.");
-  }
-};
-
+  };
 
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this member?")) return;
@@ -123,13 +123,13 @@ const handleCheckAndNavigate = async (id) => {
                   Payment History
                 </th>
                 <th className="border px-3 py-2 text-center">Status</th>
-                  
+
                 <th className="border px-3 py-2 text-center">
                   Additional Details
                 </th>
 
                 <th className="border px-3 py-2 text-center">Delete</th>
-                
+
                 <th className="border px-3 py-2 text-center">Edit</th>
               </tr>
             </thead>
@@ -148,7 +148,8 @@ const handleCheckAndNavigate = async (id) => {
                     propertySize = 0,
                     propertyCost = 0,
                   } = propertyDetails;
-                  const pending = propertyCost - Amount;
+                  const pending =
+                    propertyCost - member.propertyDetails?.paidAmount;
 
                   return (
                     <tr key={member._id}>
@@ -168,10 +169,17 @@ const handleCheckAndNavigate = async (id) => {
                       <td className="border px-3 py-2 text-center">
                         {propertyCost}
                       </td>
-                      <td className="border px-3 py-2 text-center">{Amount}</td>
+                      {/* <td className="border px-3 py-2 text-center">{Amount}</td> */}
+                      <td className="border px-3 py-2 text-center">
+                        {member.propertyDetails?.paidAmount || "-"}
+                      </td>
+
                       <td className="border px-3 py-2 text-center text-red-500">
                         {pending}
                       </td>
+                      {/* <td className="border px-3 py-2 text-center text-red-500">
+                        {(propertyCost)-(member.propertyDetails?.paidAmount)}
+                      </td> */}
                       <td className="border px-3 py-2 text-center">
                         <button
                           onClick={() =>
@@ -195,7 +203,6 @@ const handleCheckAndNavigate = async (id) => {
                         </span>
                       </td>
 
-                       
                       {/* <td className="border px-3 py-2 text-center text-red-500">
                         <Link
                           to={`/addconfirmationLetter/${member._id}`}
@@ -205,15 +212,15 @@ const handleCheckAndNavigate = async (id) => {
                         </Link>
                       </td> */}
 
-                          <td className="border px-3 py-2 text-center text-red-500">
-                            <div
-                              onClick={() => handleCheckAndNavigate(member._id)}
-                              title="Add Confirmation Letter"
-                              className="cursor-pointer"
-                            >
-                              <IoIosAddCircleOutline className="text-2xl flex m-auto text-blue-500" />
-                            </div>
-                          </td>
+                      <td className="border px-3 py-2 text-center text-red-500">
+                        <div
+                          onClick={() => handleCheckAndNavigate(member._id)}
+                          title="Add Confirmation Letter"
+                          className="cursor-pointer"
+                        >
+                          <IoIosAddCircleOutline className="text-2xl flex m-auto text-blue-500" />
+                        </div>
+                      </td>
 
                       <td className="border px-3 py-2 text-center text-red-500">
                         <button
@@ -225,7 +232,7 @@ const handleCheckAndNavigate = async (id) => {
                       </td>
                       {/* // In the table row: */}
                       <td className="border px-3 py-2 text-center text-red-500">
-                          <button
+                        <button
                           onClick={() => navigate(`/edit-member/${member._id}`)} // Pass the member ID
                           className="text-blue-600 hover:underline"
                         >

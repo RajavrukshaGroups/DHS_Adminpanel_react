@@ -9,6 +9,8 @@ const EditReceipt = () => {
   const [receiptsData, setReceiptsData] = useState(null);
   const [membersData, setMemberData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [existingReceiptIds, setExistingReceiptIds] = useState([]);
+  const [receiptError, setReceiptError] = useState("");
 
   const [formData, setFormData] = useState({
     receiptNo: "",
@@ -33,55 +35,20 @@ const EditReceipt = () => {
   console.log("receipts data", receiptsData);
   console.log("members data", membersData);
 
-  // useEffect(() => {
-  //   window.scrollTo({ top: 0, behavior: "smooth" });
-  //   const fetchReceipts = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         `http://localhost:3000/receipt/edit-receipt/payment-history/${id}${window.location.search}`
-  //       );
-
-  //       setTimeout(() => {
-  //         const { payment, member } = response.data;
-
-  //         // Set payment data
-  //         setReceiptsData(payment);
-
-  //         // Set member data
-  //         setMemberData(member);
-
-  //         // Initialize form fields
-  //         setFormData({
-  //           receiptNo: payment.receiptNo || "",
-  //           date: payment.date ? payment.date.substring(0, 10) : "",
-  //           paymentType: payment.paymentType || "",
-  //           paymentMode: payment.paymentMode || "",
-  //           bankName: payment.bankName || "",
-  //           branchName: payment.branchName || "",
-  //           amount: payment.amount || "",
-  //           installmentNumber: payment.installmentNumber || "",
-  //           chequeNumber: payment.chequeNumber || "",
-  //           transactionId: payment.transactionId || "",
-  //           ddNumber: payment.ddNumber || "",
-  //           numberOfShares: payment.numberOfShares || "",
-  //           shareFee: payment.shareFee || "",
-  //           membershipFee: payment.membershipFee || "",
-  //           applicationFee: payment.applicationFee || "",
-  //           admissionFee: payment.admissionFee || "",
-  //           miscellaneousExpenses: payment.miscellaneousExpenses || "",
-  //         });
-
-  //         setLoading(false);
-  //       }, 500);
-  //     } catch (error) {
-  //       console.error("failed to fetch member", error);
-  //       toast.error("failed to fetch member details");
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchReceipts();
-  // }, [id]);
+  useEffect(() => {
+    const fetchReceiptIds = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:3000/receipt/get-all-receipt-ids"
+        );
+        setExistingReceiptIds(response.data.receiptIds);
+      } catch (error) {
+        console.error("failed to fetch receipt ids", error);
+        toast.error("failed to load receipt ids");
+      }
+    };
+    fetchReceiptIds();
+  }, []);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -166,6 +133,14 @@ const EditReceipt = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
+    if (name === "receiptNo") {
+      if (existingReceiptIds.includes(value.trim())) {
+        setReceiptError("receipt number already exists!");
+      } else {
+        setReceiptError("");
+      }
+    }
+
     if (name === "paymentMode" && !formData.paymentType) {
       toast.error("Please select a payment type first.");
       return;
@@ -176,6 +151,11 @@ const EditReceipt = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (receiptError) {
+      toast.error("Please fix the errors before submitting");
+      return;
+    }
 
     try {
       const response = await axios.put(
@@ -251,9 +231,14 @@ const EditReceipt = () => {
                 name="receiptNo"
                 value={formData.receiptNo}
                 onChange={handleChange}
-                className="w-full border rounded px-3 py-2"
+                className={`w-full border rounded px-3 py-2 ${
+                  receiptError ? "border-red-500" : ""
+                }`}
                 required
               />
+              {receiptError && (
+                <p className="text-red-500 text-sm mt-1">{receiptError}</p>
+              )}
             </div>
             <div>
               <label className="block mb-1">Date :</label>

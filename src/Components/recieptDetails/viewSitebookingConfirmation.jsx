@@ -10,6 +10,7 @@ function ViewSitebookingConfirmation() {
   const [memberDetails, setMemberDetails] = useState([]);
   const [selectedMember, setSelectedMember] = useState(null);
   const navigate =useNavigate()
+  
   useEffect(() => {
     const fetchAffidavits = async () => {
       try {

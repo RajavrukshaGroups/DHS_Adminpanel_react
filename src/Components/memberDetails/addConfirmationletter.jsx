@@ -137,7 +137,8 @@ console.log(memberData,'memberdatasssssssssssssssssssssssss');
             className="w-full border px-4 py-2 rounded-md"
             />
       </div>
-      <div>
+      
+      {/* <div>
         <label className="block font-medium mb-1">Amount</label>
         <input
           name="Amount"
@@ -145,8 +146,9 @@ console.log(memberData,'memberdatasssssssssssssssssssssssss');
           value={memberData?.siteDownPaymentAmount || ""}
           className="w-full border px-4 py-2 rounded-md"
         />
-      </div>
-      <div>
+      </div> */}
+
+      {/* <div>
         <label className="block font-medium mb-1">Payment Method</label>
         <input
           name="PaymentType"
@@ -155,8 +157,9 @@ console.log(memberData,'memberdatasssssssssssssssssssssssss');
           placeholder="Relationship"
           className="w-full border px-4 py-2 rounded-md"
         />
-      </div>
-      <div>
+      </div> */}
+
+      {/* <div>
         <label className="block font-medium mb-1">Cheque No/DD No/UTR No</label>
         <input
           name="ChequeNo"
@@ -165,8 +168,9 @@ console.log(memberData,'memberdatasssssssssssssssssssssssss');
           placeholder="Relationship"
           className="w-full border px-4 py-2 rounded-md"
         />
-      </div>
-      <div>
+      </div> */}
+
+      {/* <div>
         <label className="block font-medium mb-1">Bank Name</label>
         <input
         name="BankName"
@@ -174,8 +178,8 @@ console.log(memberData,'memberdatasssssssssssssssssssssssss');
           value={memberData?.BankName || ""}
           className="w-full border px-4 py-2 rounded-md"
         />
-      </div>
-      <div>
+      </div> */}
+      {/* <div>
         <label className="block font-medium mb-1">Branch</label>
         <input
         name="BranchName"
@@ -183,7 +187,8 @@ console.log(memberData,'memberdatasssssssssssssssssssssssss');
           className="w-full border px-4 py-2 rounded-md"
           value={memberData?.BranchName || ""}
         />
-      </div>
+      </div> */}
+
       <div>
         <label className="block font-medium mb-1">Site Diemension</label>
         <input
@@ -195,16 +200,7 @@ console.log(memberData,'memberdatasssssssssssssssssssssssss');
           
         />
       </div>
-      <div>
-        <label className="block font-medium mb-1">Receipt No</label>
-        <input
-          type="text"
-          name="ReceiptNo"
-          placeholder="Relationship"
-          className="w-full border px-4 py-2 rounded-md"
-          value={memberData?.ReceiptNo || ""}
-        />
-      </div>
+      
       <div>
         <label className="block font-medium mb-1">Memeber ID</label>
         <input

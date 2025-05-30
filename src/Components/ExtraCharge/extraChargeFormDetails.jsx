@@ -8,7 +8,8 @@ const ExtraChargeFormDetails = () => {
   const [showForm, setShowForm] = useState(false);
   const [seniorityIdOptions, setSeniorityIdOptions] = useState([]);
   const [memberData, setMemberData] = useState(null);
-
+  const [existingReceiptIds, setExistingReceiptIds] = useState([]);
+  const [receiptError, setReceiptError] = useState("");
   console.log("members data", memberData);
 
   const [formData, setFormData] = useState({
@@ -43,6 +44,22 @@ const ExtraChargeFormDetails = () => {
       }
     };
     fetchSeniorityIds();
+  }, []);
+
+  useEffect(() => {
+    const fetchReceiptIds = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:3000/receipt/get-all-receipt-ids"
+        );
+        console.log("response receipts", response);
+        setExistingReceiptIds(response.data.receiptIds);
+      } catch (error) {
+        console.error("failed to fetch receipt ids", error);
+        toast.error("failed to load receipt ids");
+      }
+    };
+    fetchReceiptIds();
   }, []);
 
   const handleSubmitSeniority = async () => {
@@ -88,13 +105,34 @@ const ExtraChargeFormDetails = () => {
     });
   };
 
+  // const handleInputChange = (field) => (e) => {
+  //   setFormData({ ...formData, [field]: e.target.value });
+  // };
+
   const handleInputChange = (field) => (e) => {
-    setFormData({ ...formData, [field]: e.target.value });
+    const value = e.target.value;
+    console.log("receipt value", value);
+    console.log("field name", field);
+
+    if (field === "recieptNo") {
+      if (existingReceiptIds.map(String).includes(value.trim())) {
+        setReceiptError("Receipt number already exists!");
+      } else {
+        setReceiptError("");
+      }
+    }
+
+    setFormData({ ...formData, [field]: value });
   };
 
   const handleFormSubmit = async () => {
     const { recieptNo, date, paymentMode, paymentType, otherCharges, amount } =
       formData;
+
+    if (receiptError) {
+      toast.error("Please fix the errors before submitting");
+      return;
+    }
 
     if (
       !recieptNo ||
@@ -211,11 +249,21 @@ const ExtraChargeFormDetails = () => {
             </h1>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <InputField
-                label="Receipt No"
-                value={formData.recieptNo}
-                onChange={handleInputChange("recieptNo")}
-              />
+              <div>
+                <InputField
+                  label="Receipt No"
+                  value={formData.recieptNo}
+                  onChange={handleInputChange("recieptNo")}
+                  className={`w-full border rounded px-3 py-2 ${
+                    receiptError ? "border-red-500" : ""
+                  }`}
+                  required
+                />
+                {receiptError && (
+                  <p className="text-red-500 text-sm">{receiptError}</p>
+                )}
+              </div>
+
               <InputField
                 label="Date"
                 type="date"

@@ -7,9 +7,7 @@ import { FaEye } from "react-icons/fa";
 const CancelledMembersTable = () => {
 
   const [cancelledMembers, setCancelledMembers] = useState([]);
-
     console.log(cancelledMembers,'cancelled members')
-
 const handleDelete = async (memberId) => {
   try {
     console.log(memberId, 'member id');

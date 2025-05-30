@@ -43,7 +43,6 @@ const PlotCancellationForm = () => {
     toast.error("Please fill all required fields.");
     return;
   }
-
   const formData = new FormData();
   formData.append("cancelLetter", cancelLetter); // ✅ file
   formData.append("reason", cancelData.reason);
@@ -60,9 +59,7 @@ const PlotCancellationForm = () => {
         ? `${memberData.propertyDetails.length}X${memberData.propertyDetails.breadth}`
         : ""
   }));
-
   try {
-
     const res = await axiosInstance.post("/plot/plot-cancel", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
@@ -126,13 +123,13 @@ const PlotCancellationForm = () => {
             <div className="space-y-2">
               <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
               <input id="name" value={memberData?.name || ""} readOnly className="w-full h-12 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
- />
+                />
             </div>
 
             <div className="space-y-2">
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
               <input id="email" type="email" value={memberData?.email || ""} readOnly className="w-full h-12 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
- />
+              />
             </div>
 
             <div className="space-y-2">
@@ -165,7 +162,7 @@ const PlotCancellationForm = () => {
 
         <div className="rounded-lg bg-white p-6 shadow-sm">
           <h2 className="text-2xl font-normal text-gray-800 mb-8">
-Cancellation Details</h2>
+      Cancellation Details</h2>
           <div className="grid gap-6 md:grid-cols-2">
             <div className="space-y-2">
               <label htmlFor="cancellationDate" className="block text-sm font-medium text-gray-700">

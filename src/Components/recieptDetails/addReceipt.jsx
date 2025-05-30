@@ -8,6 +8,8 @@ const AddReceipt = () => {
   const navigate = useNavigate();
   const [membersData, setMemberData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [existingReceiptIds, setExistingReceiptIds] = useState([]);
+  const [receiptError, setReceiptError] = useState("");
   // const [usedPaymentTypes, setUsedPaymentTypes] = useState([]);
   // const [usedInstallments, setUsedInstallments] = useState([]);
 
@@ -46,6 +48,22 @@ const AddReceipt = () => {
     fetchMember();
   }, [id]);
 
+  useEffect(() => {
+    const fetchReceiptIds = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:3000/receipt/get-all-receipt-ids"
+        );
+        console.log("response receipts", response);
+        setExistingReceiptIds(response.data.receiptIds);
+      } catch (error) {
+        console.error("failed to fetch receipt ids", error);
+        toast.error("failed to load receipt ids");
+      }
+    };
+    fetchReceiptIds();
+  }, []);
+
   // useEffect(() => {
   //   const fetchUsedPaymentTypes = async () => {
   //     try {
@@ -69,6 +87,14 @@ const AddReceipt = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
+    if (name === "recieptNo") {
+      if (existingReceiptIds.includes(value.trim())) {
+        setReceiptError("Receipt number already exists!");
+      } else {
+        setReceiptError("");
+      }
+    }
+
     if (name === "paymentMode" && !formData.paymentType) {
       toast.error("Please select a payment type first.");
       return;
@@ -79,6 +105,11 @@ const AddReceipt = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (receiptError) {
+      toast.error("Please fix the errors before submitting");
+      return;
+    }
 
     try {
       const response = await axios.post(
@@ -141,9 +172,14 @@ const AddReceipt = () => {
               name="recieptNo"
               value={formData.recieptNo}
               onChange={handleChange}
-              className="w-full border rounded px-3 py-2"
+              className={`w-full border rounded px-3 py-2 ${
+                receiptError ? "border-red-500" : ""
+              }`}
               required
             />
+            {receiptError && (
+              <p className="text-red-500 text-sm mt-1">{receiptError}</p>
+            )}
           </div>
 
           <div>
@@ -227,6 +263,7 @@ const AddReceipt = () => {
               value={formData.paymentMode}
               onChange={handleChange}
               className="w-full border rounded px-3 py-2"
+              required
             >
               <option value="">Choose payment mode</option>
               <option value="Cash">Cash</option>

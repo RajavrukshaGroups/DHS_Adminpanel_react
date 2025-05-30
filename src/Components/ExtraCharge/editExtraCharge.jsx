@@ -23,6 +23,8 @@ const EditExtraCharge = () => {
     projectName: "",
     propertySize: "",
   });
+  const [existingReceiptIds, setExistingReceiptIds] = useState([]);
+  const [receiptError, setReceiptError] = useState("");
 
   useEffect(() => {
     async function fetchData() {
@@ -58,12 +60,42 @@ const EditExtraCharge = () => {
     fetchData();
   }, [paymentId]);
 
+  useEffect(() => {
+    const fetchReceiptIds = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:3000/receipt/get-all-receipt-ids"
+        );
+        console.log("response receipts", response);
+        setExistingReceiptIds(response.data.receiptIds);
+      } catch (error) {
+        console.error("failed to fetch receipt ids", error);
+        toast.error("failed to load receipt ids");
+      }
+    };
+    fetchReceiptIds();
+  }, []);
+
   const handleInputChange = (field) => (e) => {
+    const value = e.target.value;
+
+    if (field === "recieptNo") {
+      if (existingReceiptIds.map(String).includes(value.trim())) {
+        setReceiptError("Receipt number already exists!");
+      } else {
+        setReceiptError("");
+      }
+    }
     setFormData((prev) => ({ ...prev, [field]: e.target.value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (receiptError) {
+      toast.error("Please fix the errors before submitting");
+      return;
+    }
 
     try {
       const response = await axios.put(
@@ -99,8 +131,14 @@ const EditExtraCharge = () => {
                 type="text"
                 value={formData.recieptNo}
                 onChange={handleInputChange("recieptNo")}
-                className="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className={`w-full border rounded px-3 py-2 ${
+                  receiptError ? "border-red-500" : ""
+                }`}
+                required
               />
+              {receiptError && (
+                <p className="text-red-500 text-sm">{receiptError}</p>
+              )}
             </div>
             <div>
               <label className="block mb-2 font-medium text-gray-700">

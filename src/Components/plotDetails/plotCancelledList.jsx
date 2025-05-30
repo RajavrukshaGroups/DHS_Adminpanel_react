@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import axiosInstance from '../../api/interceptors';
 import toast from 'react-hot-toast';
+import { FaEye } from "react-icons/fa";
+
 const CancelledMembersTable = () => {
 
   const [cancelledMembers, setCancelledMembers] = useState([]);
@@ -86,8 +88,8 @@ const handleDelete = async (memberId) => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-600 hover:underline"
-                >
-                  View Letter
+              >
+            <FaEye className="text-black  text-xl cursor-pointer hover:text-black" />
                 </a>
               ) : (
                 <span className="text-gray-500">N/A</span>

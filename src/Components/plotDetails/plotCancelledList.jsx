@@ -1,9 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import axiosInstance from '../../api/interceptors';
-
+import toast from 'react-hot-toast';
 const CancelledMembersTable = () => {
+
   const [cancelledMembers, setCancelledMembers] = useState([]);
+
+    console.log(cancelledMembers,'cancelled members')
+
+const handleDelete = async (memberId) => {
+  try {
+    console.log(memberId, 'member id');
+    const response = await axiosInstance.post('/plot/delete-plote-cancelation', {
+      memberId: memberId, // Send this to backend
+    }).then((res)=>{
+      if(res){
+        toast.success(res.message)
+      }
+    }).catch((err)=>{
+      toast.error('failed to delete or some other network erros ocuured')
+      console.error("failed to delete or some other network erros ocuured")
+    })
+    // ✅ Remove deleted member from the list in the frontend
+    setCancelledMembers(prevMembers =>
+      prevMembers.filter(member => member._id !== memberId)
+    );
+    // Optionally refresh your data or UI
+  } catch (error) {
+    console.error('Error deleting plot cancellation:', error);
+  }
+};
 
   useEffect(() => {
     axiosInstance.get('/plot/plot-cancelled-list')
@@ -28,6 +54,7 @@ const CancelledMembersTable = () => {
         <th className="border px-3 py-2 text-center">Reason</th>
         <th className="border px-3 py-2 text-center">Remarks</th>
         <th className="border px-3 py-2 text-center">Letter</th>
+        <th className="border px-3 py-2 text-center">Action</th>
       </tr>
     </thead>
     <tbody>
@@ -65,6 +92,12 @@ const CancelledMembersTable = () => {
               ) : (
                 <span className="text-gray-500">N/A</span>
               )}
+            </td>
+           <td
+              onClick={() => handleDelete(member._id)}
+              className="border px-3 py-2 text-center"
+            >
+              🗑️
             </td>
           </tr>
         ))

@@ -3,10 +3,11 @@ import axios from "axios";
 import store from "../redux/store";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:3000",
+  // baseURL: "http://localhost:3000",
+  baseURL: "http://localhost:4000",
   headers: {
     "Content-Type": "application/json",
-    },
+  },
 });
 
 axiosInstance.interceptors.request.use(

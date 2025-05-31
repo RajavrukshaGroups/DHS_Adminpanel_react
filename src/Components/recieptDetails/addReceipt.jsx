@@ -32,8 +32,11 @@ const AddReceipt = () => {
   useEffect(() => {
     const fetchMember = async () => {
       try {
+        // const response = await axios.get(
+        //   `http://localhost:3000/member/get-member/${id}`
+        // );
         const response = await axios.get(
-          `http://localhost:3000/member/get-member/${id}`
+          `http://localhost:4000/member/get-member/${id}`
         );
         setTimeout(() => {
           setMemberData(response.data);
@@ -51,8 +54,11 @@ const AddReceipt = () => {
   useEffect(() => {
     const fetchReceiptIds = async () => {
       try {
+        // const response = await axios.get(
+        //   "http://localhost:3000/receipt/get-all-receipt-ids"
+        // );
         const response = await axios.get(
-          "http://localhost:3000/receipt/get-all-receipt-ids"
+          "http://localhost:4000/receipt/get-all-receipt-ids"
         );
         console.log("response receipts", response);
         setExistingReceiptIds(response.data.receiptIds);
@@ -112,8 +118,12 @@ const AddReceipt = () => {
     }
 
     try {
+      // const response = await axios.post(
+      //   `http://localhost:3000/member/add-receipt/${id}`,
+      //   formData
+      // );
       const response = await axios.post(
-        `http://localhost:3000/member/add-receipt/${id}`,
+        `http://localhost:4000/member/add-receipt/${id}`,
         formData
       );
 

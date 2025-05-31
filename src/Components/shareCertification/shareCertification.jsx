@@ -12,7 +12,8 @@ const ShareCertificate = () => {
   const fetchReceipts = async (page = 1, search = "") => {
     try {
       const res = await axios.get(
-        `http://localhost:3000/receipt/get-receipt-details`,
+        // `http://localhost:3000/receipt/get-receipt-details`,
+        `http://localhost:4000/receipt/get-receipt-details`,
         {
           params: {
             page,
@@ -47,7 +48,8 @@ const ShareCertificate = () => {
   }, 500);
 
   const handleShareCertificate = (receiptId) => {
-    const url = `http://localhost:3000/receipt/get-share-certificate/${receiptId}`;
+    // const url = `http://localhost:3000/receipt/get-share-certificate/${receiptId}`;
+    const url = `http://localhost:4000/receipt/get-share-certificate/${receiptId}`;
     window.open(url, "_blank");
   };
 

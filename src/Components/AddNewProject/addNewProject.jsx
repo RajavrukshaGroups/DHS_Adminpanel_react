@@ -35,7 +35,8 @@ const AddNewProject = ({ onProjectAdded }) => {
       };
 
       const response = await axios.post(
-        "http://localhost:3000/project/add-project",
+        // "http://localhost:3000/project/add-project",
+        "http://localhost:4000/project/add-project",
         formattedData
       );
       toast.success("Project added successfully!");

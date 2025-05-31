@@ -21,7 +21,8 @@ const ViewReceiptHistory = () => {
     const fetchMember = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/member/get-member/${id}`
+          // `http://localhost:3000/member/get-member/${id}`
+          `http://localhost:4000/member/get-member/${id}`
         );
         setTimeout(() => {
           setMemberData(response.data);
@@ -41,7 +42,8 @@ const ViewReceiptHistory = () => {
     setReceiptLoading(true);
     try {
       const res = await axios.get(
-        `http://localhost:3000/receipt/receipts/member/${id}`
+        // `http://localhost:3000/receipt/receipts/member/${id}`
+        `http://localhost:4000/receipt/receipts/member/${id}`
       );
       setTimeout(() => {
         setReceiptData(res.data);
@@ -84,7 +86,8 @@ const ViewReceiptHistory = () => {
   //   window.open(url, "_blank");
   // };
   const handleViewReceipt = (receiptId, paymentId) => {
-    const url = `http://localhost:3000/receipt/get-receipt-details/${receiptId}?paymentId=${paymentId}`;
+    // const url = `http://localhost:3000/receipt/get-receipt-details/${receiptId}?paymentId=${paymentId}`;
+    const url = `http://localhost:4000/receipt/get-receipt-details/${receiptId}?paymentId=${paymentId}`;
     window.open(url, "_blank");
   };
 
@@ -92,7 +95,8 @@ const ViewReceiptHistory = () => {
     try {
       const { receiptId, paymentType, installmentNumber } = selectedReceipt;
       await axios.delete(
-        `http://localhost:3000/member/delete-member-receipt-payment/${membersData._id}`,
+        // `http://localhost:3000/member/delete-member-receipt-payment/${membersData._id}`,
+        `http://localhost:4000/member/delete-member-receipt-payment/${membersData._id}`,
         {
           data: { paymentType, installmentNumber },
         }
@@ -244,7 +248,9 @@ const ViewReceiptHistory = () => {
                   <th className="px-3 py-2 border text-center">Payment Type</th>
                   <th className="px-3 py-2 border text-center">Payment Mode</th>
                   <th className="px-3 py-2 border text-center">Bank</th>
-                  <th className="px-3 py-2 border text-center">Ref / Cheque / DD No</th>
+                  <th className="px-3 py-2 border text-center">
+                    Ref / Cheque / DD No
+                  </th>
                   <th className="px-3 py-2 border text-center">Amount</th>
                   <th className="px-3 py-2 border text-center">Date</th>
                   <th className="px-3 py-2 border text-center">Action</th>

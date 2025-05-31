@@ -14,7 +14,10 @@ function ViewMemberdetails() {
   const fetchData = async (page = 1, search = "") => {
     try {
       const response = await axiosInstance.get(
-        `http://localhost:3000/member/view-member-details?page=${page}&search=${encodeURIComponent(
+        // `http://localhost:3000/member/view-member-details?page=${page}&search=${encodeURIComponent(
+        //   search
+        // )}`
+        `http://localhost:4000/member/view-member-details?page=${page}&search=${encodeURIComponent(
           search
         )}`
       );
@@ -42,7 +45,8 @@ function ViewMemberdetails() {
   const handleStatusToggle = async (memberId, currentStatus) => {
     try {
       await axiosInstance.put(
-        `http://localhost:3000/member/update-status/${memberId}`,
+        // `http://localhost:3000/member/update-status/${memberId}`,
+        `http://localhost:4000/member/update-status/${memberId}`,
         { isActive: !currentStatus }
       );
       setMemberDetails((prev) =>
@@ -59,7 +63,8 @@ function ViewMemberdetails() {
     setEmailSendStatus(member._id);
     try {
       const response = await axiosInstance.post(
-        "http://localhost:3000/member/membercredentials",
+        // "http://localhost:3000/member/membercredentials",
+        "http://localhost:4000/member/membercredentials",
         {
           name: member.name,
           email: member.email,

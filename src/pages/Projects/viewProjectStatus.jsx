@@ -14,7 +14,8 @@ const ViewProjectStatus = () => {
     const fetchProjectStatusLists = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3000/project/all-projectstatus"
+          // "http://localhost:3000/project/all-projectstatus"
+          "http://localhost:4000/project/all-projectstatus"
         );
         if (response.data?.success) {
           setProjectStatusLists(response.data.data);
@@ -242,7 +243,8 @@ const ViewProjectStatus = () => {
                 onClick={async () => {
                   try {
                     const res = await axios.delete(
-                      `http://localhost:3000/project/delete-projectstatus/${projectToDelete._id}`
+                      // `http://localhost:3000/project/delete-projectstatus/${projectToDelete._id}`
+                      `http://localhost:4000/project/delete-projectstatus/${projectToDelete._id}`
                     );
                     if (res.data?.success) {
                       toast.success(res.data.message);

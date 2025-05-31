@@ -25,8 +25,11 @@ const EditProjectStatus = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
+        // const res = await axios.get(
+        //   "http://localhost:3000/project/all-projects"
+        // );
         const res = await axios.get(
-          "http://localhost:3000/project/all-projects"
+          "http://localhost:4000/project/all-projects"
         );
         setListProjects(res.data.data);
       } catch (error) {
@@ -36,8 +39,11 @@ const EditProjectStatus = () => {
 
     const fetchStatus = async () => {
       try {
+        // const res = await axios.get(
+        //   `http://localhost:3000/project/indprojectstatus/${id}`
+        // );
         const res = await axios.get(
-          `http://localhost:3000/project/indprojectstatus/${id}`
+          `http://localhost:4000/project/indprojectstatus/${id}`
         );
         if (res.data.success) {
           const data = res.data.data;
@@ -110,7 +116,8 @@ const EditProjectStatus = () => {
 
     try {
       const res = await axios.put(
-        `http://localhost:3000/project/update-indprojectstatus/${id}`,
+        // `http://localhost:3000/project/update-indprojectstatus/${id}`,
+        `http://localhost:4000/project/update-indprojectstatus/${id}`,
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );

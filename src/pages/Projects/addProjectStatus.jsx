@@ -21,8 +21,11 @@ const AddProjectStatus = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
+        // const res = await axios.get(
+        //   "http://localhost:3000/project/all-projects"
+        // );
         const res = await axios.get(
-          "http://localhost:3000/project/all-projects"
+          "http://localhost:4000/project/all-projects"
         );
         setListProjects(res.data.data);
       } catch (error) {
@@ -69,7 +72,8 @@ const AddProjectStatus = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/project/project-status",
+        // "http://localhost:3000/project/project-status",
+        "http://localhost:4000/project/project-status",
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );

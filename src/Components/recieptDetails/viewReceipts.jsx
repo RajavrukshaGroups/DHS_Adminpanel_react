@@ -16,7 +16,8 @@ const ViewReceiptDetails = () => {
   const fetchReceipts = async (page = 1, search = "") => {
     try {
       const res = await axios.get(
-        `http://localhost:3000/receipt/get-receipt-details`,
+        // `http://localhost:3000/receipt/get-receipt-details`,
+        `http://localhost:4000/receipt/get-receipt-details`,
         {
           params: {
             page,
@@ -57,8 +58,13 @@ const ViewReceiptDetails = () => {
   //   window.open(url, "_blank");
   // };
 
+  // const handleViewReceipt = (receiptId, paymentId) => {
+  //   const url = `http://localhost:3000/receipt/get-receipt-details/${receiptId}?paymentId=${paymentId}`;
+  //   window.open(url, "_blank");
+  // };
+
   const handleViewReceipt = (receiptId, paymentId) => {
-    const url = `http://localhost:3000/receipt/get-receipt-details/${receiptId}?paymentId=${paymentId}`;
+    const url = `http://localhost:4000/receipt/get-receipt-details/${receiptId}?paymentId=${paymentId}`;
     window.open(url, "_blank");
   };
 
@@ -66,7 +72,8 @@ const ViewReceiptDetails = () => {
     try {
       const { paymentType, installmentNumber, memberId } = selectedReceipt;
       await axios.delete(
-        `http://localhost:3000/member/delete-member-receipt-payment/${memberId}`,
+        // `http://localhost:3000/member/delete-member-receipt-payment/${memberId}`,
+        `http://localhost:4000/member/delete-member-receipt-payment/${memberId}`,
         {
           data: { paymentType, installmentNumber },
         }

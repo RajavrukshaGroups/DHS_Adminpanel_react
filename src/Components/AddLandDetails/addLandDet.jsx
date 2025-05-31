@@ -16,7 +16,8 @@ const AddLandDetails = ({ refreshKey }) => {
     const fetchProjects = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:3000/project/all-projects"
+          // "http://localhost:3000/project/all-projects"
+          "http://localhost:4000/project/all-projects"
         );
         setProjectOptions(res.data.data || []);
       } catch (err) {
@@ -97,7 +98,8 @@ const AddLandDetails = ({ refreshKey }) => {
 
     try {
       const res = await axios.patch(
-        "http://localhost:3000/project/update-land-details",
+        // "http://localhost:3000/project/update-land-details",
+        "http://localhost:4000/project/update-land-details",
         {
           projectName,
           dimensionId,
@@ -110,7 +112,8 @@ const AddLandDetails = ({ refreshKey }) => {
       toast.success(res.data.message || "Land details updated!");
 
       const refreshed = await axios.get(
-        "http://localhost:3000/project/all-projects"
+        // "http://localhost:3000/project/all-projects"
+        "http://localhost:4000/project/all-projects"
       );
       setProjectOptions(refreshed.data.data || []);
 

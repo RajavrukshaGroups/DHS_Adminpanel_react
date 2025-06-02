@@ -11,6 +11,7 @@ const AddLandDetails = ({ refreshKey }) => {
   const [pricePerSqft, setPricePerSqft] = useState("");
   const [propertyCost, setPropertyCost] = useState("");
   const [location, setLocation] = useState("");
+  const [description, setDescription] = useState("");
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -51,6 +52,12 @@ const AddLandDetails = ({ refreshKey }) => {
       setLocation(selected.location);
     } else {
       setLocation("");
+    }
+
+    if (selected?.description) {
+      setDescription(selected.description);
+    } else {
+      setDescription("");
     }
   };
 
@@ -106,6 +113,7 @@ const AddLandDetails = ({ refreshKey }) => {
           pricePerSqft: parseFloat(pricePerSqft),
           propertyCost: parseFloat(propertyCost.replace(/,/g, "")),
           location,
+          description,
         }
       );
 
@@ -125,6 +133,7 @@ const AddLandDetails = ({ refreshKey }) => {
       setPricePerSqft("");
       setPropertyCost("");
       setLocation("");
+      setDescription("");
     } catch (err) {
       console.error(err);
       toast.error("Failed to update land details");
@@ -208,6 +217,18 @@ const AddLandDetails = ({ refreshKey }) => {
               name="location"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              rows={2}
+            ></textarea>
+          </div>
+          <div>
+            <label className="block mb-2 font-medium">
+              Project Description
+            </label>
+            <textarea
+              name="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
               className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               rows={2}
             ></textarea>

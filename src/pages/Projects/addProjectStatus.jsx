@@ -76,6 +76,7 @@ const AddProjectStatus = () => {
         "http://localhost:4000/project/project-status",
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
+        
       );
       toast.success("Project status added successfully!");
       setSelectedProject("");

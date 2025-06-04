@@ -46,6 +46,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
     location.pathname.startsWith("/extrachargeformdetails")
   );
 
+  const [visitorInfoOpen, setVisitorInfoOpen] = useState(
+    location.pathname.startsWith("/viewVisitorsOpen")
+  );
+
   return (
     <div className="relative">
       {/* Sidebar */}
@@ -414,6 +418,38 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                   >
                     <FaListAlt className="text-base" />
                     <span className="ml-3">View Extra Charges</span>
+                  </Link>
+                  {/* Visitors Info Menu */}
+                </div>
+              )}
+
+              {/* Visitors Info Menu - Moved outside of Extra Charges */}
+              <button
+                onClick={() => setVisitorInfoOpen(!visitorInfoOpen)}
+                className={`flex items-center w-full px-4 py-3 rounded-lg ${
+                  location.pathname.startsWith("/viewVisitorsOpen")
+                    ? "bg-blue-100 text-blue-700"
+                    : "text-black hover:bg-gray-100"
+                }`}
+              >
+                <FaUserFriends className="text-lg" />
+                <span className="ml-4 flex-grow text-left">Visitors Info</span>
+                {visitorInfoOpen ? <FaChevronUp /> : <FaChevronDown />}
+              </button>
+
+              {/* Visitors Info Sub-Menu */}
+              {visitorInfoOpen && (
+                <div className="ml-8 mt-2 space-y-3 text-[15px]">
+                  <Link
+                    to="/viewVisitorsContact"
+                    className={`flex items-center px-3 py-2 rounded-lg ${
+                      location.pathname === "/viewVisitorsContact"
+                        ? "bg-blue-100 text-blue-700"
+                        : "text-black hover:bg-gray-100"
+                    }`}
+                  >
+                    <FaRegEye className="text-base" />
+                    <span className="ml-3">View Visitors</span>
                   </Link>
                 </div>
               )}

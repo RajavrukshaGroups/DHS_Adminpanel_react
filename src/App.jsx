@@ -41,6 +41,7 @@ import PlotCancellationForm from "./Components/plotDetails/plotCancelationForm";
 import ViewExtraCharge from "./Components/ExtraCharge/viewExtraCharge";
 import CancelledMembersTable from "./Components/plotDetails/plotCancelledList"
 import EditExtraCharge from "./Components/ExtraCharge/editExtraCharge";
+import OnlineApplicationsTable from "./Components/OnlineApplication/viewOnlineapplication";
 function AppWrapper() {
   return (
     <Router>
@@ -319,6 +320,22 @@ function MainLayout({ sidebarOpen, setSidebarOpen }) {
             element={
               <PrivateRoute>
                 <CancelledMembersTable />
+              </PrivateRoute>
+            }
+          />
+           <Route
+            path="/downloads"
+            element={
+              <PrivateRoute>
+                <OnlineApplicationsTable />
+              </PrivateRoute>
+            }
+          />
+           <Route
+            path="/from-application/:id"
+            element={
+              <PrivateRoute>
+                <MemberFormWrapper/>
               </PrivateRoute>
             }
           />

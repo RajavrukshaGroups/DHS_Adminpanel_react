@@ -13,13 +13,16 @@ import { useNavigate,useParams } from 'react-router-dom';
 import toast from "react-hot-toast";
 import { useEffect } from 'react';
 import { FaRegEye } from 'react-icons/fa';
+import { useLocation } from 'react-router-dom';
 // import axiosInstance from '../../api/interceptors';
 
 const MemberFormWrapper = () => {
-  
-  const { id } = useParams(); // id comes from route like /edit-member/:id
+  const { id } = useParams(); //id comes from route like /edit-member/:id
   const [formErrors, setFormErrors] = useState({});
   console.log(id,"iddddddddddddddddddddd")
+  const location = useLocation();
+  const isFromApplication = location.pathname.includes("from-application");
+   console.log(isFromApplication,'is from application')
   const [formData, setFormData] = useState({
     salutation: '',
     name: '',
@@ -80,65 +83,113 @@ const MemberFormWrapper = () => {
   const [memberPhoto, setMemberPhoto] = useState(null);
   const [memberSign, setMemberSign] = useState(null);
   const [loading, setLoading] = useState(false);
-
-  // Fetch existing member data for editing
-
+  const [memberPhotoPreview, setMemberPhotoPreview] = useState(null);
+const [memberSignPreview, setMemberSignPreview] = useState(null);
+  
   useEffect(() => {
-    if (id) {
-      axiosInstance.get(`/member/get-member/${id}`)
-        .then((res) => {
-          const fetched = res;
+  if (id && isFromApplication) {
+    // From online application
+    axiosInstance.get(`/defenceWebsiteRoutes/get-application/${id}`)
+      .then((res) => {
+        console.log(res,'fething dataaaassssssssss')
+        const fetched = res;
+
+        setFormData((prev) => ({
+          ...prev,
+          name: fetched.name || '',
+          mobile: fetched.mobileNumber || '',
+          altMobile: '', // No alt mobile in application
+          email: fetched.email || '',
+          dob: fetched.dateofbirth || '',
+          fatherSpouse: fetched.fatherName || '',
+          correspondenceAddress: fetched.contactAddress || '',
+          permanentAddress: fetched.permanentAddress || '',
+          workingAddress: fetched.workingAddress || '',
+          
+          // Reference
+          refencName: fetched.refname || '',
+          rankDesignation: fetched.rankDesignation || '',
+          ServiceId: fetched.serviceId || '',
+          relationship: fetched.relationship || '',
+
+          // Property
+          projectName: fetched.propertyDetails?.projectName || '',
+          PropertySize: fetched.propertyDetails?.propertySize || '',
+          perSqftPropertyPrice: fetched.propertyDetails?.pricePerSqft || '',
+          selectedPropertyCost: fetched.propertyDetails?.propertyCost || '',
+          percentage: fetched.propertyDetails?.percentage || '',
+          percentageCost: fetched.propertyDetails?.percentageCost || '',
+          plotLength: fetched.propertyDetails?.length || '',
+          plotBreadth: fetched.propertyDetails?.breadth || '',
+
+          // Nominee
+          nomineeName: fetched.nomineeName || '',
+          nomineeAge: fetched.nomineeAge || '',
+          nomineeRelationship: fetched.nomineeRelation || '',
+          nomineeAddress: fetched.nomineeAddress || '',
+
+          // Membership fields stay default unless needed
+          date: fetched.date || '',
+        }));
+      })
+      .catch((err) => {
+        console.error("Failed to fetch application", err);
+      });
+  } else if (id && !isFromApplication) {
+    // Editing existing member
+    axiosInstance.get(`/member/get-member/${id}`)
+      .then((res) => {
+        const fetched = res;
+        setFormData((prev) => ({
+          ...prev,
+          salutation: fetched.saluation || '',
+          name: fetched.name || '',
+          mobile: fetched.mobileNumber || '',
+          altMobile: fetched.AlternativeNumber || '',
+          email: fetched.email || '',
+          dob: fetched.dateofbirth || '',
+          fatherSpouse: fetched.fatherName || '',
+          correspondenceAddress: fetched.contactAddress || '',
+          permanentAddress: fetched.permanentAddress || '',
+          workingAddress: fetched.workingAddress || '',
   
-          setFormData((prev) => ({
-            ...prev,
-            salutation: fetched.saluation || '', // typo in backend: "saluation"
-            name: fetched.name || '',
-            mobile: fetched.mobileNumber || '',
-            altMobile: fetched.AlternativeNumber || '',
-            email: fetched.email || '',
-            dob: fetched.dateofbirth || '',
-            fatherSpouse: fetched.fatherName || '',
-            correspondenceAddress: fetched.contactAddress || '',
-            permanentAddress: fetched.permanentAddress || '',
-            workingAddress: fetched.workingAddress || '',
+          // Reference
+          refencName: fetched.refname || '',
+          rankDesignation: fetched.rankDesignation || '',
+          ServiceId: fetched.serviceId || '',
+          relationship: fetched.relationship || '',
   
-            // ✅ Reference Details mapping
-            refencName: fetched.refname || '', // <-- FIXED
-            rankDesignation: fetched.rankDesignation || '',
-            ServiceId: fetched.serviceId || '',
-            relationship: fetched.relationship || '',
+          // Property
+          projectName: fetched.propertyDetails?.projectName || '',
+          PropertySize: fetched.propertyDetails?.propertySize || '',
+          perSqftPropertyPrice: fetched.propertyDetails?.pricePerSqft || '',
+          percentage: fetched.propertyDetails?.percentage || '',
+          percentageCost: fetched.propertyDetails?.percentageCost || '',
+          plotLength: fetched.propertyDetails?.length || '',
+          plotBreadth: fetched.propertyDetails?.breadth || '',
   
-            // ✅ Property Details mapping
-            projectName: fetched.propertyDetails?.projectName || '',
-            PropertySize: fetched.propertyDetails?.propertySize || '',
-            perSqftPropertyPrice: fetched.propertyDetails?.pricePerSqft || '',
-            // selectedPropertyCost: fetched.propertyDetails?.propertyCost || '',
-            percentage: fetched.propertyDetails?.percentage || '',
-            percentageCost: fetched.propertyDetails?.percentageCost || '',
-            plotLength: fetched.propertyDetails?.length || '',
-            plotBreadth: fetched.propertyDetails?.breadth || '',
+          // Nominee
+          nomineeName: fetched.nomineeName || '',
+          nomineeAge: fetched.nomineeAge || '',
+          nomineeRelationship: fetched.nomineeRelation || '',
+          nomineeAddress: fetched.nomineeAddress || '',
   
-            // ✅ Nominee Details
-            nomineeName: fetched.nomineeName || '',
-            nomineeAge: fetched.nomineeAge || '',
-            nomineeRelationship: fetched.nomineeRelation || '',
-            nomineeAddress: fetched.nomineeAddress || '',
+          // Membership Details
+          seniorityId: fetched.SeniorityID || '',
+          membershipNo: fetched.MembershipNo || '',
+          cunfirmationLetterNo: fetched.ConfirmationLetterNo || '',
+          shareCertificateNo: fetched.ShareCertificateNumber || '',
   
-            // ✅ Membership Details
-            seniorityId: fetched.SeniorityID || '',
-            membershipNo: fetched.MembershipNo || '',
-            cunfirmationLetterNo: fetched.ConfirmationLetterNo || '',
-            shareCertificateNo: fetched.ShareCertificateNumber || '',
-  
-            // ✅ Receipt Details — if you're integrating receipt separately, skip this
-            date: fetched.date || '',
-          }));
-        })
-        .catch((err) => {
-          console.error("Failed to fetch member", err);
-        });
-    }
-  }, [id]);
+          // Receipt Details
+          date: fetched.date || '',
+        }));
+      })
+      .catch((err) => {
+        console.error("Failed to fetch member", err);
+      });
+  }
+}, [id, isFromApplication]);
+
     useEffect(() => {
     const totalAmount =
       Number(formData.shareFee || 0) +
@@ -256,14 +307,6 @@ if (!memberSign) {
   };
   
 
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setFormData((prev) => ({
-  //     ...prev,
-  //     [name]: value,
-  //   }));
-  // };
-  
   const handleChange = (e) => {
     const { name, value, type } = e.target;
   
@@ -279,11 +322,31 @@ if (!memberSign) {
   };
   
 
+  // const handleFileChange = (e) => {
+  //   const { name, files } = e.target;
+  //   if (name === 'memberPhoto') setMemberPhoto(files[0]);
+  //   if (name === 'memberSign') setMemberSign(files[0]);
+  // };
+
   const handleFileChange = (e) => {
-    const { name, files } = e.target;
-    if (name === 'memberPhoto') setMemberPhoto(files[0]);
-    if (name === 'memberSign') setMemberSign(files[0]);
-  };
+  const { name, files } = e.target;
+  const file = files[0];
+  if (!file) return;
+
+  setFormData((prev) => ({
+    ...prev,
+    [name]: file,
+  }));
+
+  // Set preview based on input name
+  if (name === "memberPhoto") {
+    setMemberPhotoPreview(URL.createObjectURL(file));
+  }
+
+  if (name === "memberSign") {
+    setMemberSignPreview(URL.createObjectURL(file));
+  }
+};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -309,27 +372,21 @@ if (!memberSign) {
     if (memberPhoto) data.append('memberPhoto', memberPhoto);
     if (memberSign) data.append('memberSign', memberSign);
     try {
-      if (id) {
-        // Edit member
-
-        // await axiosInstance.put(`/member/update-member/${id}`, data, {
-        //   headers: { "Content-Type": "multipart/form-data" },
-        // });
-
+            if (id && !isFromApplication) {
+        // ✅ Update Member
         await axiosInstance.put(`/member/update-member/${id}`, data, {
           headers: { "Content-Type": "multipart/form-data" },
         });
-        
         toast.success('Member updated successfully!');
       } else {
-        // Add member
+        // ✅ Add Member (either fresh OR from application with id present)
         await axiosInstance.post('/member/add-member', data, {
           headers: { "Content-Type": "multipart/form-data" },
-
         });
         toast.success('Member added successfully!');
       }
       navigate('/viewmemberdetails');
+     
     } catch (error) {
       console.error('Error submitting form:', error);
       toast.error('An error occurred while submitting the form.');
@@ -338,53 +395,6 @@ if (!memberSign) {
     }
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   console.log("Form Data:", formData);
-  //   setLoading(true); // Start loading
-  //     // Validate PersonalDetails section
-  // const personalErrors = validatePersonalDetails(formData);
-
-  // if (Object.keys(personalErrors).length > 0) {
-  //   setFormErrors(personalErrors);
-  //   window.scrollTo({ top: 0, behavior: "smooth" });
-  //   setLoading(false); // Stop loading on validation error
-
-  //   return;
-  // }
-
-  // setFormErrors({}); // clear errors if passed
-
-  //   const data = new FormData();
-  //   // Append text fields
-  //   for (const key in formData) {
-  //     data.append(key, formData[key]);
-  //   }
-
-  //   // Append files
-  //   if (memberPhoto) data.append('memberPhoto', memberPhoto);
-  //   if (memberSign) data.append('memberSign', memberSign);
-
-  //   try {
-  //     const res = await axiosInstance.post('http://localhost:3000/member/add-member', data, {
-  //       headers: {
-  //         'Content-Type': 'multipart/form-data',
-  //       },
-  //     });
-  //     toast.success("Member added successfully!");
-
-  //     navigate("/viewmemberdetails")
-
-  //     console.log('Success:', res.data);
-  //     // Show toast or redirect
-    
-  //   } catch (error) {
-  //     console.error('Error submitting form:', error);
-  //   }
-  //   finally {
-  //     setLoading(false); // Always stop loading at the end
-  //   }
-  // };
 
   return (
     <div className="min-h-screen w-full" style={{ backgroundColor: 'oklch(0.92 0.04 252.1)' }}>
@@ -419,6 +429,7 @@ if (!memberSign) {
               <label className="block mb-2 text-sm font-medium text-gray-700">
                 Member Signature
               </label>
+              
               <input
                 type="file"
                 name="memberSign"

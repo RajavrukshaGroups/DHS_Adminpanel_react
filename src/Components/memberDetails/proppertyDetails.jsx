@@ -56,10 +56,14 @@ function ProppertyDetails({ formData, handleChange, refreshKey, formErrors }) {
   }, [formData?.PropertySize, formData?.perSqftPropertyPrice]);
 
   useEffect(() => {
-    if (formData?.selectedPropertyCost && formData?.percentage) {
-      const numericCost = parseFloat(
-        formData.selectedPropertyCost.replace(/,/g, "")
-      );
+    // if (formData?.selectedPropertyCost && formData?.percentage) {
+    //   const numericCost = parseFloat(
+    //     formData.selectedPropertyCost?.replace(/,/g, "")
+    //   );
+      if (formData?.selectedPropertyCost && formData?.percentage) {
+    const numericCost = parseFloat(
+      formData.selectedPropertyCost?.toString().replace(/,/g, "")
+    );
       const percentageCost =
         (numericCost * parseFloat(formData.percentage)) / 100;
 

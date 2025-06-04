@@ -77,13 +77,13 @@ const OnlineApplicationsTable = () => {
                       {member.name}
                     </td>
                     <td className="border px-3 py-2 text-center">
-                      {new Date(member.createdAt).toLocaleDateString()}
+                      {new Date(member.date).toLocaleDateString()}
                     </td>
                     <td className="border px-3 py-2 text-center">
                       {member.email}
                     </td>
                     <td className="border px-3 py-2 text-center">
-                      {member.phone}
+                      {member.mobileNumber}
                     </td>
                     {/* <td className="border px-3 py-2 text-center">
                       <button onSubmit={handleAddmember} className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">

@@ -49,6 +49,8 @@ const CustomersContact = () => {
     }
   };
 
+  const formatDate = (dateStr) => new Date(dateStr).toLocaleDateString("en-GB");
+
   return (
     <div className="min-h-screen bg-blue-100 p-6">
       <div className="p-4 bg-white rounded shadow-md w-full max-w-7xl">
@@ -75,6 +77,7 @@ const CustomersContact = () => {
             <thead className="bg-gray-100">
               <tr>
                 <th className="border p-2">S.No</th>
+                <th className="border p-2">Date</th>
                 <th className="border p-2">Name</th>
                 <th className="border p-2">Phone</th>
                 <th className="border p-2">Email</th>
@@ -96,6 +99,9 @@ const CustomersContact = () => {
                   <tr key={contact._id}>
                     <td className="border p-2">
                       {(currentPage - 1) * 10 + index + 1}
+                    </td>
+                    <td className="border p-2">
+                      {contact.createdAt ? formatDate(contact.createdAt) : "-"}
                     </td>
                     <td className="border p-2">{contact.name}</td>
                     <td className="border p-2">{contact.phone}</td>

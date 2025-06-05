@@ -11,12 +11,9 @@ const ViewReceiptDetails = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedReceipt, setSelectedReceipt] = useState(null);
 
-  console.log("receipts history", receipts);
-
   const fetchReceipts = async (page = 1, search = "") => {
     try {
       const res = await axios.get(
-        // `http://localhost:3000/receipt/get-receipt-details`,
         `http://localhost:4000/receipt/get-receipt-details`,
         {
           params: {
@@ -35,7 +32,6 @@ const ViewReceiptDetails = () => {
     }
   };
 
-  console.log("receipts data", receipts);
   useEffect(() => {
     fetchReceipts(currentPage, searchTerm);
   }, [currentPage, searchTerm]);
@@ -51,18 +47,6 @@ const ViewReceiptDetails = () => {
     setSearchTerm(value);
   }, 500);
 
-  // const handleViewReceipt = (receiptId, paymentType, installmentNumber) => {
-  //   const url = `http://localhost:3000/receipt/get-receipt-details/${receiptId}?paymentType=${paymentType}${
-  //     installmentNumber ? `&installmentNumber=${installmentNumber}` : ""
-  //   }`;
-  //   window.open(url, "_blank");
-  // };
-
-  // const handleViewReceipt = (receiptId, paymentId) => {
-  //   const url = `http://localhost:3000/receipt/get-receipt-details/${receiptId}?paymentId=${paymentId}`;
-  //   window.open(url, "_blank");
-  // };
-
   const handleViewReceipt = (receiptId, paymentId) => {
     const url = `http://localhost:4000/receipt/get-receipt-details/${receiptId}?paymentId=${paymentId}`;
     window.open(url, "_blank");
@@ -72,7 +56,6 @@ const ViewReceiptDetails = () => {
     try {
       const { paymentType, installmentNumber, memberId } = selectedReceipt;
       await axios.delete(
-        // `http://localhost:3000/member/delete-member-receipt-payment/${memberId}`,
         `http://localhost:4000/member/delete-member-receipt-payment/${memberId}`,
         {
           data: { paymentType, installmentNumber },
@@ -100,7 +83,6 @@ const ViewReceiptDetails = () => {
 
   return (
     <div className="min-h-screen bg-blue-100 p-6 flex items-center justify-center">
-      {/* <div className="p-4"> */}
       <div className="p-4 bg-white rounded shadow-md w-full max-w-7xl">
         <h1 className="text-2xl font-bold mb-4">View Receipt Details</h1>
         <div className="mb-4">
@@ -130,93 +112,81 @@ const ViewReceiptDetails = () => {
             </thead>
             <tbody>
               {receipts.length > 0 ? (
-                (() => {
-                  let serialCounter = (currentPage - 1) * 10;
+                receipts.map((receipt, index) => {
+                  const payment = receipt.payment;
+                  const serialNumber = (currentPage - 1) * 10 + index + 1;
 
-                  return receipts.flatMap((receipt) =>
-                    receipt.payments.map((payment) => {
-                      console.log("payment1234", payment);
-                      serialCounter += 1;
-                      return (
-                        <tr key={payment._id} className="text-center">
-                          <td className="px-4 py-2 border">{serialCounter}</td>
-                          <td className="px-4 py-2 border">
-                            {new Date(payment.date).toLocaleDateString("en-GB")}
-                          </td>
-                          <td className="px-4 py-2 border">
-                            {payment.receiptNo}
-                          </td>
-                          <td className="px-4 py-2 border">
-                            {receipt.member?.name}
-                            <br />
-                            Seniority ID: {receipt.member?.SeniorityID}
-                          </td>
-                          <td className="px-4 py-2 border capitalize">
-                            {receipt.member?.propertyDetails?.projectName}
-                          </td>
-                          <td className="px-4 py-2 border">
-                            ₹
-                            {payment.paymentType === "Membership Fee"
-                              ? Number(
-                                  payment?.admissionFee +
-                                    payment?.applicationFee +
-                                    payment?.membershipFee +
-                                    payment?.miscellaneousExpenses +
-                                    payment?.shareFee
-                                ).toLocaleString("en-IN")
-                              : Number(payment.amount).toLocaleString("en-IN")}
-                            /-
-                          </td>
-                          <td className="px-4 py-2 border capitalize">
-                            {payment.paymentType}
-                          </td>
-                          <td className="px-4 py-2 border capitalize">
-                            {payment.paymentMode}
-                          </td>
-                          <td
-                            className={`px-4 py-2 border font-semibold ${
-                              receipt.member?.isActive
-                                ? "text-green-600"
-                                : "text-red-600"
-                            }`}
-                          >
-                            {receipt.member?.isActive ? "Active" : "Inactive"}
-                          </td>
-                          <td className="px-4 py-2 border">
-                            <button
-                              className="text-blue-600 hover:underline"
-                              onClick={() =>
-                                // handleViewReceipt(
-                                //   receipt._id,
-                                //   payment.paymentType,
-                                //   payment.installmentNumber
-                                // )
-                                handleViewReceipt(receipt._id, payment._id)
-                              }
-                            >
-                              👁️
-                            </button>
-                          </td>
-                          <td className="px-4 py-2 border">
-                            <button
-                              className="text-red-600 hover:underline"
-                              onClick={() =>
-                                handleDeleteClick(
-                                  receipt._id,
-                                  payment.paymentType,
-                                  payment.installmentNumber,
-                                  receipt.member._id
-                                )
-                              }
-                            >
-                              🗑️
-                            </button>
-                          </td>
-                        </tr>
-                      );
-                    })
+                  return (
+                    <tr key={payment._id} className="text-center">
+                      <td className="px-4 py-2 border">{serialNumber}</td>
+                      <td className="px-4 py-2 border">
+                        {new Date(payment.date).toLocaleDateString("en-GB")}
+                      </td>
+                      <td className="px-4 py-2 border">{payment.receiptNo}</td>
+                      <td className="px-4 py-2 border">
+                        {receipt.member?.name}
+                        <br />
+                        Seniority ID: {receipt.member?.SeniorityID}
+                      </td>
+                      <td className="px-4 py-2 border capitalize">
+                        {receipt.member?.propertyDetails?.projectName}
+                      </td>
+                      <td className="px-4 py-2 border">
+                        ₹
+                        {payment.paymentType === "Membership Fee"
+                          ? Number(
+                              payment?.admissionFee +
+                                payment?.applicationFee +
+                                payment?.membershipFee +
+                                payment?.miscellaneousExpenses +
+                                payment?.shareFee
+                            ).toLocaleString("en-IN")
+                          : Number(payment.amount).toLocaleString("en-IN")}
+                        /-
+                      </td>
+                      <td className="px-4 py-2 border capitalize">
+                        {payment.paymentType}
+                      </td>
+                      <td className="px-4 py-2 border capitalize">
+                        {payment.paymentMode}
+                      </td>
+                      <td
+                        className={`px-4 py-2 border font-semibold ${
+                          receipt.member?.isActive
+                            ? "text-green-600"
+                            : "text-red-600"
+                        }`}
+                      >
+                        {receipt.member?.isActive ? "Active" : "Inactive"}
+                      </td>
+                      <td className="px-4 py-2 border">
+                        <button
+                          className="text-blue-600 hover:underline"
+                          onClick={() =>
+                            handleViewReceipt(receipt._id, payment._id)
+                          }
+                        >
+                          👁️
+                        </button>
+                      </td>
+                      <td className="px-4 py-2 border">
+                        <button
+                          className="text-red-600 hover:underline"
+                          onClick={() =>
+                            handleDeleteClick(
+                              receipt._id,
+                              payment.paymentType,
+                              payment.installmentNumber,
+                              receipt.member._id
+                            )
+                          }
+                        >
+                          🗑️
+                        </button>
+                      </td>
+                    </tr>
                   );
-                })()
+                })
               ) : (
                 <tr>
                   <td colSpan="11" className="text-center py-4">
@@ -253,7 +223,6 @@ const ViewReceiptDetails = () => {
           </div>
         )}
 
-        {/* Pagination Controls */}
         <div className="mt-6 flex justify-center items-center gap-3">
           <button
             className="px-3 py-1.5 bg-gray-200 rounded disabled:opacity-50"

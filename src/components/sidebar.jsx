@@ -17,6 +17,16 @@ import {
   FaFolderOpen,
   FaUsersCog,
   FaFileAlt,
+  FaBriefcase,
+  FaMoneyCheckAlt,
+  FaReceipt,
+  FaCheckCircle,
+  FaEye,
+  FaFileSignature,
+  FaExchangeAlt,
+  FaBan,
+  FaHistory,
+  FaDownload,
 } from "react-icons/fa";
 import { RiUserSettingsLine } from "react-icons/ri";
 import { FaUsersSlash } from "react-icons/fa";
@@ -48,7 +58,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const [downloads, setDownloads] = useState(
     location.pathname.startsWith("/downloads")
   );
-
 
   const [visitorInfoOpen, setVisitorInfoOpen] = useState(
     location.pathname.startsWith("/viewVisitorsOpen")
@@ -96,7 +105,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     : "text-black hover:bg-gray-100"
                 }`}
               >
-                <FaFolderOpen className="text-lg" />
+                <FaBriefcase className="text-lg" />
                 <span className="ml-4 flex-grow text-left">Project</span>
                 {projectOpen ? <FaChevronUp /> : <FaChevronDown />}
               </button>
@@ -256,7 +265,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                 }`}
               >
                 {/* <FaRegEye className="text-lg" /> */}
-                <FaUsers className="text-lg" />
+                {/* <FaUsers className="text-lg" /> */}
+                <FaReceipt className="text-lg" />
 
                 <span className="ml-4 flex-grow text-left">
                   Receipt Details
@@ -276,7 +286,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     }`}
                   >
                     {/* <FaPlusCircle className="text-base" /> */}
-                    <FaUserPlus className="text-base" />
+                    <FaCheckCircle className="text-base" />
 
                     <span className="ml-3">Booking Confirmation</span>
                   </Link>
@@ -290,7 +300,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     }`}
                   >
                     {/* <FaPlusCircle className="text-base" /> */}
-                    <FaUserPlus className="text-base" />
+                    <FaEye className="text-base" />
 
                     <span className="ml-3">View Receipts</span>
                   </Link>
@@ -321,7 +331,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                 }`}
               >
                 {/* <FaRegEye className="text-lg" /> */}
-                <FaUsers className="text-lg" />
+                <FaRulerCombined className="text-lg" />
 
                 <span className="ml-4 flex-grow text-left">Plot Details</span>
                 {plotDetailsOpen ? <FaChevronUp /> : <FaChevronDown />}
@@ -339,7 +349,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     }`}
                   >
                     {/* <FaPlusCircle className="text-base" /> */}
-                    <FaUserPlus className="text-base" />
+                    <FaFileSignature className="text-base" />
                     <span className="ml-3">Plot Transfer Form</span>
                   </Link>
                   <Link
@@ -352,7 +362,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     }`}
                   >
                     {/* <FaPlusCircle className="text-base" /> */}
-                    <FaUserPlus className="text-base" />
+                    <FaExchangeAlt className="text-base" />
                     <span className="ml-3">View Transferred Plot History</span>
                   </Link>
                   <Link
@@ -365,7 +375,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     }`}
                   >
                     {/* <FaPlusCircle className="text-base" /> */}
-                    <FaUserPlus className="text-base" />
+                    <FaBan className="text-base" />
                     <span className="ml-3"> Plot Cancellation Form</span>
                   </Link>
                   <Link
@@ -378,7 +388,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     }`}
                   >
                     {/* <FaPlusCircle className="text-base" /> */}
-                    <FaUserPlus className="text-base" />
+                    <FaHistory className="text-base" />
                     <span className="ml-3"> Plot Cancellation History</span>
                   </Link>
                 </div>
@@ -458,7 +468,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                 </div>
               )}
               {/* Extra Charge Form Submenu */}
-               {/* Extra Charge Form Menu */}
+              {/* Extra Charge Form Menu */}
               <button
                 onClick={() => setDownloads(!downloads)}
                 className={`flex items-center w-full px-4 py-3 rounded-lg ${
@@ -467,7 +477,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     : "text-black hover:bg-gray-100"
                 }`}
               >
-                <FaFileAlt className="text-lg" />
+                <FaDownload className="text-lg" />
                 <span className="ml-4 flex-grow text-left">Downloads</span>
                 {extraChargeFormOpen ? <FaChevronUp /> : <FaChevronDown />}
               </button>
@@ -481,10 +491,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                         : "text-black hover:bg-gray-100"
                     }`}
                   >
-                    <FaPlusCircle className="text-base" />
+                    <FaEye className="text-base" />
                     <span className="ml-3">View Online Application</span>
                   </Link>
-
                 </div>
               )}
             </nav>

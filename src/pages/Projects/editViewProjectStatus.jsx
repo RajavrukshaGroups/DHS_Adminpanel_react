@@ -134,7 +134,9 @@ const EditProjectStatus = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-blue-50 px-4">
       <div className="w-full max-w-4xl p-6 bg-white rounded-lg shadow-md mt-6">
-        <h1 className="text-2xl font-bold mb-8">Edit Project Status</h1>
+        <h1 className="text-2xl font-bold mb-8 text-center">
+          Edit Project Status
+        </h1>
         <form
           onSubmit={handleSubmit}
           className="grid grid-cols-1 md:grid-cols-2 gap-6"

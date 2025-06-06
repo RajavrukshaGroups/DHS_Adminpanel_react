@@ -158,7 +158,8 @@ function ViewUserdetails() {
                   return (
                     <tr key={member._id}>
                       <td className="border px-3 py-2 text-center">
-                        {index + 1}
+                        {/* {index + 1} */}
+                        {(currentPage - 1) * 10 + index + 1}
                       </td>
                       <td className="border px-3 py-2 text-center">
                         {member.name} <br />
@@ -175,7 +176,8 @@ function ViewUserdetails() {
                       </td>
                       {/* <td className="border px-3 py-2 text-center">{Amount}</td> */}
                       <td className="border px-3 py-2 text-center">
-                        ₹{Number(
+                        ₹
+                        {Number(
                           member.propertyDetails?.paidAmount
                         ).toLocaleString("en-IN") || "-"}
                       </td>

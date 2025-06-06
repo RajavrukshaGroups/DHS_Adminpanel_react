@@ -84,7 +84,10 @@ function ViewMemberdetails() {
     <div className="flex flex-col items-center min-h-screen bg-blue-50 px-4 py-6">
       <div className="w-full max-w-8xl bg-white rounded-lg shadow p-6">
         <div className="mt-4 overflow-x-auto">
-          <div className="mb-4">
+          <h1 className="text-center text-xl font-semibold mb-4">
+            View Member Details
+          </h1>
+          <div className="mb-4 text-center">
             <input
               type="text"
               placeholder="Search by name, email or Seniority ID"
@@ -215,5 +218,3 @@ function ViewMemberdetails() {
 }
 
 export default ViewMemberdetails;
-
-

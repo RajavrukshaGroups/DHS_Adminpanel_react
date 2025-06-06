@@ -93,7 +93,7 @@ function ViewUserdetails() {
         </h1>
 
         <div className="mt-4 overflow-x-auto">
-          <div className="mb-4">
+          <div className="mb-4 text-center">
             <input
               type="text"
               placeholder="Search by name, email or Seniority ID"
@@ -171,15 +171,17 @@ function ViewUserdetails() {
                       </td>
                       <td className="border px-3 py-2 text-center">{`${member.propertyDetails.length} X ${member.propertyDetails.breadth} `}</td>
                       <td className="border px-3 py-2 text-center">
-                        {propertyCost}
+                        ₹{Number(propertyCost).toLocaleString("en-IN")}
                       </td>
                       {/* <td className="border px-3 py-2 text-center">{Amount}</td> */}
                       <td className="border px-3 py-2 text-center">
-                        {member.propertyDetails?.paidAmount || "-"}
+                        ₹{Number(
+                          member.propertyDetails?.paidAmount
+                        ).toLocaleString("en-IN") || "-"}
                       </td>
 
                       <td className="border px-3 py-2 text-center text-red-500">
-                        {pending}
+                        ₹{Number(pending).toLocaleString("en-IN")}
                       </td>
                       {/* <td className="border px-3 py-2 text-center text-red-500">
                         {(propertyCost)-(member.propertyDetails?.paidAmount)}

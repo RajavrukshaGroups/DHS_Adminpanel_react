@@ -84,8 +84,8 @@ const ViewReceiptDetails = () => {
   return (
     <div className="min-h-screen bg-blue-100 p-6 flex items-center justify-center">
       <div className="p-4 bg-white rounded shadow-md w-full max-w-7xl">
-        <h1 className="text-2xl font-bold mb-4">View Receipt Details</h1>
-        <div className="mb-4">
+        <h1 className="text-2xl font-bold mb-4 text-center">View Receipt Details</h1>
+        <div className="mb-4 text-center">
           <input
             type="text"
             placeholder="enter receipt no, name, seniority ID, or project"

@@ -13,7 +13,7 @@ const ShareCertificate = () => {
     try {
       const res = await axios.get(
         // `http://localhost:3000/receipt/get-receipt-details`,
-        `http://localhost:4000/receipt/get-receipt-details`,
+        `http://localhost:4000/receipt/collect-share-certificates`,
         {
           params: {
             page,
@@ -31,7 +31,7 @@ const ShareCertificate = () => {
     }
   };
 
-  console.log("receipts data", receipts);
+  console.log("receipts data 123", receipts);
   useEffect(() => {
     fetchReceipts(currentPage, searchTerm);
   }, [currentPage, searchTerm]);
@@ -55,12 +55,15 @@ const ShareCertificate = () => {
 
   return (
     <div className="flex flex-col items-center min-h-screen bg-blue-50 px-4 py-6">
-      <h1 className="text-2xl font-bold mb-4">View Share Certificates</h1>
+      {/* <h1 className="text-2xl font-bold mb-4">View Share Certificates</h1> */}
       <div className="w-full max-w-8xl bg-white rounded-lg shadow p-6">
-        <div className="mb-4">
+        <h1 className="text-2xl font-bold mb-4 text-center">
+          View Share Certificates
+        </h1>
+        <div className="mb-4 text-center">
           <input
             type="text"
-            placeholder="enter name"
+            placeholder="enter name or email"
             className="border px-4 py-2 w-full md:w-96 rounded"
             onChange={(e) => debouncedSearch(e.target.value)}
           />

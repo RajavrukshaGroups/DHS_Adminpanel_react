@@ -63,7 +63,7 @@ function AddConfirmationletter() {
 
   return (
     <div className="bg-white p-16 rounded-xl shadow-md mb-6 ">
-      <h2 className="text-xl font-bold mb-4">AddConfirmation letter</h2>
+      <h2 className="text-xl font-bold mb-4">Add Confirmation letter</h2>
       <form
         onSubmit={handleSubmit}
         className="grid grid-cols-1 md:grid-cols-2 gap-4"

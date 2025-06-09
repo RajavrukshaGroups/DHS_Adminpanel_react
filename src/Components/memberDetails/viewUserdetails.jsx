@@ -3,7 +3,7 @@ import axios from "axios";
 import axiosInstance from "../../api/interceptors";
 import { Link } from "react-router-dom";
 import { IoIosAddCircleOutline } from "react-icons/io";
-import toast from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { FaEye } from "react-icons/fa";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
@@ -55,11 +55,13 @@ function ViewUserdetails() {
 
         navigate(`/addconfirmationLetter/${id}`);
       } else {
-        alert(response.message || "Membership fee condition not met.");
+        // alert(response.message || "Membership fee condition not met.");
+        toast.error(response.message || "Membership fee condition not met.");
       }
     } catch (error) {
       console.error("Error checking membership fee:", error);
-      alert("Something went wrong while checking the membership fee.");
+      // alert("Something went wrong while checking the membership fee.");
+      toast.error("Something went wrong while checking the membership fee.");
     }
   };
 

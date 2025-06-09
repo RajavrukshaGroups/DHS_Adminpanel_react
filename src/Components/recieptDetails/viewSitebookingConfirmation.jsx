@@ -15,6 +15,7 @@ function ViewSitebookingConfirmation() {
     const fetchAffidavits = async () => {
       try {
         const res = await axiosInstance.get("/member/all");
+        console.log("response site", res);
         setMemberDetails(res);
       } catch (error) {
         console.error("Error fetching data", error);
@@ -62,11 +63,12 @@ function ViewSitebookingConfirmation() {
                   Project Address
                 </th>
                 <th className="border px-3 py-2 text-center">MembershipNo</th>
-                {/* <th className="border px-3 py-2 text-center">Duration</th> */}
                 <th className="border px-3 py-2 text-center">
                   Confirmation No.
                 </th>
-                <th className="border px-3 py-2 text-center">Total Amount</th>
+                <th className="border px-3 py-2 text-center">
+                  Site Down Payment
+                </th>
                 <th className="border px-3 py-2 text-center">Affidavit</th>
               </tr>
             </thead>
@@ -99,9 +101,19 @@ function ViewSitebookingConfirmation() {
                     <td className="border px-3 py-2 text-center">
                       {member.userId.ConfirmationLetterNo || "No Receipt"}
                     </td>
-                    <td className="border px-3 py-2 text-center">
+                    {/* <td className="border px-3 py-2 text-center">
                       ₹{member?.totalPaidAmount || 0}
+                    </td> */}
+                    <td className="border px-3 py-2 text-center">
+                      ₹
+                      {member.siteDownPayments
+                        ?.reduce(
+                          (sum, payment) => sum + (payment.amount || 0),
+                          0
+                        )
+                        .toLocaleString("en-IN")}
                     </td>
+
                     <td className="border px-3 py-2 text-center">
                       <div className="flex justify-center">
                         <a

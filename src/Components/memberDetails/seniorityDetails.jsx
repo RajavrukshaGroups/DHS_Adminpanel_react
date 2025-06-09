@@ -125,7 +125,7 @@ function SeniorityDetails({ handleChange, formData, formErrors }) {
             }}
             onBlur={() => handleFieldInteraction('shareCertificateNo')}
             className={`w-full border px-4 py-2 rounded-md ${isDuplicate("shareCertificateNo") ? 'border-red-500' : ''}`}
-          />
+          />  
           {isDuplicate("shareCertificateNo") && (
             <p className="text-red-600 text-sm">This Share Certificate Number is already used.</p>
           )}

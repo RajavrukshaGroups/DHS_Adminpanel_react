@@ -5,6 +5,9 @@ import toast from "react-hot-toast";
 function ProppertyDetails({ formData, handleChange, refreshKey, formErrors }) {
   const [projectOptions, setProjectOptions] = useState([]);
   const [dimensions, setDimensions] = useState([]);
+  console.log(projectOptions, "projectOptions");
+
+  
 
   // Fetch projects on mount or when refreshKey changes
   useEffect(() => {
@@ -106,6 +109,7 @@ function ProppertyDetails({ formData, handleChange, refreshKey, formErrors }) {
   //   }
   // };
 
+
   const handleDimensionSelect = (e) => {
     const dimId = e.target.value;
     const selectedDim = dimensions.find((dim) => dim._id === dimId);
@@ -173,7 +177,6 @@ function ProppertyDetails({ formData, handleChange, refreshKey, formErrors }) {
           )}
         </div>
         <input type="hidden" name="plotLength" value={formData?.plotLength} />
-
         <input type="hidden" name="plotBreadth" value={formData?.plotBreadth} />
         <div>
           <label className="block font-medium mb-1">

@@ -12,7 +12,6 @@ const AddReceipt = () => {
   const [receiptError, setReceiptError] = useState("");
   // const [usedPaymentTypes, setUsedPaymentTypes] = useState([]);
   // const [usedInstallments, setUsedInstallments] = useState([]);
-
   const [formData, setFormData] = useState({
     recieptNo: "",
     date: "",
@@ -26,9 +25,7 @@ const AddReceipt = () => {
     transactionId: "",
     ddNumber: "",
   });
-
   console.log("members data", membersData);
-
   useEffect(() => {
     const fetchMember = async () => {
       try {
@@ -38,6 +35,7 @@ const AddReceipt = () => {
         const response = await axios.get(
           `http://localhost:4000/member/get-member/${id}`
         );
+        console.log("response member", response);
         setTimeout(() => {
           setMemberData(response.data);
           setLoading(false);

@@ -1,7 +1,10 @@
 import React from 'react'
 
 function MemberShipDetails({ formData, handleChange ,formErrors }) {
-  console.log("formDatassssssssssssss", formData);
+  console.log("formDatasssssscccccccccccccccccccccccssssssss", formData);
+  const formatDate = (isoDate) => {
+  return isoDate ? isoDate.split("T")[0] : "";
+};
   return (
     <div className="bg-white p-6 rounded-xl shadow-md mb-6">
       <h2 className="text-xl font-bold mb-4">Membership Details</h2>
@@ -20,14 +23,14 @@ function MemberShipDetails({ formData, handleChange ,formErrors }) {
         </div>
         <div>
           <label className="block font-medium mb-1">Date</label>
-          <input
-            type="date"
-            name="date"
-            placeholder="Date"
-            value={formData?.date}
-            onChange={handleChange}
-            className="w-full border px-4 py-2 rounded-md"
-          />
+           <input
+    type="date"
+    name="date"
+    placeholder="Date"
+    value={formatDate(formData?.date)}
+    onChange={handleChange}
+    className="w-full border px-4 py-2 rounded-md"
+  />
           {formErrors.date && <p className="text-red-600 text-sm">{formErrors.date}</p>}
         </div>
         <div>

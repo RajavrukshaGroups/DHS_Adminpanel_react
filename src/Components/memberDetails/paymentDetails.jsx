@@ -1,8 +1,10 @@
 import React from 'react';
 
 function PaymentDetails({ formData, handleChange, formErrors }) {
+  console.log("formData in PaymentDetails:", formData);
+  
   const paymentMode = formData?.paymentMode;
-
+  console.log(paymentMode,'paymentModeeeeeeeeee');
   return (
     <div className="bg-white p-6 rounded-xl shadow-md mb-6">
       <h2 className="text-xl font-bold mb-4">Payment Details</h2>

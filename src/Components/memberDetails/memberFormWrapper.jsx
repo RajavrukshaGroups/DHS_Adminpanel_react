@@ -149,7 +149,6 @@ const MemberFormWrapper = () => {
       .then((res) => {
         console.log(res,'fething dataaaassssss')
         const fetched = res;
-
         setFormData((prev) => ({
           ...prev,
           name: fetched.name || '',
@@ -180,7 +179,6 @@ const MemberFormWrapper = () => {
           nomineeAge: fetched.nomineeAge || '',
           nomineeRelationship: fetched.nomineeRelation || '',
           nomineeAddress: fetched.nomineeAddress || '',
-
           // Membership fields stay default unless needed
           date: fetched.date || '',
         }));
@@ -193,48 +191,49 @@ const MemberFormWrapper = () => {
     axiosInstance.get(`/member/get-member/${id}`)
       .then((res) => {
         const fetched = res;
+        console.log(fetched,"incoming dataaaassssss")
         setFormData((prev) => ({
           ...prev,
-          salutation: fetched.saluation || '',
-          name: fetched.name || '',
-          mobile: fetched.mobileNumber || '',
-          altMobile: fetched.AlternativeNumber || '',
-          email: fetched.email || '',
-          dob: fetched.dateofbirth || '',
-          fatherSpouse: fetched.fatherName || '',
-          correspondenceAddress: fetched.contactAddress || '',
-          permanentAddress: fetched.permanentAddress || '',
-          workingAddress: fetched.workingAddress || '',
-  
+          salutation: fetched.member.saluation || '',
+          name: fetched.member.name || '',
+          mobile: fetched.member.mobileNumber || '',
+          altMobile: fetched.member.AlternativeNumber || '',
+          email: fetched.member.email || '',
+          dob: fetched.member.dateofbirth || '',
+          fatherSpouse: fetched.member.fatherName || '',
+          correspondenceAddress: fetched.member.contactAddress || '',
+          permanentAddress: fetched.member.permanentAddress || '',
+          workingAddress: fetched.member.workingAddress || '',
           // Reference
-          refencName: fetched.refname || '',
-          rankDesignation: fetched.rankDesignation || '',
-          ServiceId: fetched.serviceId || '',
-          relationship: fetched.relationship || '',
+          refencName: fetched.member.refname || '',
+          rankDesignation: fetched.member.rankDesignation || '',
+          ServiceId: fetched.member.serviceId || '',
+          relationship: fetched.member.relationship || '',
   
           // Property
-          projectName: fetched.propertyDetails?.projectName || '',
-          PropertySize: fetched.propertyDetails?.propertySize || '',
-          perSqftPropertyPrice: fetched.propertyDetails?.pricePerSqft || '',
-          percentage: fetched.propertyDetails?.percentage || '',
-          percentageCost: fetched.propertyDetails?.percentageCost || '',
-          plotLength: fetched.propertyDetails?.length || '',
-          plotBreadth: fetched.propertyDetails?.breadth || '',
+          projectName: fetched.member.propertyDetails?.projectName || '',
+          PropertySize: fetched.member.propertyDetails?.propertySize || '',
+          perSqftPropertyPrice: fetched.member.propertyDetails?.pricePerSqft || '',
+          percentage: fetched.member.propertyDetails?.percentage || '',
+          percentageCost: fetched.member.propertyDetails?.percentageCost || '',
+          plotLength: fetched.member.propertyDetails?.length || '',
+          plotBreadth: fetched.member.propertyDetails?.breadth || '',
   
           // Nominee
-          nomineeName: fetched.nomineeName || '',
-          nomineeAge: fetched.nomineeAge || '',
-          nomineeRelationship: fetched.nomineeRelation || '',
-          nomineeAddress: fetched.nomineeAddress || '',
+          nomineeName: fetched.member.nomineeName || '',
+          nomineeAge: fetched.member.nomineeAge || '',
+          nomineeRelationship: fetched.member.nomineeRelation || '',
+          nomineeAddress: fetched.member.nomineeAddress || '',
   
           // Membership Details
-          seniorityId: fetched.SeniorityID || '',
-          membershipNo: fetched.MembershipNo || '',
-          cunfirmationLetterNo: fetched.ConfirmationLetterNo || '',
-          shareCertificateNo: fetched.ShareCertificateNumber || '',
-  
+          seniorityId: fetched.member.SeniorityID || '',
+          membershipNo: fetched.member.MembershipNo || '',
+          cunfirmationLetterNo: fetched.member.ConfirmationLetterNo || '',
+          shareCertificateNo: fetched.member.ShareCertificateNumber || '',
           // Receipt Details
-          date: fetched.date || '',
+          date: fetched.member.date || '',
+          recieptNo:fetched.result.receiptNo
+
         }));
       })
       .catch((err) => {

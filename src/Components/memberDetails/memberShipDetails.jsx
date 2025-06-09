@@ -1,6 +1,7 @@
 import React from 'react'
 
 function MemberShipDetails({ formData, handleChange ,formErrors }) {
+  console.log("formDatassssssssssssss", formData);
   return (
     <div className="bg-white p-6 rounded-xl shadow-md mb-6">
       <h2 className="text-xl font-bold mb-4">Membership Details</h2>

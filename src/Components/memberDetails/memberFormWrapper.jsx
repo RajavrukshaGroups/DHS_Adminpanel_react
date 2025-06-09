@@ -47,10 +47,10 @@ const MemberFormWrapper = () => {
     plotLength: '',
     plotBreadth: '',
      // Nominee Particulars
-  nomineeName: '',
-  nomineeAge: '',
-  nomineeRelationship: '',
-  nomineeAddress: '',
+    nomineeName: '',
+    nomineeAge: '',
+    nomineeRelationship: '',
+    nomineeAddress: '',
    // Add these for SeniorityDetails
    seniorityId: '',
    membershipNo: '',
@@ -83,6 +83,8 @@ const MemberFormWrapper = () => {
   const [memberPhoto, setMemberPhoto] = useState(null);
   const [memberSign, setMemberSign] = useState(null);
   const [loading, setLoading] = useState(false);
+
+
   // Fetch existing member data for editing
   // useEffect(() => {
   //   if (id) {
@@ -139,12 +141,13 @@ const MemberFormWrapper = () => {
   //       });
   //   }
   // }, [id]);
+  
   useEffect(() => {
   if (id && isFromApplication) {
     // From online application
     axiosInstance.get(`/defenceWebsiteRoutes/get-application/${id}`)
       .then((res) => {
-        console.log(res,'fething dataaaassssssssss')
+        console.log(res,'fething dataaaassssss')
         const fetched = res;
 
         setFormData((prev) => ({
@@ -158,13 +161,11 @@ const MemberFormWrapper = () => {
           correspondenceAddress: fetched.contactAddress || '',
           permanentAddress: fetched.permanentAddress || '',
           workingAddress: fetched.workingAddress || '',
-          
           // Reference
           refencName: fetched.refname || '',
           rankDesignation: fetched.rankDesignation || '',
           ServiceId: fetched.serviceId || '',
           relationship: fetched.relationship || '',
-
           // Property
           projectName: fetched.propertyDetails?.projectName || '',
           PropertySize: fetched.propertyDetails?.propertySize || '',
@@ -174,7 +175,6 @@ const MemberFormWrapper = () => {
           percentageCost: fetched.propertyDetails?.percentageCost || '',
           plotLength: fetched.propertyDetails?.length || '',
           plotBreadth: fetched.propertyDetails?.breadth || '',
-
           // Nominee
           nomineeName: fetched.nomineeName || '',
           nomineeAge: fetched.nomineeAge || '',

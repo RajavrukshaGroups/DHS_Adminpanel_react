@@ -9,41 +9,26 @@ function ViewSitebookingConfirmation() {
   const [selectedMember, setSelectedMember] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [itemsPerPage] = useState(10); // You can adjust the limit
-  const [searchTerm, setSearchTerm] = useState("");
+  const [itemsPerPage] = useState(5); // You can adjust the limit
 
   const navigate = useNavigate();
 
-  const fetchAffidavits = async (page = 1, search = "") => {
+  const fetchAffidavits = async (page = 1) => {
     try {
       const res = await axiosInstance.get("/member/all", {
-        params: { page, limit: itemsPerPage, search: search.trim() },
+        params: { page, limit: itemsPerPage },
       });
       console.log("response site", res);
-      setMemberDetails(res.data || []);
-      setTotalPages(res.pagination.totalPages || 1);
+      setMemberDetails(res.data);
+      setTotalPages(res.pagination.totalPages);
     } catch (error) {
       console.error("Error fetching data", error);
     }
   };
 
   useEffect(() => {
-    const delayDebounce = setTimeout(() => {
-      setCurrentPage(1);
-      fetchAffidavits(1, searchTerm);
-    }, 500); // 500ms delay after typing stops
-
-    return () => clearTimeout(delayDebounce);
-  }, [searchTerm]);
-
-  useEffect(() => {
-    fetchAffidavits(currentPage, searchTerm);
+    fetchAffidavits(currentPage);
   }, [currentPage]);
-
-  const handleSearch = () => {
-    setCurrentPage(1);
-    fetchAffidavits(1, searchTerm);
-  };
 
   const handleViewConfirmation = async (memberId) => {
     try {
@@ -77,16 +62,6 @@ function ViewSitebookingConfirmation() {
         <h1 className="text-xl font-semibold mb-4 text-center">
           View Site Booking
         </h1>
-        <div className="flex items-center gap-2 mb-4">
-          <input
-            type="text"
-            placeholder="Search by name, phone, or confirmation no."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="border border-gray-300 rounded px-3 py-2 w-full max-w-md"
-          />
-        </div>
-
         <div className="mt-4 overflow-x-auto">
           <table className="w-full text-left border border-gray-300">
             <thead className="bg-gray-100">

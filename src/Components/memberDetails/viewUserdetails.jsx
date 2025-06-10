@@ -3,7 +3,7 @@ import axios from "axios";
 import axiosInstance from "../../api/interceptors";
 import { Link } from "react-router-dom";
 import { IoIosAddCircleOutline } from "react-icons/io";
-import toast from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { FaEye } from "react-icons/fa";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
@@ -44,22 +44,55 @@ function ViewUserdetails() {
     }
   };
 
+  // const handleCheckAndNavigate = async (id) => {
+  //   try {
+  //     const response = await axiosInstance.get(
+  //       `/receipt/checkMembershipFee/${id}`
+  //     );
+  //     console.log(response, "resssssssssssssssssssssssssssssssssssssssssssss");
+  //     if (response.feeAdded) {
+  //       console.log(response, "ressssssssssssssssssssssss");
+
+  //       navigate(`/addconfirmationLetter/${id}`);
+  //     } else {
+  //       // alert(response.message || "Membership fee condition not met.");
+  //       toast.error(response.message || "Membership fee condition not met.");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error checking membership fee:", error);
+  //     // alert("Something went wrong while checking the membership fee.");
+  //     toast.error("Something went wrong while checking the membership fee.");
+  //   }
+  // };
+
   const handleCheckAndNavigate = async (id) => {
     try {
-      const response = await axiosInstance.get(
+      // Step 1: Check membership fee
+      const feeResponse = await axiosInstance.get(
         `/receipt/checkMembershipFee/${id}`
       );
-      console.log(response, "resssssssssssssssssssssssssssssssssssssssssssss");
-      if (response.feeAdded) {
-        console.log(response, "ressssssssssssssssssssssss");
+      console.log(feeResponse, "Membership Fee Response");
 
-        navigate(`/addconfirmationLetter/${id}`);
+      if (feeResponse.feeAdded) {
+        // Step 2: Check if affidavit exists
+        const affidavitResponse = await axiosInstance.get(
+          `receipt/check-affidavit-model/${id}`
+        );
+        console.log(affidavitResponse.data, "Affidavit Response");
+
+        if (affidavitResponse.isExist) {
+          // If both are true, navigate to edit confirmation
+          navigate(`/edit-confirmationletter/${id}`);
+        } else {
+          // If only fee is true, navigate to add confirmation
+          navigate(`/addconfirmationLetter/${id}`);
+        }
       } else {
-        alert(response.message || "Membership fee condition not met.");
+        toast.error(feeResponse.message || "Membership fee condition not met.");
       }
     } catch (error) {
-      console.error("Error checking membership fee:", error);
-      alert("Something went wrong while checking the membership fee.");
+      console.error("Error during navigation checks:", error);
+      toast.error("Something went wrong while checking the requirements.");
     }
   };
 

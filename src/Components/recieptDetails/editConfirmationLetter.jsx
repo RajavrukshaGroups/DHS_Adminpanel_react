@@ -1,28 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axiosInstance from "../../api/interceptors";
-import { FaSpinner } from 'react-icons/fa';
+import { FaSpinner } from "react-icons/fa";
 import { toast } from "react-hot-toast";
 
 function EditConfirmationLetter() {
-
   const { id } = useParams();
-  console.log(id,'iddddddddddddddddddddddddddddddddddddddddd');
+  console.log(id, "iddddddddddddddddddddddddddddddddddddddddd");
   const navigate = useNavigate();
   const [memberData, setMemberData] = useState({});
   const [loading, setLoading] = useState(false);
 
-useEffect(() => {
-
- const fetchMember = async () => {
-  try {
-    const response = await axiosInstance.get(`/member/get-affidavit/${id}`);
-    console.log(response,'incoming response')
-    setMemberData(response); // use response.data instead of just response
-  } catch (error) {
-    console.error("Error fetching member data:", error);
-  }
-};
+  useEffect(() => {
+    const fetchMember = async () => {
+      try {
+        const response = await axiosInstance.get(`/member/get-affidavit/${id}`);
+        console.log(response, "incoming response");
+        setMemberData(response); // use response.data instead of just response
+      } catch (error) {
+        console.error("Error fetching member data:", error);
+      }
+    };
     fetchMember();
   }, [id]);
 
@@ -56,7 +54,10 @@ useEffect(() => {
   return (
     <div className="bg-white p-8 rounded-xl shadow-md mb-6">
       <h2 className="text-xl font-bold mb-4">Edit Confirmation Letter</h2>
-      <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <form
+        onSubmit={handleSubmit}
+        className="grid grid-cols-1 md:grid-cols-2 gap-4"
+      >
         <div>
           <label className="block font-medium mb-1">Member Name</label>
           <input
@@ -87,27 +88,7 @@ useEffect(() => {
           />
         </div>
 
-        <div>
-          <label className="block font-medium mb-1">Amount</label>
-          <input
-            type="text"
-            name="Amount"
-            defaultValue={memberData?.Amount || ""}
-            className="w-full border px-4 py-2 rounded-md"
-          />
-        </div>
-
-        <div>
-          <label className="block font-medium mb-1">Payment Method</label>
-          <input
-            type="text"
-            name="PaymentType"
-            defaultValue={memberData?.PaymentType || ""}
-            className="w-full border px-4 py-2 rounded-md"
-          />
-        </div>
-
-        <div>
+        {/* <div>
           <label className="block font-medium mb-1">Confirmation Number</label>
           <input
             type="text"
@@ -115,43 +96,49 @@ useEffect(() => {
             defaultValue={memberData?.ConfirmationLetterNo || ""}
             className="w-full border px-4 py-2 rounded-md"
           />
-        </div>
+        </div> */}
 
-        <div>
-          <label className="block font-medium mb-1">Confirmation Letter Issue Date</label>
+        {/* <div>
+          <label className="block font-medium mb-1">
+            Confirmation Letter Issue Date
+          </label>
           <input
             type="date"
             name="ConfirmationLetterDate"
             defaultValue={
               memberData?.ConfirmationLetterDate
-                ? new Date(memberData.ConfirmationLetterDate).toISOString().split("T")[0]
+                ? new Date(memberData.ConfirmationLetterDate)
+                    .toISOString()
+                    .split("T")[0]
                 : ""
             }
             className="w-full border px-4 py-2 rounded-md"
           />
+        </div> */}
+
+        <div>
+          <label className="block font-medium mb-1">
+            Upload New Affidavit (optional)
+          </label>
+
+          {/* Preview of the previously uploaded affidavit */}
+          {memberData?.affidavitUrl && (
+            <div className="mb-2">
+              <img
+                src={memberData.affidavitUrl}
+                alt="Previous Affidavit"
+                className="w-52 h-auto rounded border"
+              />
+            </div>
+          )}
+
+          {/* File upload input */}
+          <input
+            type="file"
+            name="affidivate"
+            className="w-full border px-4 py-2 rounded-md"
+          />
         </div>
-
-             <div>
-  <label className="block font-medium mb-1">Upload New Affidavit (optional)</label>
-
-  {/* Preview of the previously uploaded affidavit */}
-  {memberData?.affidavitUrl && (
-    <div className="mb-2">
-      <img
-        src={memberData.affidavitUrl}
-        alt="Previous Affidavit"
-        className="w-52 h-auto rounded border"
-      />
-    </div>
-  )}
-
-  {/* File upload input */}
-  <input
-    type="file"
-    name="affidivate"
-    className="w-full border px-4 py-2 rounded-md"
-  />
-</div>
 
         <div className="col-span-2">
           <button

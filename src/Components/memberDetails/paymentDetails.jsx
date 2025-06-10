@@ -2,7 +2,6 @@ import React from 'react';
 
 function PaymentDetails({ formData, handleChange, formErrors }) {
   console.log("formData in PaymentDetails:", formData);
-  
   const paymentMode = formData?.paymentMode;
   console.log(paymentMode,'paymentModeeeeeeeeee');
   return (
@@ -14,7 +13,8 @@ function PaymentDetails({ formData, handleChange, formErrors }) {
           <label className="block font-medium mb-1">Payment Type:</label>
           <input
             type="text"
-            name="paymentType"
+            // name="paymentType"
+            name={`${formData?.reciptInfo?.paymentInfo?.paymentMode}`}
             placeholder="Payment Type"
             value={formData?.paymentType || ''}
             onChange={handleChange}
@@ -22,13 +22,12 @@ function PaymentDetails({ formData, handleChange, formErrors }) {
           />
           {formErrors.paymentType && <p className="text-red-500 text-sm">{formErrors.paymentType}</p>}
         </div>
-
         {/* Payment Mode */}
         <div>
           <label className="block font-medium mb-1">Payment Mode:</label>
           <select
             name="paymentMode"
-            value={formData?.paymentMode}
+            value={formData?.reciptInfo?.paymentInfo?.paymentMode}
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           >

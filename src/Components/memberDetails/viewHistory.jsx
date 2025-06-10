@@ -24,8 +24,9 @@ const ViewReceiptHistory = () => {
           // `http://localhost:3000/member/get-member/${id}`
           `http://localhost:4000/member/get-member/${id}`
         );
+        // console.log("Member data:", response.data.member);
         setTimeout(() => {
-          setMemberData(response.data);
+          setMemberData(response.data.member);
           setLoading(false);
         }, 500);
       } catch (error) {

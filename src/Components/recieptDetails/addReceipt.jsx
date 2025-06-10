@@ -37,7 +37,7 @@ const AddReceipt = () => {
         );
         console.log("response member", response);
         setTimeout(() => {
-          setMemberData(response.data);
+          setMemberData(response.data.member);
           setLoading(false);
         }, 500);
       } catch (error) {

@@ -232,7 +232,9 @@ const MemberFormWrapper = () => {
           shareCertificateNo: fetched.member.ShareCertificateNumber || '',
           // Receipt Details
           date: fetched.member.date || '',
-          recieptNo:fetched.result.receiptNo
+          recieptNo:fetched.result.receiptNo,
+          paymentMode:fetched.result.paymentMode,
+          reciptInfo:fetched.result
 
         }));
       })

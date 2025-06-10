@@ -2,8 +2,12 @@ import React from 'react';
 
 function PaymentDetails({ formData, handleChange, formErrors }) {
   console.log("formData in PaymentDetails:", formData);
-  const paymentMode = formData?.paymentMode;
-  console.log(paymentMode,'paymentModeeeeeeeeee');
+  
+  // const paymentMode = formData?.paymentMode;
+  const paymentMode = formData?.reciptInfo?.paymentInfo?.paymentMode || '';
+
+
+  // console.log(paymentMode,'paymentModeeeeeeeeee');
   return (
     <div className="bg-white p-6 rounded-xl shadow-md mb-6">
       <h2 className="text-xl font-bold mb-4">Payment Details</h2>
@@ -13,8 +17,7 @@ function PaymentDetails({ formData, handleChange, formErrors }) {
           <label className="block font-medium mb-1">Payment Type:</label>
           <input
             type="text"
-            // name="paymentType"
-            name={`${formData?.reciptInfo?.paymentInfo?.paymentMode}`}
+            name="paymentType"
             placeholder="Payment Type"
             value={formData?.paymentType || ''}
             onChange={handleChange}
@@ -22,12 +25,13 @@ function PaymentDetails({ formData, handleChange, formErrors }) {
           />
           {formErrors.paymentType && <p className="text-red-500 text-sm">{formErrors.paymentType}</p>}
         </div>
+
         {/* Payment Mode */}
         <div>
           <label className="block font-medium mb-1">Payment Mode:</label>
           <select
             name="paymentMode"
-            value={formData?.reciptInfo?.paymentInfo?.paymentMode}
+            value={formData?.paymentMode || paymentMode}
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           >
@@ -49,7 +53,7 @@ function PaymentDetails({ formData, handleChange, formErrors }) {
                 type="text"
                 name="bankName"
                 placeholder="Bank Name"
-                value={formData?.bankName || ''}
+                value={formData?.bankName || formData?.reciptInfo?.paymentInfo?.bankName || ''}
                 onChange={handleChange}
                 className="w-full border px-4 py-2 rounded-md"
               />
@@ -61,7 +65,7 @@ function PaymentDetails({ formData, handleChange, formErrors }) {
                 type="text"
                 name="branchName"
                 placeholder="Branch Name"
-                value={formData?.branchName || ''}
+                value={formData?.branchName || formData?.reciptInfo?.paymentInfo?.branchName || ''}
                 onChange={handleChange}
                 className="w-full border px-4 py-2 rounded-md"
               />
@@ -94,7 +98,7 @@ function PaymentDetails({ formData, handleChange, formErrors }) {
               type="text"
               name="chequeNumber"
               placeholder="Cheque Number"
-              value={formData?.chequeNumber || ''}
+              value={formData?.chequeNumber || formData?.reciptInfo?.paymentInfo?.chequeNumber || ''}
               onChange={handleChange}
               className="w-full border px-4 py-2 rounded-md"
             />

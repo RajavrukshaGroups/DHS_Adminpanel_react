@@ -7,8 +7,6 @@ function ProppertyDetails({ formData, handleChange, refreshKey, formErrors }) {
   const [dimensions, setDimensions] = useState([]);
   console.log(projectOptions, "projectOptions");
 
-  
-
   // Fetch projects on mount or when refreshKey changes
   useEffect(() => {
     const fetchProjects = async () => {
@@ -140,7 +138,7 @@ function ProppertyDetails({ formData, handleChange, refreshKey, formErrors }) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label className="block font-medium mb-1">Project</label>
-          <select
+          {/* <select
             name="projectName"
             value={formData?.projectName}
             onChange={handleProjectSelect}
@@ -152,7 +150,23 @@ function ProppertyDetails({ formData, handleChange, refreshKey, formErrors }) {
                 {proj.projectName}
               </option>
             ))}
-          </select>
+          </select> */}
+          <select
+    name="projectName"
+    value={formData?.projectName}
+    onChange={handleProjectSelect}
+    className="w-full border px-4 py-2 rounded-md"
+  >
+    <option value="">Select project</option>
+    {projectOptions.map((proj, index) => (
+      <option
+        key={proj._id || `${proj.projectName}-${index}`} // fallback if _id is missing
+        value={proj.projectName}
+      >
+        {proj.projectName}
+      </option>
+    ))}
+  </select>
           {formErrors.projectName && (
             <p className="text-red-600 text-sm">{formErrors.projectName}</p>
           )}

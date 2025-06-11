@@ -1,7 +1,46 @@
-import React from 'react';
-
+import React, { useEffect } from 'react';
+import axiosInstance from '../../api/interceptors';
 function PaymentDetails({ formData, handleChange, formErrors }) {
   const paymentMode = formData?.paymentMode;
+  console.log(formData.memberId, "formData in payment details");
+ useEffect(() => {
+    if (formData?.memberId) {
+      axiosInstance
+        .get(`http://localhost:4000/member/get-member-receipt/${formData.memberId}`)
+        .then((response) => {
+          const data = response;
+          if (data) {
+            const fieldsToUpdate = [
+              "paymentType",
+              "paymentMode",
+              "bankName",
+              "branchName",
+              "amount",
+              "chequeNumber",
+              "transactionId",
+              "ddNumber",
+              "applicationFee",
+              "admissionFee",
+              "miscellaneousExpenses",
+              "membershipFee",
+              "shareFee",
+              "numberOfShares",
+              "date", // ✅ Include date
+            ];
+
+            fieldsToUpdate.forEach((field) => {
+              if (data[field] !== undefined) {
+                handleChange({ target: { name: field, value: data[field] || '' } });
+              }
+            });
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching member details:", error);
+        });
+    }
+  }, [formData.memberId]);
+;
 
   return (
     <div className="bg-white p-6 rounded-xl shadow-md mb-6">

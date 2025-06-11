@@ -26,6 +26,7 @@ useEffect(() => {
   };
 
   fetchData();
+  
 }, [searchTerm, currentPage]);
 
   const filteredData = transferData.filter((item) => {

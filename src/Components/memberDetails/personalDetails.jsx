@@ -2,7 +2,9 @@ import React from "react";
 import { useState } from "react";
 
 const PersonalDetails = ({ formData, handleChange, formErrors  }) => {
-
+const formatDate = (isoDate) => {
+  return isoDate ? isoDate.split("T")[0] : "";
+};
   return (
     <div className="bg-white p-6 rounded-xl shadow-md mb-6">
       <h2 className="text-xl font-semibold mb-4">Personal Details</h2>
@@ -73,14 +75,14 @@ const PersonalDetails = ({ formData, handleChange, formErrors  }) => {
         </div>
         <div>
           <label className="block font-medium mb-1">Date of Birth</label>
-          <input
-            type="date"
-            name="dob"
-            placeholder="Date of Birth"
-            value={formData?.dob}
-            onChange={handleChange}
-            className="w-full border px-4 py-2 rounded-md"
-          />
+         <input
+  type="date"
+  name="dob"
+  placeholder="Date of Birth"
+  value={formatDate(formData?.dob)}
+  onChange={handleChange}
+  className="w-full border px-4 py-2 rounded-md"
+/>
           {formErrors.dob && ( <p className="text-red-500 text-sm">{formErrors.dob}</p> )}
         </div>
         <div>

@@ -3,8 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Puff } from "react-loader-spinner";
-
 const EditProjectStatus = () => {
+  
   const { id } = useParams();
   const navigate = useNavigate();
   const fileInputRef = useRef();
@@ -15,7 +15,7 @@ const EditProjectStatus = () => {
   const [statusDetails, setStatusDetails] = useState("");
   const [files, setFiles] = useState([]);
   const [filePreviews, setFilePreviews] = useState([]);
-  const [existingFiles, setExistingFiles] = useState([]); // in case you're showing previous images
+  const [existingFiles, setExistingFiles] = useState([]);
   const [sendSMS, setSendSMS] = useState(false);
   const [sendEmail, setSendEmail] = useState(false);
   const [isLoading, setIsLoading] = useState(false);

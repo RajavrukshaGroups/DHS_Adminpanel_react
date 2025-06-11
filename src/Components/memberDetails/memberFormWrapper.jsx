@@ -17,7 +17,7 @@ import { useLocation } from 'react-router-dom';
 // import axiosInstance from '../../api/interceptors';
 
 const MemberFormWrapper = () => {
-  const { id } = useParams(); //id comes from route like /edit-member/:id
+  const { id } = useParams(); 
   const [formErrors, setFormErrors] = useState({});
   console.log(id,"iddddddddddddddddddddd")
   const location = useLocation();
@@ -77,13 +77,15 @@ const MemberFormWrapper = () => {
     checqueNumber: "",
     transactionId: "",
     ddNumber: "",
+    memberId :""
   });
   
   const navigate = useNavigate();
   const [memberPhoto, setMemberPhoto] = useState(null);
   const [memberSign, setMemberSign] = useState(null);
+   const [existingPhoto, setExistingPhoto] = useState(null); // Add this
+  const [existingSign, setExistingSign] = useState(null); // Add this
   const [loading, setLoading] = useState(false);
-
 
   // Fetch existing member data for editing
   // useEffect(() => {
@@ -149,7 +151,6 @@ const MemberFormWrapper = () => {
       .then((res) => {
         console.log(res,'fething dataaaassssss')
         const fetched = res;
-
         setFormData((prev) => ({
           ...prev,
           name: fetched.name || '',
@@ -180,7 +181,6 @@ const MemberFormWrapper = () => {
           nomineeAge: fetched.nomineeAge || '',
           nomineeRelationship: fetched.nomineeRelation || '',
           nomineeAddress: fetched.nomineeAddress || '',
-
           // Membership fields stay default unless needed
           date: fetched.date || '',
         }));
@@ -193,49 +193,59 @@ const MemberFormWrapper = () => {
     axiosInstance.get(`/member/get-member/${id}`)
       .then((res) => {
         const fetched = res;
+        console.log(fetched,"incoming dataaaassssss")
         setFormData((prev) => ({
           ...prev,
-          salutation: fetched.saluation || '',
-          name: fetched.name || '',
-          mobile: fetched.mobileNumber || '',
-          altMobile: fetched.AlternativeNumber || '',
-          email: fetched.email || '',
-          dob: fetched.dateofbirth || '',
-          fatherSpouse: fetched.fatherName || '',
-          correspondenceAddress: fetched.contactAddress || '',
-          permanentAddress: fetched.permanentAddress || '',
-          workingAddress: fetched.workingAddress || '',
-  
+          salutation: fetched.member.saluation || '',
+          name: fetched.member.name || '',
+          mobile: fetched.member.mobileNumber || '',
+          altMobile: fetched.member.AlternativeNumber || '',
+          email: fetched.member.email || '',
+          dob: fetched.member.dateofbirth || '',
+          fatherSpouse: fetched.member.fatherName || '',
+          correspondenceAddress: fetched.member.contactAddress || '',
+          permanentAddress: fetched.member.permanentAddress || '',
+          workingAddress: fetched.member.workingAddress || '',
           // Reference
-          refencName: fetched.refname || '',
-          rankDesignation: fetched.rankDesignation || '',
-          ServiceId: fetched.serviceId || '',
-          relationship: fetched.relationship || '',
+          refencName: fetched.member.refname || '',
+          rankDesignation: fetched.member.rankDesignation || '',
+          ServiceId: fetched.member.serviceId || '',
+          relationship: fetched.member.relationship || '',
   
           // Property
-          projectName: fetched.propertyDetails?.projectName || '',
-          PropertySize: fetched.propertyDetails?.propertySize || '',
-          perSqftPropertyPrice: fetched.propertyDetails?.pricePerSqft || '',
-          percentage: fetched.propertyDetails?.percentage || '',
-          percentageCost: fetched.propertyDetails?.percentageCost || '',
-          plotLength: fetched.propertyDetails?.length || '',
-          plotBreadth: fetched.propertyDetails?.breadth || '',
+          projectName: fetched.member.propertyDetails?.projectName || '',
+          PropertySize: fetched.member.propertyDetails?.propertySize || '',
+          perSqftPropertyPrice: fetched.member.propertyDetails?.pricePerSqft || '',
+          percentage: fetched.member.propertyDetails?.percentage || '',
+          percentageCost: fetched.member.propertyDetails?.percentageCost || '',
+          plotLength: fetched.member.propertyDetails?.length || '',
+          plotBreadth: fetched.member.propertyDetails?.breadth || '',
   
           // Nominee
-          nomineeName: fetched.nomineeName || '',
-          nomineeAge: fetched.nomineeAge || '',
-          nomineeRelationship: fetched.nomineeRelation || '',
-          nomineeAddress: fetched.nomineeAddress || '',
+          nomineeName: fetched.member.nomineeName || '',
+          nomineeAge: fetched.member.nomineeAge || '',
+          nomineeRelationship: fetched.member.nomineeRelation || '',
+          nomineeAddress: fetched.member.nomineeAddress || '',
   
           // Membership Details
-          seniorityId: fetched.SeniorityID || '',
-          membershipNo: fetched.MembershipNo || '',
-          cunfirmationLetterNo: fetched.ConfirmationLetterNo || '',
-          shareCertificateNo: fetched.ShareCertificateNumber || '',
-  
+          seniorityId: fetched.member.SeniorityID || '',
+          membershipNo: fetched.member.MembershipNo || '',
+          cunfirmationLetterNo: fetched.member.ConfirmationLetterNo || '',
+          shareCertificateNo: fetched.member.ShareCertificateNumber || '',
           // Receipt Details
-          date: fetched.date || '',
+          date: fetched.member.date || '',
+          recieptNo:fetched.result.receiptNo,
+          paymentMode:fetched.result.paymentMode,
+          reciptInfo:fetched.result,
+          memberId: fetched.member._id || '',
+
         }));
+         if (fetched.member.MemberPhoto) {
+            setExistingPhoto(fetched.member.MemberPhoto);
+          }
+          if (fetched.member.MemberSign) {
+            setExistingSign(fetched.member.MemberSign);
+          }
       })
       .catch((err) => {
         console.error("Failed to fetch member", err);
@@ -324,16 +334,16 @@ if (!data.miscellaneousExpenses || isNaN(data.miscellaneousExpenses) || Number(d
 }
 // Payment Details
 
-if (!formData.paymentType.trim()) {
+if (!formData?.paymentType.trim()) {
   errors.paymentType = "Payment type is required";
 }
 
-if (!formData.paymentMode.trim()) {
+if (!formData?.paymentMode?.trim()) {
   errors.paymentMode = "Payment mode is required";
 }
 
 if (
-  ["cheque", "online", "card"].includes(formData.paymentMode.toLowerCase())
+  ["cheque", "online", "card"].includes(formData?.paymentMode?.toLowerCase())
 ) {
   if (!formData.bankName.trim()) {
     errors.bankName = "Bank name is required for this payment mode";
@@ -348,46 +358,81 @@ if (!formData.amount || isNaN(formData.amount) || Number(formData.amount) <= 0) 
   errors.amount = "Valid amount is required";
 }
 
-if (!memberPhoto) {
-  errors.memberPhoto = "Member photo is required";
-}
+// if (!memberPhoto) {
+//   errors.memberPhoto = "Member photo is required";
+// }
+  if (!memberPhoto && !existingPhoto) {
+    errors.memberPhoto = "Member photo is required";
+  }
 
-if (!memberSign) {
-  errors.memberSign = "Member signature is required";
-}
+
+// if (!memberSign) {
+//   errors.memberSign = "Member signature is required";
+// }
+  if (!memberSign && !existingSign) {
+    errors.memberSign = "Member signature is required";
+  }
 
     return errors;
   };
   
 
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setFormData((prev) => ({
-  //     ...prev,
-  //     [name]: value,
-  //   }));
-  // };
-  
   const handleChange = (e) => {
-    const { name, value, type } = e.target;
-  
-    // Prevent negative numbers for numeric inputs
-    if (type === "number" || ["noofShares", "shareFee", "memberShipFee", "applicationFee", "adminissionFee", "miscellaneousExpenses", "amount", "nomineeAge", "perSqftPropertyPrice", "PropertySize", "selectedPropertyCost", "percentage", "percentageCost"].includes(name)) {
-      if (Number(value) < 0) return; // Ignore update if value is negative
-    }
-  
+    console.log('e.target.name:', e.target.name, 'e.target.value:', e.target.value);
+    
+    const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
   
+  // const handleChange = (e) => {
+  //   const { name, value, type } = e.target;
+  //   console.log(name)
 
-  const handleFileChange = (e) => {
+  //   // Prevent negative numbers for numeric inputs
+  //   if (type === "number" || ["noofShares", "shareFee", "memberShipFee", "applicationFee", "adminissionFee", "miscellaneousExpenses", "amount", "nomineeAge", "perSqftPropertyPrice", "PropertySize", "selectedPropertyCost", "percentage", "percentageCost"].includes(name)) {
+  //     if (Number(value) < 0) return; // Ignore update if value is negative
+  //   }
+  
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     [name]: value,
+  //   }));
+  // };
+  
+
+  // const handleFileChange = (e) => {
+  //   const { name, files } = e.target;
+  //   if (name === 'memberPhoto') setMemberPhoto(files[0]);
+  //   if (name === 'memberSign') setMemberSign(files[0]);
+  // };
+
+    const handleFileChange = (e) => {
     const { name, files } = e.target;
-    if (name === 'memberPhoto') setMemberPhoto(files[0]);
-    if (name === 'memberSign') setMemberSign(files[0]);
+    if (files && files[0]) {
+      if (name === 'memberPhoto') {
+        setMemberPhoto(files[0]);
+        setExistingPhoto(null); // Clear existing photo when new one is selected
+      }
+      if (name === 'memberSign') {
+        setMemberSign(files[0]);
+        setExistingSign(null); // Clear existing sign when new one is selected
+      }
+    }
   };
+    // Helper function to render preview
+  const renderPreview = (file, existingUrl) => {
+    if (file) {
+      return URL.createObjectURL(file);
+    }
+    if (existingUrl) {
+      return existingUrl;
+    }
+    return null;
+  };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -517,34 +562,62 @@ if (!memberSign) {
           <PaymentDetails formData={formData} handleChange={handleChange}  formErrors={formErrors}/>
 
           {/* Image Uploads */}
+          <div className="flex flex-wrap gap-6 mb-6">
+  {/* Member Photo */}
+  <div className="w-full md:w-1/2">
+    <label className="block mb-2 text-sm font-medium text-gray-700">
+      Member Photo
+    </label>
+    <input
+      type="file"
+      name="memberPhoto"
+      accept="image/*"
+      onChange={handleFileChange}
+      className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 p-2"
+    />
+    {(memberPhoto || existingPhoto) && (
+      <div className="mt-4">
+        <p className="text-sm text-gray-600 mb-2">Preview:</p>
+        <img 
+          src={renderPreview(memberPhoto, existingPhoto)} 
+          alt="Member Photo Preview"
+          className="h-32 w-32 object-cover rounded border border-gray-300"
+        />
+      </div>
+    )}
+    {formErrors.memberPhoto && (
+      <p className="text-red-500 text-sm mt-2">{formErrors.memberPhoto}</p>
+    )}
+  </div>
 
-          <div className="mb-6">
-              <label className="block mb-2 text-sm font-medium text-gray-700">
-                Member Photo
-              </label>
-              <input
-                type="file"
-                name="memberPhoto"
-                accept="image/*"
-                onChange={handleFileChange}
-                className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 p-2"
-              />
-              {formErrors.memberPhoto && <p className="text-red-500 text-sm">{formErrors.memberPhoto}</p>}
-            </div>
+  {/* Member Signature */}
+  <div className="w-full md:w-1/2">
+    <label className="block mb-2 text-sm font-medium text-gray-700">
+      Member Signature
+    </label>
+    <input
+      type="file"
+      name="memberSign"
+      accept="image/*"
+      onChange={handleFileChange}
+      className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 p-2"
+    />
+    {(memberSign || existingSign) && (
+      <div className="mt-4">
+        <p className="text-sm text-gray-600 mb-2">Preview:</p>
+        <img 
+          src={renderPreview(memberSign, existingSign)} 
+          alt="Member Signature Preview"
+          className="h-20 w-48 object-contain border border-gray-300 bg-white"
+        />
+      </div>
+    )}
+    {formErrors.memberSign && (
+      <p className="text-red-500 text-sm mt-2">{formErrors.memberSign}</p>
+    )}
+  </div>
+</div>
 
-            <div className="mb-6">
-              <label className="block mb-2 text-sm font-medium text-gray-700">
-                Member Signature
-              </label>
-              <input
-                type="file"
-                name="memberSign"
-                accept="image/*"
-                onChange={handleFileChange}
-                className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 p-2"
-              />
-              {formErrors.memberSign && <p className="text-red-500 text-sm">{formErrors.memberSign}</p>}
-            </div>
 
             <div className="flex justify-start mt-6">
               <button

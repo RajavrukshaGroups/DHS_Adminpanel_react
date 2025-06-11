@@ -132,7 +132,7 @@ const ViewReceiptHistory = () => {
     <div className="max-w-5xl mx-auto p-6">
       {/* Member Info Card */}
       <div className="bg-white rounded-md shadow-md p-6">
-        <h1 className="text-2xl font-bold mb-4">
+        <h1 className="text-2xl font-bold mb-4 text-center">
           Payment History for {membersData.name}
         </h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

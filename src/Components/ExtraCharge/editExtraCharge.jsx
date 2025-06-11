@@ -25,7 +25,7 @@ const EditExtraCharge = () => {
   });
   const [existingReceiptIds, setExistingReceiptIds] = useState([]);
   const [receiptError, setReceiptError] = useState("");
-
+  const [originalReceiptNo, setOriginalReceiptNo] = useState("");
   useEffect(() => {
     async function fetchData() {
       try {
@@ -34,6 +34,7 @@ const EditExtraCharge = () => {
           `http://localhost:4000/receipt/get-extra-charge-by-paymentid/${paymentId}`
         );
         const data = res.data;
+        setOriginalReceiptNo(data.data.payment.receiptNo || "");
         setFormData({
           recieptNo: data.data.payment.receiptNo || "",
           date: data.data.payment.date?.slice(0, 10) || "",
@@ -78,16 +79,33 @@ const EditExtraCharge = () => {
     fetchReceiptIds();
   }, []);
 
+  // const handleInputChange = (field) => (e) => {
+  //   const value = e.target.value;
+
+  //   if (field === "recieptNo") {
+  //     if (existingReceiptIds.map(String).includes(value.trim())) {
+  //       setReceiptError("Receipt number already exists!");
+  //     } else {
+  //       setReceiptError("");
+  //     }
+  //   }
+  //   setFormData((prev) => ({ ...prev, [field]: e.target.value }));
+  // };
+
   const handleInputChange = (field) => (e) => {
     const value = e.target.value;
 
     if (field === "recieptNo") {
-      if (existingReceiptIds.map(String).includes(value.trim())) {
+      if (
+        value.trim() !== originalReceiptNo &&
+        existingReceiptIds.map(String).includes(value.trim())
+      ) {
         setReceiptError("Receipt number already exists!");
       } else {
         setReceiptError("");
       }
     }
+
     setFormData((prev) => ({ ...prev, [field]: e.target.value }));
   };
 

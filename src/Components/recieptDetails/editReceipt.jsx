@@ -38,9 +38,6 @@ const EditReceipt = () => {
   useEffect(() => {
     const fetchReceiptIds = async () => {
       try {
-        // const response = await axios.get(
-        //   "http://localhost:3000/receipt/get-all-receipt-ids"
-        // );
         const response = await axios.get(
           "http://localhost:4000/receipt/get-all-receipt-ids"
         );
@@ -57,9 +54,6 @@ const EditReceipt = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     const fetchReceipts = async () => {
       try {
-        // const response = await axios.get(
-        //   `http://localhost:3000/receipt/edit-receipt/payment-history/${id}${window.location.search}`
-        // );
         const response = await axios.get(
           `http://localhost:4000/receipt/edit-receipt/payment-history/${id}${window.location.search}`
         );
@@ -164,10 +158,6 @@ const EditReceipt = () => {
     }
 
     try {
-      // const response = await axios.put(
-      //   `http://localhost:3000/member/edit-receipt/${membersData._id}?paymentId=${receiptsData._id}`,
-      //   formData
-      // );
       const response = await axios.put(
         `http://localhost:4000/member/edit-receipt/${membersData._id}?paymentId=${receiptsData._id}`,
         formData

@@ -1,13 +1,47 @@
-import React from 'react';
-
+import React, { useEffect } from 'react';
+import axiosInstance from '../../api/interceptors';
 function PaymentDetails({ formData, handleChange, formErrors }) {
-  console.log("formData in PaymentDetails:", formData);
-  
-  // const paymentMode = formData?.paymentMode;
-  const paymentMode = formData?.reciptInfo?.paymentInfo?.paymentMode || '';
+  const paymentMode = formData?.paymentMode;
+  console.log(formData.memberId, "formData in payment details");
+ useEffect(() => {
+    if (formData?.memberId) {
+      axiosInstance
+        .get(`http://localhost:4000/member/get-member-receipt/${formData.memberId}`)
+        .then((response) => {
+          const data = response;
+          if (data) {
+            const fieldsToUpdate = [
+              "paymentType",
+              "paymentMode",
+              "bankName",
+              "branchName",
+              "amount",
+              "chequeNumber",
+              "transactionId",
+              "ddNumber",
+              "applicationFee",
+              "admissionFee",
+              "miscellaneousExpenses",
+              "membershipFee",
+              "shareFee",
+              "numberOfShares",
+              "date", // ✅ Include date
+            ];
 
+            fieldsToUpdate.forEach((field) => {
+              if (data[field] !== undefined) {
+                handleChange({ target: { name: field, value: data[field] || '' } });
+              }
+            });
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching member details:", error);
+        });
+    }
+  }, [formData.memberId]);
+;
 
-  // console.log(paymentMode,'paymentModeeeeeeeeee');
   return (
     <div className="bg-white p-6 rounded-xl shadow-md mb-6">
       <h2 className="text-xl font-bold mb-4">Payment Details</h2>
@@ -31,7 +65,7 @@ function PaymentDetails({ formData, handleChange, formErrors }) {
           <label className="block font-medium mb-1">Payment Mode:</label>
           <select
             name="paymentMode"
-            value={formData?.paymentMode || paymentMode}
+            value={formData?.paymentMode}
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           >
@@ -53,7 +87,7 @@ function PaymentDetails({ formData, handleChange, formErrors }) {
                 type="text"
                 name="bankName"
                 placeholder="Bank Name"
-                value={formData?.bankName || formData?.reciptInfo?.paymentInfo?.bankName || ''}
+                value={formData?.bankName || ''}
                 onChange={handleChange}
                 className="w-full border px-4 py-2 rounded-md"
               />
@@ -65,7 +99,7 @@ function PaymentDetails({ formData, handleChange, formErrors }) {
                 type="text"
                 name="branchName"
                 placeholder="Branch Name"
-                value={formData?.branchName || formData?.reciptInfo?.paymentInfo?.branchName || ''}
+                value={formData?.branchName || ''}
                 onChange={handleChange}
                 className="w-full border px-4 py-2 rounded-md"
               />
@@ -98,7 +132,7 @@ function PaymentDetails({ formData, handleChange, formErrors }) {
               type="text"
               name="chequeNumber"
               placeholder="Cheque Number"
-              value={formData?.chequeNumber || formData?.reciptInfo?.paymentInfo?.chequeNumber || ''}
+              value={formData?.chequeNumber || ''}
               onChange={handleChange}
               className="w-full border px-4 py-2 rounded-md"
             />

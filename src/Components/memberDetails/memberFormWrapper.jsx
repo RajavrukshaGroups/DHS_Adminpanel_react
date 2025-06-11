@@ -77,6 +77,7 @@ const MemberFormWrapper = () => {
     checqueNumber: "",
     transactionId: "",
     ddNumber: "",
+    memberId :""
   });
   
   const navigate = useNavigate();
@@ -235,7 +236,8 @@ const MemberFormWrapper = () => {
           date: fetched.member.date || '',
           recieptNo:fetched.result.receiptNo,
           paymentMode:fetched.result.paymentMode,
-          reciptInfo:fetched.result
+          reciptInfo:fetched.result,
+          memberId: fetched.member._id || '',
 
         }));
          if (fetched.member.MemberPhoto) {
@@ -560,81 +562,62 @@ if (!formData.amount || isNaN(formData.amount) || Number(formData.amount) <= 0) 
           <PaymentDetails formData={formData} handleChange={handleChange}  formErrors={formErrors}/>
 
           {/* Image Uploads */}
-           <div className="mb-6">
-            <label className="block mb-2 text-sm font-medium text-gray-700">
-              Member Photo
-            </label>
-            <input
-              type="file"
-              name="memberPhoto"
-              accept="image/*"
-              onChange={handleFileChange}
-              className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 p-2"
-            />
-            {(memberPhoto || existingPhoto) && (
-              <div className="mt-4">
-                <p className="text-sm text-gray-600 mb-2">Preview:</p>
-                <img 
-                  src={renderPreview(memberPhoto, existingPhoto)} 
-                  alt="Member Photo Preview"
-                  className="h-32 w-32 object-cover rounded border border-gray-300"
-                />
-              </div>
-            )}
-            {formErrors.memberPhoto && <p className="text-red-500 text-sm">{formErrors.memberPhoto}</p>}
-          </div>
+          <div className="flex flex-wrap gap-6 mb-6">
+  {/* Member Photo */}
+  <div className="w-full md:w-1/2">
+    <label className="block mb-2 text-sm font-medium text-gray-700">
+      Member Photo
+    </label>
+    <input
+      type="file"
+      name="memberPhoto"
+      accept="image/*"
+      onChange={handleFileChange}
+      className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 p-2"
+    />
+    {(memberPhoto || existingPhoto) && (
+      <div className="mt-4">
+        <p className="text-sm text-gray-600 mb-2">Preview:</p>
+        <img 
+          src={renderPreview(memberPhoto, existingPhoto)} 
+          alt="Member Photo Preview"
+          className="h-32 w-32 object-cover rounded border border-gray-300"
+        />
+      </div>
+    )}
+    {formErrors.memberPhoto && (
+      <p className="text-red-500 text-sm mt-2">{formErrors.memberPhoto}</p>
+    )}
+  </div>
 
-          <div className="mb-6">
-            <label className="block mb-2 text-sm font-medium text-gray-700">
-              Member Signature
-            </label>
-            <input
-              type="file"
-              name="memberSign"
-              accept="image/*"
-              onChange={handleFileChange}
-              className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 p-2"
-            />
-            {(memberSign || existingSign) && (
-              <div className="mt-4">
-                <p className="text-sm text-gray-600 mb-2">Preview:</p>
-                <img 
-                  src={renderPreview(memberSign, existingSign)} 
-                  alt="Member Signature Preview"
-                  className="h-20 w-48 object-contain border border-gray-300 bg-white"
-                />
-              </div>
-            )}
-            {formErrors.memberSign && <p className="text-red-500 text-sm">{formErrors.memberSign}</p>}
-          </div>
+  {/* Member Signature */}
+  <div className="w-full md:w-1/2">
+    <label className="block mb-2 text-sm font-medium text-gray-700">
+      Member Signature
+    </label>
+    <input
+      type="file"
+      name="memberSign"
+      accept="image/*"
+      onChange={handleFileChange}
+      className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 p-2"
+    />
+    {(memberSign || existingSign) && (
+      <div className="mt-4">
+        <p className="text-sm text-gray-600 mb-2">Preview:</p>
+        <img 
+          src={renderPreview(memberSign, existingSign)} 
+          alt="Member Signature Preview"
+          className="h-20 w-48 object-contain border border-gray-300 bg-white"
+        />
+      </div>
+    )}
+    {formErrors.memberSign && (
+      <p className="text-red-500 text-sm mt-2">{formErrors.memberSign}</p>
+    )}
+  </div>
+</div>
 
-          {/* <div className="mb-6">
-              <label className="block mb-2 text-sm font-medium text-gray-700">
-                Member Photo
-              </label>
-              <input
-                type="file"
-                name="memberPhoto"
-                accept="image/*"
-                onChange={handleFileChange}
-                className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 p-2"
-              />
-              {formErrors.memberPhoto && <p className="text-red-500 text-sm">{formErrors.memberPhoto}</p>}
-            </div>
-
-            <div className="mb-6">
-              <label className="block mb-2 text-sm font-medium text-gray-700">
-                Member Signature
-              </label>
-              <input
-                type="file"
-                name="memberSign"
-                accept="image/*"
-                onChange={handleFileChange}
-                className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 p-2"
-              />
-              {formErrors.memberSign && <p className="text-red-500 text-sm">{formErrors.memberSign}</p>}
-            </div> */}
 
             <div className="flex justify-start mt-6">
               <button

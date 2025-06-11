@@ -272,12 +272,22 @@ const ViewReceiptHistory = () => {
                       <td className="px-3 py-2 border text-center">
                         {payment.bankName || "-"}
                       </td>
-                      <td className="px-3 py-2 border text-center">
+                      {/* <td className="px-3 py-2 border text-center">
                         {payment.transactionId ||
                           payment.chequeNumber ||
                           payment.ddNumber ||
                           "-"}
+                      </td> */}
+                      <td className="px-3 py-2 border text-center">
+                        {payment.paymentMode?.toLowerCase() === "netbanking"
+                          ? payment.transactionId
+                          : payment.paymentMode?.toLowerCase() === "cheque"
+                          ? payment.chequeNumber
+                          : payment.paymentMode?.toLowerCase() === "dd"
+                          ? payment.ddNumber
+                          : "-"}
                       </td>
+
                       <td className="px-3 py-2 border text-center">
                         {/* ₹{payment.amount.toLocaleString("en-IN")}/- */}₹
                         {payment.paymentType === "Membership Fee"

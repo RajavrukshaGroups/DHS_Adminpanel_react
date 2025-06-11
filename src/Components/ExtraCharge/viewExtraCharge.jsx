@@ -11,6 +11,8 @@ const ViewExtraCharge = () => {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
 
+  console.log("extra charges", data);
+
   const fetchData = async (pageNum = 1, searchQuery = "") => {
     setLoading(true);
     const startTime = Date.now();
@@ -137,11 +139,20 @@ const ViewExtraCharge = () => {
                     <td className="border p-2 capitalize text-center">
                       {item.paymentMode || ""}
                     </td>
-                    <td className="border p-2 text-center">
+                    {/* <td className="border p-2 text-center">
                       {item.transactionId ||
                         item.chequeNumber ||
                         item.ddNumber ||
                         "-"}
+                    </td> */}
+                    <td className="border p-2 text-center">
+                      {item.paymentMode?.toLowerCase() === "netbanking"
+                        ? item.transactionId || "-"
+                        : item.paymentMode?.toLowerCase() === "cheque"
+                        ? item.chequeNumber || "-"
+                        : item.paymentMode?.toLowerCase() === "dd"
+                        ? item.ddNumber || "-"
+                        : "-"}
                     </td>
                     <td className="border p-2 text-center">
                       {formatDate(item.date)}

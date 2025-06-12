@@ -1,46 +1,104 @@
-import React, { useEffect } from 'react';
+import React, { use, useEffect } from 'react';
 import axiosInstance from '../../api/interceptors';
 function PaymentDetails({ formData, handleChange, formErrors }) {
   const paymentMode = formData?.paymentMode;
-  console.log(formData.memberId, "formData in payment details");
- useEffect(() => {
-    if (formData?.memberId) {
-      axiosInstance
-        .get(`http://localhost:4000/member/get-member-receipt/${formData.memberId}`)
-        .then((response) => {
-          const data = response;
-          if (data) {
-            const fieldsToUpdate = [
-              "paymentType",
-              "paymentMode",
-              "bankName",
-              "branchName",
-              "amount",
-              "chequeNumber",
-              "transactionId",
-              "ddNumber",
-              "applicationFee",
-              "admissionFee",
-              "miscellaneousExpenses",
-              "membershipFee",
-              "shareFee",
-              "numberOfShares",
-              "date", // ✅ Include date
-            ];
+  console.log(paymentMode, "paymentMode in payment details");
 
-            fieldsToUpdate.forEach((field) => {
-              if (data[field] !== undefined) {
-                handleChange({ target: { name: field, value: data[field] || '' } });
-              }
+  console.log(formData, "formData in payment details");
+
+
+
+//  useEffect(() => {
+//     if (formData?.memberId) {
+//       axiosInstance
+//         .get(`http://localhost:4000/member/get-member-receipt/${formData.memberId}`)
+//         .then((response) => {
+//           const data = response;
+//           if (data) {
+//             const fieldsToUpdate = [
+//               "paymentType",
+//               "paymentMode",
+//               "bankName",
+//               "branchName",
+//               "amount",
+//               "chequeNumber",
+//               "transactionId",
+//               "ddNumber",
+//               "applicationFee",
+//               "admissionFee",
+//               "miscellaneousExpenses",
+//               "membershipFee",
+//               "shareFee",
+//               "numberOfShares",
+//               "date", // ✅ Include date
+//             ];
+
+//             fieldsToUpdate.forEach((field) => {
+//               if (data[field] !== undefined) {
+//                 handleChange({ target: { name: field, value: data[field] || '' } });
+//               }
+//             });
+//           }
+//         })
+//         .catch((error) => {
+//           console.error("Error fetching member details:", error);
+//         });
+//     }
+//   }, [formData.memberId]);
+useEffect(() => {
+  const fetchPaymentData = async () => {
+    try {
+      let response;
+      if (formData?.memberId) {
+        response = await axiosInstance.get(
+          `http://localhost:4000/member/get-member-receipt/${formData.memberId}`
+        );
+      } else if (formData?.onlineApplicationId) {
+        response = await axiosInstance.get(
+          `http://localhost:4000/member/get-member-onlineApplication/${formData.onlineApplicationId}`
+        );
+        console.log(response,"response in paymeent details application")
+      }
+
+
+      if (response) {
+        const data = response;
+
+        const fieldsToUpdate = [
+          "paymentType",
+          "paymentMode",
+          "bankName",
+          "branchName",
+          "amount",
+          "chequeNumber",
+          "transactionId",
+          "ddNumber",
+          "applicationFee",
+          "admissionFee",
+          "miscellaneousExpenses",
+          "membershipFee",
+          "shareFee",
+          "numberOfShares",
+          "date",
+        ];
+
+        fieldsToUpdate.forEach((field) => {
+          if (data[field] !== undefined) {
+            handleChange({
+              target: { name: field, value: data[field] || "" },
             });
           }
-        })
-        .catch((error) => {
-          console.error("Error fetching member details:", error);
         });
+      }
+    } catch (error) {
+      console.error("❌ Error fetching payment details:", error);
     }
-  }, [formData.memberId]);
-;
+  };
+
+  fetchPaymentData();
+}, [formData?.memberId, formData?.onlineApplicationId]);
+
+
 
   return (
     <div className="bg-white p-6 rounded-xl shadow-md mb-6">

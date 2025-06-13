@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import debounce from "lodash.debounce";
-import toast from "react-hot-toast";
 const ShareCertificate = () => {
   const [receipts, setReceipts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
-  //   const [errorMessage, setErrorMessage] = useState("");
 
   const fetchReceipts = async (page = 1, search = "") => {
     try {
@@ -31,7 +29,6 @@ const ShareCertificate = () => {
     }
   };
 
-  console.log("receipts data 123", receipts);
   useEffect(() => {
     fetchReceipts(currentPage, searchTerm);
   }, [currentPage, searchTerm]);

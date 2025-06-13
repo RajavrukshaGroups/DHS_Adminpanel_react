@@ -6,11 +6,6 @@ import {
   Route,
   useLocation,
 } from "react-router-dom";
-
-
-
-
-
 import AdminLogin from "./pages/adminLogin";
 import Dashboard from "./pages/dashboard";
 import Sidebar from "./pages/sidebar";
@@ -42,7 +37,7 @@ import PlotTransferhistory from "./Components/plotDetails/plotTransferhistory";
 import ExtraChargeFormDetails from "./Components/ExtraCharge/extraChargeFormDetails";
 import PlotCancellationForm from "./Components/plotDetails/plotCancelationForm";
 import ViewExtraCharge from "./Components/ExtraCharge/viewExtraCharge";
-import CancelledMembersTable from "./Components/plotDetails/plotCancelledList"
+import CancelledMembersTable from "./Components/plotDetails/plotCancelledList";
 import EditExtraCharge from "./Components/ExtraCharge/editExtraCharge";
 import OnlineApplicationsTable from "./Components/OnlineApplication/viewOnlineapplication";
 import CustomersContact from "./Components/CustomersContact/customersContact";
@@ -303,7 +298,7 @@ function MainLayout({ sidebarOpen, setSidebarOpen }) {
               </PrivateRoute>
             }
           />
-           <Route
+          <Route
             path="/viewextracharges"
             element={
               <PrivateRoute>
@@ -311,7 +306,7 @@ function MainLayout({ sidebarOpen, setSidebarOpen }) {
               </PrivateRoute>
             }
           />
-           <Route
+          <Route
             path="/edit-extra-charge/:paymentId"
             element={
               <PrivateRoute>
@@ -319,7 +314,7 @@ function MainLayout({ sidebarOpen, setSidebarOpen }) {
               </PrivateRoute>
             }
           />
-           <Route
+          <Route
             path="/PlotCancelledList"
             element={
               <PrivateRoute>
@@ -327,7 +322,7 @@ function MainLayout({ sidebarOpen, setSidebarOpen }) {
               </PrivateRoute>
             }
           />
-           <Route
+          <Route
             path="/downloads"
             element={
               <PrivateRoute>
@@ -335,15 +330,15 @@ function MainLayout({ sidebarOpen, setSidebarOpen }) {
               </PrivateRoute>
             }
           />
-           <Route
+          <Route
             path="/from-application/:id"
             element={
               <PrivateRoute>
-                <MemberFormWrapper/>
+                <MemberFormWrapper />
               </PrivateRoute>
             }
           />
-           <Route
+          <Route
             path="/viewVisitorsContact"
             element={
               <PrivateRoute>

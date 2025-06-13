@@ -76,7 +76,6 @@ const AddProjectStatus = () => {
         "http://localhost:4000/project/project-status",
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
-        
       );
       toast.success("Project status added successfully!");
       setSelectedProject("");
@@ -101,7 +100,9 @@ const AddProjectStatus = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-blue-50 px-4">
       <div className="w-full max-w-4xl p-6 bg-white rounded-lg shadow-md mt-6">
-        <h1 className="text-2xl font-bold mb-8 text-center">Add Project Status</h1>
+        <h1 className="text-2xl font-bold mb-8 text-center">
+          Add Project Status
+        </h1>
         <form
           onSubmit={handleSubmit}
           className="grid grid-cols-1 md:grid-cols-2 gap-6"
@@ -229,16 +230,15 @@ const AddProjectStatus = () => {
           </div>
 
           {/* Notifications */}
-          {/* <div className="md:col-span-2 space-y-2"> */}
           <div className="md:col-span-2 flex flex-col gap-2">
-            <label className="flex items-center space-x-2">
+            {/* <label className="flex items-center space-x-2">
               <input
                 type="checkbox"
                 checked={sendSMS}
                 onChange={() => setSendSMS(!sendSMS)}
               />
               <span>Send notification to customer as text message (SMS)</span>
-            </label>
+            </label> */}
             <label className="flex items-center space-x-2">
               <input
                 type="checkbox"

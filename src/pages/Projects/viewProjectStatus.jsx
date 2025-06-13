@@ -108,56 +108,6 @@ const ViewProjectStatus = () => {
           </tbody>
         </table>
       </div>
-
-      {/* 🔹 Modal */}
-      {/* {selectedProject && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg max-w-2xl w-full overflow-auto max-h-[90vh] relative">
-            <button
-              onClick={() => setSelectedProject(null)}
-              className="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-xl"
-            >
-              &times;
-            </button>
-            <h2 className="text-xl font-semibold mb-2 capitalize">
-              {selectedProject.projectName}
-            </h2>
-            <p className="mb-2">
-              <strong>Title:</strong> {selectedProject.statusTitle}
-            </p>
-            <p className="mb-2 whitespace-pre-line break-words">
-              <strong>Description:</strong> {selectedProject.statusDetails}
-            </p>
-            <p className="mb-2">
-              <strong>Notified Via:</strong> {selectedProject.sendSMS && "SMS "}
-              {selectedProject.sendEmail && "Email"}
-              {!selectedProject.sendSMS && !selectedProject.sendEmail && "—"}
-            </p>
-            <p className="mb-4">
-              <strong>Updated Date:</strong>{" "}
-              {formatDate(selectedProject.updatedAt)}
-            </p>
-            {selectedProject.image?.length > 0 && (
-              <div className="flex flex-wrap gap-2 justify-center">
-                {selectedProject.image.map((imgUrl, i) => (
-                  <a
-                    key={i}
-                    href={imgUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <img
-                      src={imgUrl}
-                      alt={`project-img-${i}`}
-                      className="h-24 w-24 object-cover border rounded"
-                    />
-                  </a>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-      )} */}
       {selectedProject && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded-lg max-w-2xl w-full overflow-auto max-h-[90vh] relative">

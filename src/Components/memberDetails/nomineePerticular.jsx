@@ -1,6 +1,6 @@
-import React from 'react'
+import React from "react";
 
-function NomineePerticular({ formData, handleChange ,formErrors }) {
+function NomineePerticular({ formData, handleChange, formErrors }) {
   return (
     <div className="bg-white p-6 rounded-xl shadow-md mb-6">
       <h2 className="text-xl font-bold mb-4">Nominees Particular</h2>
@@ -15,8 +15,9 @@ function NomineePerticular({ formData, handleChange ,formErrors }) {
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
-          {formErrors.nomineeName && <p className="text-red-500 text-sm">{formErrors.nomineeName}</p>}
-
+          {formErrors.nomineeName && (
+            <p className="text-red-500 text-sm">{formErrors.nomineeName}</p>
+          )}
         </div>
         <div>
           <label className="block font-medium mb-1">Age</label>
@@ -28,7 +29,9 @@ function NomineePerticular({ formData, handleChange ,formErrors }) {
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
-          {formErrors.nomineeAge && <p className="text-red-500 text-sm">{formErrors.nomineeAge}</p>}
+          {formErrors.nomineeAge && (
+            <p className="text-red-500 text-sm">{formErrors.nomineeAge}</p>
+          )}
         </div>
         <div>
           <label className="block font-medium mb-1">Relationship</label>
@@ -40,7 +43,11 @@ function NomineePerticular({ formData, handleChange ,formErrors }) {
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
-          {formErrors.nomineeRelationship && <p className="text-red-500 text-sm">{formErrors.nomineeRelationship}</p>}
+          {formErrors.nomineeRelationship && (
+            <p className="text-red-500 text-sm">
+              {formErrors.nomineeRelationship}
+            </p>
+          )}
         </div>
         <div>
           <label className="block font-medium mb-1">Address</label>
@@ -52,11 +59,13 @@ function NomineePerticular({ formData, handleChange ,formErrors }) {
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
-          {formErrors.nomineeAddress && <p className="text-red-500 text-sm">{formErrors.nomineeAddress}</p>}
+          {formErrors.nomineeAddress && (
+            <p className="text-red-500 text-sm">{formErrors.nomineeAddress}</p>
+          )}
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default NomineePerticular
+export default NomineePerticular;

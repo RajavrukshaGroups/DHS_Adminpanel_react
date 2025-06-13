@@ -13,9 +13,8 @@ const PlotCancellationForm = () => {
   const [cancelData, setCancelData] = useState({
     reason: "",
     cancellationDate: "",
-    remarks: ""
+    remarks: "",
   });
-
 
   const handleFetchMember = async () => {
     if (!selectedId) {
@@ -23,7 +22,9 @@ const PlotCancellationForm = () => {
       return;
     }
     try {
-      const response = await axiosInstance.get(`/plot/getMemberBySeniorityID/${selectedId}`);
+      const response = await axiosInstance.get(
+        `/plot/getMemberBySeniorityID/${selectedId}`
+      );
       setMemberData(response);
     } catch (error) {
       console.error("Error fetching member:", error);
@@ -33,51 +34,53 @@ const PlotCancellationForm = () => {
   };
 
   const handleDocumentUpload = (e) => {
-  const file = e.target.files[0];
-  setCancelLetter(file);
-};
+    const file = e.target.files[0];
+    setCancelLetter(file);
+  };
 
   const handleSubmit = async () => {
-  setLoading(true);
-  if (!memberData || !cancelData.reason || !cancelData.cancellationDate) {
-    toast.error("Please fill all required fields.");
-    return;
-  }
-  const formData = new FormData();
-  formData.append("cancelLetter", cancelLetter); // ✅ file
-  formData.append("reason", cancelData.reason);
-  formData.append("cancellationDate", cancelData.cancellationDate);
-  formData.append("remarks", cancelData.remarks);
+    setLoading(true);
+    if (!memberData || !cancelData.reason || !cancelData.cancellationDate) {
+      toast.error("Please fill all required fields.");
+      return;
+    }
+    const formData = new FormData();
+    formData.append("cancelLetter", cancelLetter); // ✅ file
+    formData.append("reason", cancelData.reason);
+    formData.append("cancellationDate", cancelData.cancellationDate);
+    formData.append("remarks", cancelData.remarks);
 
-  formData.append("member", JSON.stringify({
-    seniorityId: selectedId,
-    name: memberData.name,
-    email: memberData.email,
-    projectName: memberData.propertyDetails?.projectName || "",
-    propertySize:
-      memberData.propertyDetails?.length && memberData.propertyDetails?.breadth
-        ? `${memberData.propertyDetails.length}X${memberData.propertyDetails.breadth}`
-        : ""
-  }));
-  try {
-    const res = await axiosInstance.post("/plot/plot-cancel", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
-    toast.success("Plot cancellation successful.");
-    console.log(res);
-  } catch (err) {
-    toast.error("Cancellation failed.");
-    console.error(err);
-  } finally {
-    setLoading(false);
-  }
-};
+    formData.append(
+      "member",
+      JSON.stringify({
+        seniorityId: selectedId,
+        name: memberData.name,
+        email: memberData.email,
+        projectName: memberData.propertyDetails?.projectName || "",
+        propertySize:
+          memberData.propertyDetails?.length &&
+          memberData.propertyDetails?.breadth
+            ? `${memberData.propertyDetails.length}X${memberData.propertyDetails.breadth}`
+            : "",
+      })
+    );
+    try {
+      const res = await axiosInstance.post("/plot/plot-cancel", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      toast.success("Plot cancellation successful.");
+      console.log(res);
+    } catch (err) {
+      toast.error("Cancellation failed.");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-6">
-      {/* <div className="mx-auto max-w-5xl space-y-6"> */}
       <div className="w-full max-w-6xl bg-white rounded-lg shadow-lg p-8 space-y-10">
-
         <div className="rounded-lg bg-white p-6 shadow-sm">
           <div className="mb-4">
             <button className="flex items-center text-lg font-medium">
@@ -86,7 +89,8 @@ const PlotCancellationForm = () => {
             </button>
           </div>
           <h2 className="text-2xl font-normal text-gray-800 mb-8">
-          Plot Cancellation Form</h2>
+            Plot Cancellation Form
+          </h2>
           {loading && (
             <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/20">
               <ClipLoader color="#36d7b7" size={60} />
@@ -94,7 +98,10 @@ const PlotCancellationForm = () => {
           )}
           <div className="grid gap-6 md:grid-cols-3">
             <div className="space-y-2">
-              <label htmlFor="seniorityId" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="seniorityId"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Seniority ID
               </label>
               <div className="flex items-center space-x-2">
@@ -121,40 +128,68 @@ const PlotCancellationForm = () => {
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
-              <input id="name" value={memberData?.name || ""} readOnly className="w-full h-12 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-            </div>
-
-            <div className="space-y-2">
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
-              <input id="email" type="email" value={memberData?.email || ""} readOnly className="w-full h-12 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Name
+              </label>
+              <input
+                id="name"
+                value={memberData?.name || ""}
+                readOnly
+                className="w-full h-12 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="project" className="block text-sm font-medium text-gray-700">Project</label>
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Email
+              </label>
+              <input
+                id="email"
+                type="email"
+                value={memberData?.email || ""}
+                readOnly
+                className="w-full h-12 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label
+                htmlFor="project"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Project
+              </label>
               <input
                 id="project"
                 value={memberData?.propertyDetails?.projectName || ""}
                 readOnly
                 className="w-full h-12 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-
               />
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="propertySize" className="block text-sm font-medium text-gray-700">Property Size</label>
+              <label
+                htmlFor="propertySize"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Property Size
+              </label>
               <input
                 id="propertySize"
                 value={
-                  memberData?.propertyDetails?.length && memberData?.propertyDetails?.breadth
+                  memberData?.propertyDetails?.length &&
+                  memberData?.propertyDetails?.breadth
                     ? `${memberData.propertyDetails.length}X${memberData.propertyDetails.breadth}`
                     : ""
                 }
                 readOnly
                 className="w-full h-12 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-
               />
             </div>
           </div>
@@ -162,10 +197,14 @@ const PlotCancellationForm = () => {
 
         <div className="rounded-lg bg-white p-6 shadow-sm">
           <h2 className="text-2xl font-normal text-gray-800 mb-8">
-      Cancellation Details</h2>
+            Cancellation Details
+          </h2>
           <div className="grid gap-6 md:grid-cols-2">
             <div className="space-y-2">
-              <label htmlFor="cancellationDate" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="cancellationDate"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Cancellation Date
               </label>
               <div className="relative">
@@ -173,39 +212,64 @@ const PlotCancellationForm = () => {
                   id="cancellationDate"
                   type="date"
                   className="w-full h-12 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-
                   value={cancelData.cancellationDate}
-                  onChange={(e) => setCancelData({ ...cancelData, cancellationDate: e.target.value })}
+                  onChange={(e) =>
+                    setCancelData({
+                      ...cancelData,
+                      cancellationDate: e.target.value,
+                    })
+                  }
                 />
                 <Calendar className="absolute right-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-500" />
               </div>
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="reason" className="block text-sm font-medium text-gray-700">Reason for Cancellation</label>
+              <label
+                htmlFor="reason"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Reason for Cancellation
+              </label>
               <textarea
                 id="reason"
                 placeholder="Enter reason"
                 className="w-full h-24 border p-2"
                 value={cancelData.reason}
-                onChange={(e) => setCancelData({ ...cancelData, reason: e.target.value })}
+                onChange={(e) =>
+                  setCancelData({ ...cancelData, reason: e.target.value })
+                }
               />
             </div>
 
             <div className="space-y-2  md:col-span-2">
-              <label htmlFor="remarks" className="block text-sm font-medium text-gray-700">Remarks</label>
+              <label
+                htmlFor="remarks"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Remarks
+              </label>
               <textarea
                 id="remarks"
                 placeholder="Enter any remarks"
                 className="w-full h-24 border p-2"
                 value={cancelData.remarks}
-                onChange={(e) => setCancelData({ ...cancelData, remarks: e.target.value })}
+                onChange={(e) =>
+                  setCancelData({ ...cancelData, remarks: e.target.value })
+                }
               />
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">Upload Cancellation Letter</label>
-              <input type="file" name="memberPhoto" accept="document/*" onChange={handleDocumentUpload} />
+              <label className="block text-sm font-medium text-gray-700">
+                Upload Cancellation Letter
+              </label>
+              <input
+                type="file"
+                name="memberPhoto"
+                accept="document/*"
+                onChange={handleDocumentUpload}
+              />
             </div>
           </div>
 

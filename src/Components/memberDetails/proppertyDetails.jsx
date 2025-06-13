@@ -5,7 +5,6 @@ import toast from "react-hot-toast";
 function ProppertyDetails({ formData, handleChange, refreshKey, formErrors }) {
   const [projectOptions, setProjectOptions] = useState([]);
   const [dimensions, setDimensions] = useState([]);
-  console.log(projectOptions, "projectOptions");
 
   // Fetch projects on mount or when refreshKey changes
   useEffect(() => {
@@ -57,14 +56,10 @@ function ProppertyDetails({ formData, handleChange, refreshKey, formErrors }) {
   }, [formData?.PropertySize, formData?.perSqftPropertyPrice]);
 
   useEffect(() => {
-    // if (formData?.selectedPropertyCost && formData?.percentage) {
-    //   const numericCost = parseFloat(
-    //     formData.selectedPropertyCost?.replace(/,/g, "")
-    //   );
-      if (formData?.selectedPropertyCost && formData?.percentage) {
-    const numericCost = parseFloat(
-      formData.selectedPropertyCost?.toString().replace(/,/g, "")
-    );
+    if (formData?.selectedPropertyCost && formData?.percentage) {
+      const numericCost = parseFloat(
+        formData.selectedPropertyCost?.toString().replace(/,/g, "")
+      );
       const percentageCost =
         (numericCost * parseFloat(formData.percentage)) / 100;
 
@@ -91,22 +86,6 @@ function ProppertyDetails({ formData, handleChange, refreshKey, formErrors }) {
     handleChange({ target: { name: "perSqftPropertyPrice", value: "" } });
     handleChange({ target: { name: "selectedPropertyCost", value: "" } });
   };
-
-  // const handleDimensionSelect = (e) => {
-  //   const dimId = e.target.value;
-  //   const selectedDim = dimensions.find((dim) => dim._id === dimId);
-  //   if (selectedDim) {
-  //     const size = selectedDim.length * selectedDim.breadth;
-  //     handleChange({ target: { name: "PropertySize", value: size } });
-  //     handleChange({
-  //       target: {
-  //         name: "perSqftPropertyPrice",
-  //         value: selectedDim.pricePerSqft?.toString() || "",
-  //       },
-  //     });
-  //   }
-  // };
-
 
   const handleDimensionSelect = (e) => {
     const dimId = e.target.value;
@@ -138,35 +117,22 @@ function ProppertyDetails({ formData, handleChange, refreshKey, formErrors }) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label className="block font-medium mb-1">Project</label>
-          {/* <select
+          <select
             name="projectName"
             value={formData?.projectName}
             onChange={handleProjectSelect}
             className="w-full border px-4 py-2 rounded-md"
           >
             <option value="">Select project</option>
-            {projectOptions.map((proj) => (
-              <option key={proj._id} value={proj.projectName}>
+            {projectOptions.map((proj, index) => (
+              <option
+                key={proj._id || `${proj.projectName}-${index}`} // fallback if _id is missing
+                value={proj.projectName}
+              >
                 {proj.projectName}
               </option>
             ))}
-          </select> */}
-          <select
-    name="projectName"
-    value={formData?.projectName}
-    onChange={handleProjectSelect}
-    className="w-full border px-4 py-2 rounded-md"
-  >
-    <option value="">Select project</option>
-    {projectOptions.map((proj, index) => (
-      <option
-        key={proj._id || `${proj.projectName}-${index}`} // fallback if _id is missing
-        value={proj.projectName}
-      >
-        {proj.projectName}
-      </option>
-    ))}
-  </select>
+          </select>
           {formErrors.projectName && (
             <p className="text-red-600 text-sm">{formErrors.projectName}</p>
           )}

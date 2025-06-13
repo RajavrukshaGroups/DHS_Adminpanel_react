@@ -40,11 +40,6 @@ function ViewSitebookingConfirmation() {
     fetchAffidavits(currentPage, searchTerm);
   }, [currentPage]);
 
-  const handleSearch = () => {
-    setCurrentPage(1);
-    fetchAffidavits(1, searchTerm);
-  };
-
   const handleViewConfirmation = async (memberId) => {
     try {
       const res = await axiosInstance.get(
@@ -56,10 +51,6 @@ function ViewSitebookingConfirmation() {
     } catch (error) {
       console.error("Error fetching confirmation letter", error);
     }
-  };
-
-  const handleEdit = (id) => {
-    navigate(`/edit-confirmationletter/${id}`);
   };
 
   if (selectedMember) {

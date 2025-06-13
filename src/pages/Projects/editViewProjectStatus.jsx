@@ -4,7 +4,6 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { Puff } from "react-loader-spinner";
 const EditProjectStatus = () => {
-  
   const { id } = useParams();
   const navigate = useNavigate();
   const fileInputRef = useRef();
@@ -19,9 +18,6 @@ const EditProjectStatus = () => {
   const [sendSMS, setSendSMS] = useState(false);
   const [sendEmail, setSendEmail] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
-  //   console.log("existing files",existingFiles)
-
   useEffect(() => {
     const fetchProjects = async () => {
       try {
@@ -213,35 +209,6 @@ const EditProjectStatus = () => {
               onChange={handleFileChange}
               className="hidden"
             />
-
-            {/* {existingFiles.length > 0 && (
-              <div className="mt-3">
-                <label className="block mb-1 font-semibold">
-                  Previously Uploaded Files
-                </label>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-3">
-                  {existingFiles.map((fileUrl, i) => (
-                    <div
-                      key={i}
-                      className="relative w-full h-24 rounded overflow-hidden border"
-                    >
-                      <img
-                        src={fileUrl}
-                        alt={`Existing ${i}`}
-                        className="w-full h-full object-cover"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => removeExistingImage(i)}
-                        className="absolute top-1 right-1 bg-red-500 text-white text-xs px-1 rounded"
-                      >
-                        ✕
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )} */}
             {existingFiles.length > 0 && (
               <div className="mt-3">
                 <label className="block mb-1 font-semibold">

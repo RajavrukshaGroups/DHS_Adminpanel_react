@@ -10,8 +10,6 @@ const AddReceipt = () => {
   const [loading, setLoading] = useState(true);
   const [existingReceiptIds, setExistingReceiptIds] = useState([]);
   const [receiptError, setReceiptError] = useState("");
-  // const [usedPaymentTypes, setUsedPaymentTypes] = useState([]);
-  // const [usedInstallments, setUsedInstallments] = useState([]);
   const [formData, setFormData] = useState({
     recieptNo: "",
     date: "",
@@ -35,7 +33,6 @@ const AddReceipt = () => {
         const response = await axios.get(
           `http://localhost:4000/member/get-member/${id}`
         );
-        console.log("response member", response);
         setTimeout(() => {
           setMemberData(response.data.member);
           setLoading(false);
@@ -67,26 +64,6 @@ const AddReceipt = () => {
     };
     fetchReceiptIds();
   }, []);
-
-  // useEffect(() => {
-  //   const fetchUsedPaymentTypes = async () => {
-  //     try {
-  //       const res = await axios.get(
-  //         `http://localhost:3000/member/check-payment-type-duplicates/${id}`
-  //       );
-  //       const types = res.data.paymentTypes || [];
-  //       setUsedPaymentTypes(types.map((t) => t.paymentType));
-  //       setUsedInstallments(
-  //         types
-  //           .filter((t) => t.paymentType === "installments")
-  //           .map((t) => t.installmentNumber)
-  //       );
-  //     } catch (err) {
-  //       console.error("Failed to fetch used payment types", err);
-  //     }
-  //   };
-  //   if (id) fetchUsedPaymentTypes();
-  // }, [id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -234,29 +211,6 @@ const AddReceipt = () => {
               className="w-full border rounded px-3 py-2"
               required
             >
-              {/* <option value="">Choose Payment Type</option>
-              <option
-                value="siteAdvance"
-                disabled={usedPaymentTypes.includes("siteAdvance")}
-              >
-                Site Advance{" "}
-                {usedPaymentTypes.includes("siteAdvance") && "(Already Added)"}
-              </option>
-              <option
-                value="siteDownPayment"
-                disabled={usedPaymentTypes.includes("siteDownPayment")}
-              >
-                Site Down Payment{" "}
-                {usedPaymentTypes.includes("siteDownPayment") &&
-                  "(Already Added)"}
-              </option>
-              <option
-                value="installments"
-                disabled={usedInstallments.length >= 3} // Disable only if all 3 installments are used
-              >
-                Installments{" "}
-                {usedInstallments.length >= 3 && "(All Installments Used)"}
-              </option> */}
               <option value="">Choose Payment Type</option>
               <option value="siteAdvance">Site Advance</option>
               <option value="siteDownPayment">Site Down Payment</option>

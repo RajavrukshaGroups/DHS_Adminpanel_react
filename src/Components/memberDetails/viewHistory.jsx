@@ -80,12 +80,6 @@ const ViewReceiptHistory = () => {
     );
   }
 
-  // const handleViewReceipt = (receiptId, paymentType, installmentNumber) => {
-  //   const url = `http://localhost:3000/receipt/get-receipt-details/${receiptId}?paymentType=${paymentType}${
-  //     installmentNumber ? `&installmentNumber=${installmentNumber}` : ""
-  //   }`;
-  //   window.open(url, "_blank");
-  // };
   const handleViewReceipt = (receiptId, paymentId) => {
     // const url = `http://localhost:3000/receipt/get-receipt-details/${receiptId}?paymentId=${paymentId}`;
     const url = `http://localhost:4000/receipt/get-receipt-details/${receiptId}?paymentId=${paymentId}`;
@@ -112,12 +106,6 @@ const ViewReceiptHistory = () => {
     }
   };
 
-  // const handleEditReceipt = (receiptId, paymentType, installmentNumber) => {
-  //   const url = `/edit-receipt/${receiptId}?paymentType=${paymentType}${
-  //     installmentNumber ? `&installmentNumber=${installmentNumber}` : ""
-  //   }`;
-  //   navigate(url); // Navigates in the same tab
-  // };
   const handleEditReceipt = (receiptId, paymentId) => {
     const url = `/edit-receipt/${receiptId}?paymentId=${paymentId}`;
     navigate(url);
@@ -197,20 +185,6 @@ const ViewReceiptHistory = () => {
         </div>
       </div>
 
-      {/* Button or Spinner */}
-      {/* <div className="flex justify-center mt-6">
-        {receiptLoading ? (
-          <div className="w-8 h-8 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
-        ) : (
-          <button
-            className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition"
-            onClick={fetchReceipts}
-          >
-            Get Receipts History
-          </button>
-          
-        )}
-      </div> */}
       <div className="flex justify-center gap-4 mt-6">
         {receiptLoading ? (
           <div className="w-8 h-8 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
@@ -273,12 +247,6 @@ const ViewReceiptHistory = () => {
                       <td className="px-3 py-2 border text-center">
                         {payment.bankName || "-"}
                       </td>
-                      {/* <td className="px-3 py-2 border text-center">
-                        {payment.transactionId ||
-                          payment.chequeNumber ||
-                          payment.ddNumber ||
-                          "-"}
-                      </td> */}
                       <td className="px-3 py-2 border text-center">
                         {payment.paymentMode?.toLowerCase() === "netbanking"
                           ? payment.transactionId
@@ -309,13 +277,6 @@ const ViewReceiptHistory = () => {
                         <div className="flex justify-center items-center gap-3 h-full">
                           <button
                             title="View"
-                            // onClick={() => {
-                            //   handleViewReceipt(
-                            //     receipt._id,
-                            //     payment.paymentType,
-                            //     payment.installmentNumber
-                            //   );
-                            // }}
                             onClick={() => {
                               handleViewReceipt(receipt._id, payment._id);
                             }}
@@ -324,13 +285,6 @@ const ViewReceiptHistory = () => {
                           </button>
                           <button
                             title="Edit"
-                            // onClick={() => {
-                            //   handleEditReceipt(
-                            //     receipt._id,
-                            //     payment.paymentType,
-                            //     payment.installmentNumber
-                            //   );
-                            // }}
                             onClick={() => {
                               handleEditReceipt(receipt._id, payment._id);
                             }}

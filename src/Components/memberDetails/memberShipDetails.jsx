@@ -1,10 +1,9 @@
-import React from 'react'
+import React from "react";
 
-function MemberShipDetails({ formData, handleChange ,formErrors }) {
-  console.log("formDatasssssscccccccccccccccccccccccssssssss", formData);
+function MemberShipDetails({ formData, handleChange, formErrors }) {
   const formatDate = (isoDate) => {
-  return isoDate ? isoDate.split("T")[0] : "";
-};
+    return isoDate ? isoDate.split("T")[0] : "";
+  };
   return (
     <div className="bg-white p-6 rounded-xl shadow-md mb-6">
       <h2 className="text-xl font-bold mb-4">Membership Details</h2>
@@ -19,35 +18,40 @@ function MemberShipDetails({ formData, handleChange ,formErrors }) {
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
-          {formErrors.recieptNo && <p className="text-red-600 text-sm">{formErrors.recieptNo}</p>}
+          {formErrors.recieptNo && (
+            <p className="text-red-600 text-sm">{formErrors.recieptNo}</p>
+          )}
         </div>
         <div>
           <label className="block font-medium mb-1">Date</label>
-           <input
-    type="date"
-    name="date"
-    placeholder="Date"
-    value={formatDate(formData?.date)}
-    onChange={handleChange}
-    className="w-full border px-4 py-2 rounded-md"
-  />
-          {formErrors.date && <p className="text-red-600 text-sm">{formErrors.date}</p>}
+          <input
+            type="date"
+            name="date"
+            placeholder="Date"
+            value={formatDate(formData?.date)}
+            onChange={handleChange}
+            className="w-full border px-4 py-2 rounded-md"
+          />
+          {formErrors.date && (
+            <p className="text-red-600 text-sm">{formErrors.date}</p>
+          )}
         </div>
         <div>
           <label className="block font-medium mb-1">No of Shares</label>
           <input
-            type="number" 
+            type="number"
             name="numberOfShares"
             placeholder="No of Shares"
             value={formData?.numberOfShares}
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
-          {formErrors.numberOfShares && <p className="text-red-600 text-sm">{formErrors.numberOfShares}</p>}
+          {formErrors.numberOfShares && (
+            <p className="text-red-600 text-sm">{formErrors.numberOfShares}</p>
+          )}
         </div>
-        <div>    
-          <label className="block font-medium mb-1">Share Fee
-          </label>
+        <div>
+          <label className="block font-medium mb-1">Share Fee</label>
           <input
             type="number"
             name="shareFee"
@@ -56,7 +60,9 @@ function MemberShipDetails({ formData, handleChange ,formErrors }) {
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
-          {formErrors.shareFee && <p className="text-red-600 text-sm">{formErrors.shareFee}</p>}
+          {formErrors.shareFee && (
+            <p className="text-red-600 text-sm">{formErrors.shareFee}</p>
+          )}
         </div>
         <div>
           <label className="block font-medium mb-1">Membership Fee</label>
@@ -68,7 +74,9 @@ function MemberShipDetails({ formData, handleChange ,formErrors }) {
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
-          {formErrors.memberShipFee && <p className="text-red-600 text-sm">{formErrors.memberShipFee}</p>}
+          {formErrors.memberShipFee && (
+            <p className="text-red-600 text-sm">{formErrors.memberShipFee}</p>
+          )}
         </div>
         <div>
           <label className="block font-medium mb-1">Application Fee</label>
@@ -80,7 +88,9 @@ function MemberShipDetails({ formData, handleChange ,formErrors }) {
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
-          {formErrors.applicationFee && <p className="text-red-600 text-sm">{formErrors.applicationFee}</p>}
+          {formErrors.applicationFee && (
+            <p className="text-red-600 text-sm">{formErrors.applicationFee}</p>
+          )}
         </div>
         <div>
           <label className="block font-medium mb-1">Admission Fee</label>
@@ -92,10 +102,14 @@ function MemberShipDetails({ formData, handleChange ,formErrors }) {
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
-          {formErrors.adminissionFee && <p className="text-red-600 text-sm">{formErrors.adminissionFee}</p>}
+          {formErrors.adminissionFee && (
+            <p className="text-red-600 text-sm">{formErrors.adminissionFee}</p>
+          )}
         </div>
         <div>
-          <label className="block font-medium mb-1">Miscellaneous Expenses</label>
+          <label className="block font-medium mb-1">
+            Miscellaneous Expenses
+          </label>
           <input
             type="number"
             name="miscellaneousExpenses"
@@ -104,12 +118,15 @@ function MemberShipDetails({ formData, handleChange ,formErrors }) {
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
-          {formErrors.miscellaneousExpenses && <p className="text-red-600 text-sm">{formErrors.miscellaneousExpenses}</p>}
+          {formErrors.miscellaneousExpenses && (
+            <p className="text-red-600 text-sm">
+              {formErrors.miscellaneousExpenses}
+            </p>
+          )}
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default MemberShipDetails
-
+export default MemberShipDetails;

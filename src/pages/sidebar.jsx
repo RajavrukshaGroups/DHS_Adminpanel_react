@@ -1,9 +1,7 @@
-import React from 'react';
-import SidebarComponent from '../components/sidebar'
+import React from "react";
+import SidebarComponent from "../Components/sidebar";
 function Sidebar(data) {
-  return (
-     <SidebarComponent {...data}/>
-  )
+  return <SidebarComponent {...data} />;
 }
 
-export default Sidebar
+export default Sidebar;

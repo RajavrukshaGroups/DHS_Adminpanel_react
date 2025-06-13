@@ -108,10 +108,6 @@ const ExtraChargeFormDetails = () => {
     });
   };
 
-  // const handleInputChange = (field) => (e) => {
-  //   setFormData({ ...formData, [field]: e.target.value });
-  // };
-
   const handleInputChange = (field) => (e) => {
     const value = e.target.value;
     console.log("receipt value", value);

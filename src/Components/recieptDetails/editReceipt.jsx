@@ -32,9 +32,6 @@ const EditReceipt = () => {
     numberOfShares: "",
   });
 
-  console.log("receipts data", receiptsData);
-  console.log("members data", membersData);
-
   useEffect(() => {
     const fetchReceiptIds = async () => {
       try {
@@ -133,13 +130,6 @@ const EditReceipt = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // if (name === "receiptNo") {
-    //   if (existingReceiptIds.includes(value.trim())) {
-    //     setReceiptError("receipt number already exists!");
-    //   } else {
-    //     setReceiptError("");
-    //   }
-    // }
     if (name === "receiptNo") {
       if (
         value.trim() !== receiptsData.receiptNo &&
@@ -236,8 +226,6 @@ const EditReceipt = () => {
               <label className="block mb-1">Receipt NO :</label>
               <input
                 type="text"
-                // name="recieptNo"
-                // value={formData.recieptNo}
                 name="receiptNo"
                 value={formData.receiptNo}
                 onChange={handleChange}

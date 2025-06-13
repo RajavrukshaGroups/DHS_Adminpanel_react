@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import axiosInstance from "../../api/interceptors";
-import { Link } from "react-router-dom";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { FaEye } from "react-icons/fa";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 
 function ViewUserdetails() {
@@ -43,27 +40,6 @@ function ViewUserdetails() {
       }
     }
   };
-
-  // const handleCheckAndNavigate = async (id) => {
-  //   try {
-  //     const response = await axiosInstance.get(
-  //       `/receipt/checkMembershipFee/${id}`
-  //     );
-  //     console.log(response, "resssssssssssssssssssssssssssssssssssssssssssss");
-  //     if (response.feeAdded) {
-  //       console.log(response, "ressssssssssssssssssssssss");
-
-  //       navigate(`/addconfirmationLetter/${id}`);
-  //     } else {
-  //       // alert(response.message || "Membership fee condition not met.");
-  //       toast.error(response.message || "Membership fee condition not met.");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error checking membership fee:", error);
-  //     // alert("Something went wrong while checking the membership fee.");
-  //     toast.error("Something went wrong while checking the membership fee.");
-  //   }
-  // };
 
   const handleCheckAndNavigate = async (id) => {
     try {
@@ -118,9 +94,6 @@ function ViewUserdetails() {
   return (
     <div className="flex justify-center min-h-screen bg-blue-50 px-4 py-6">
       <div className="w-full max-w-8xl bg-white rounded-lg shadow p-6">
-        {/* <h1 className="text-xl font-semibold mb-4 text-center">
-          View Member Details
-        </h1> */}
         <h1 className="text-xl font-semibold mb-4 text-center">
           View User Details
         </h1>
@@ -243,16 +216,6 @@ function ViewUserdetails() {
                           {member.isActive ? "Active" : "Inactive"}
                         </span>
                       </td>
-
-                      {/* <td className="border px-3 py-2 text-center text-red-500">
-                        <Link
-                          to={`/addconfirmationLetter/${member._id}`}
-                          title="Add Confirmation Letter"
-                        >
-                          <IoIosAddCircleOutline className="text-2xl flex m-auto text-blue-500" />
-                        </Link>
-                      </td> */}
-
                       <td className="border px-3 py-2 text-center text-red-500">
                         <div
                           onClick={() => handleCheckAndNavigate(member._id)}

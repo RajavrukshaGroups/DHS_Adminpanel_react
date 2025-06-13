@@ -4,7 +4,6 @@ import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import toast from "react-hot-toast";
 
 function ViewMemberdetails() {
-  
   const [memberDetails, setMemberDetails] = useState([]);
   const [emailSendStatus, setEmailSendStatus] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);

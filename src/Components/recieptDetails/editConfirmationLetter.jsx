@@ -6,7 +6,6 @@ import { toast } from "react-hot-toast";
 
 function EditConfirmationLetter() {
   const { id } = useParams();
-  console.log(id, "iddddddddddddddddddddddddddddddddddddddddd");
   const navigate = useNavigate();
   const [memberData, setMemberData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -15,7 +14,6 @@ function EditConfirmationLetter() {
     const fetchMember = async () => {
       try {
         const response = await axiosInstance.get(`/member/get-affidavit/${id}`);
-        console.log(response, "incoming response");
         setMemberData(response); // use response.data instead of just response
       } catch (error) {
         console.error("Error fetching member data:", error);
@@ -27,7 +25,6 @@ function EditConfirmationLetter() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
-
     setLoading(true);
 
     try {
@@ -87,41 +84,10 @@ function EditConfirmationLetter() {
             className="w-full border px-4 py-2 rounded-md"
           />
         </div>
-
-        {/* <div>
-          <label className="block font-medium mb-1">Confirmation Number</label>
-          <input
-            type="text"
-            name="ConfirmationLetterNo"
-            defaultValue={memberData?.ConfirmationLetterNo || ""}
-            className="w-full border px-4 py-2 rounded-md"
-          />
-        </div> */}
-
-        {/* <div>
-          <label className="block font-medium mb-1">
-            Confirmation Letter Issue Date
-          </label>
-          <input
-            type="date"
-            name="ConfirmationLetterDate"
-            defaultValue={
-              memberData?.ConfirmationLetterDate
-                ? new Date(memberData.ConfirmationLetterDate)
-                    .toISOString()
-                    .split("T")[0]
-                : ""
-            }
-            className="w-full border px-4 py-2 rounded-md"
-          />
-        </div> */}
-
         <div>
           <label className="block font-medium mb-1">
             Upload New Affidavit (optional)
           </label>
-
-          {/* Preview of the previously uploaded affidavit */}
           {memberData?.affidavitUrl && (
             <div className="mb-2">
               <img
@@ -131,8 +97,6 @@ function EditConfirmationLetter() {
               />
             </div>
           )}
-
-          {/* File upload input */}
           <input
             type="file"
             name="affidivate"

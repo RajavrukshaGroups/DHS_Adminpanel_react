@@ -43,10 +43,6 @@ function ViewSitebookingConfirmation() {
     }
   };
 
-  const handleEdit = (id) => {
-    navigate(`/edit-confirmationletter/${id}`);
-  };
-
   if (selectedMember) {
     return (
       <SiteBookingConfirmation

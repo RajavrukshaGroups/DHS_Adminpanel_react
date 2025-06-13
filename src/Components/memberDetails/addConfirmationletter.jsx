@@ -2,18 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axiosInstance from "../../api/interceptors";
 import { FaSpinner } from "react-icons/fa";
-// import { FaSpinner } from 'react-icons/fa';
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 function AddConfirmationletter() {
   const { id } = useParams();
-  console.log(id, "idddddddddddddddddddddddddddddd");
   const [memberData, setMemberData] = useState({});
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
-  console.log(memberData, "memberdatasssssssssssssssssssssssss");
 
   useEffect(() => {
     const fetchMember = async () => {
@@ -147,58 +143,6 @@ function AddConfirmationletter() {
             className="w-full border px-4 py-2 rounded-md"
           />
         </div>
-
-        {/* <div>
-        <label className="block font-medium mb-1">Amount</label>
-        <input
-          name="Amount"
-          type="text"
-          value={memberData?.siteDownPaymentAmount || ""}
-          className="w-full border px-4 py-2 rounded-md"
-        />
-      </div> */}
-
-        {/* <div>
-        <label className="block font-medium mb-1">Payment Method</label>
-        <input
-          name="PaymentType"
-          type="text"
-          value={memberData?.PaymentType|| ""}
-          placeholder="Relationship"
-          className="w-full border px-4 py-2 rounded-md"
-        />
-      </div> */}
-
-        {/* <div>
-        <label className="block font-medium mb-1">Cheque No/DD No/UTR No</label>
-        <input
-          name="ChequeNo"
-          value={memberData?.checqueNumber || ""}
-          type="text"
-          placeholder="Relationship"
-          className="w-full border px-4 py-2 rounded-md"
-        />
-      </div> */}
-
-        {/* <div>
-        <label className="block font-medium mb-1">Bank Name</label>
-        <input
-        name="BankName"
-          type="text"
-          value={memberData?.BankName || ""}
-          className="w-full border px-4 py-2 rounded-md"
-        />
-      </div> */}
-        {/* <div>
-        <label className="block font-medium mb-1">Branch</label>
-        <input
-        name="BranchName"
-          type="text"
-          className="w-full border px-4 py-2 rounded-md"
-          value={memberData?.BranchName || ""}
-        />
-      </div> */}
-
         <div>
           <label className="block font-medium mb-1">Site Diemension</label>
           <input
@@ -230,15 +174,6 @@ function AddConfirmationletter() {
             value={memberData?.SeniorityID || ""}
           />
         </div>
-        {/* <div>
-        <label className="block font-medium mb-1">Duration</label>
-        <input
-        name="Duration"
-          type="text"   
-          placeholder="Relationship"
-          className="w-full border px-4 py-2 rounded-md"
-        />
-      </div> */}
         <div>
           <label className="block font-medium mb-1">Confirmation Number</label>
           <input

@@ -79,19 +79,6 @@ const EditExtraCharge = () => {
     fetchReceiptIds();
   }, []);
 
-  // const handleInputChange = (field) => (e) => {
-  //   const value = e.target.value;
-
-  //   if (field === "recieptNo") {
-  //     if (existingReceiptIds.map(String).includes(value.trim())) {
-  //       setReceiptError("Receipt number already exists!");
-  //     } else {
-  //       setReceiptError("");
-  //     }
-  //   }
-  //   setFormData((prev) => ({ ...prev, [field]: e.target.value }));
-  // };
-
   const handleInputChange = (field) => (e) => {
     const value = e.target.value;
 

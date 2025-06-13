@@ -28,10 +28,7 @@ import {
   FaHistory,
   FaDownload,
 } from "react-icons/fa";
-import { RiUserSettingsLine } from "react-icons/ri";
 import { FaUsersSlash } from "react-icons/fa";
-
-import { MdRoomPreferences } from "react-icons/md";
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const location = useLocation();
@@ -264,10 +261,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     : "text-black hover:bg-gray-100"
                 }`}
               >
-                {/* <FaRegEye className="text-lg" /> */}
-                {/* <FaUsers className="text-lg" /> */}
                 <FaReceipt className="text-lg" />
-
                 <span className="ml-4 flex-grow text-left">
                   Receipt Details
                 </span>
@@ -287,7 +281,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                   >
                     {/* <FaPlusCircle className="text-base" /> */}
                     <FaCheckCircle className="text-base" />
-
                     <span className="ml-3">Booking Confirmation</span>
                   </Link>
                   <Link
@@ -301,7 +294,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                   >
                     {/* <FaPlusCircle className="text-base" /> */}
                     <FaEye className="text-base" />
-
                     <span className="ml-3">View Receipts</span>
                   </Link>
                   <Link
@@ -315,12 +307,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                   >
                     {/* <FaPlusCircle className="text-base" /> */}
                     <FaFileAlt className="text-base" />
-
                     <span className="ml-3">View Share Certificate</span>
                   </Link>
                 </div>
               )}
-
               {/* Recipt Details Menu */}
               <button
                 onClick={() => setPlotDetailsOpen(!plotDetailsOpen)}
@@ -332,7 +322,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
               >
                 {/* <FaRegEye className="text-lg" /> */}
                 <FaRulerCombined className="text-lg" />
-
                 <span className="ml-4 flex-grow text-left">Plot Details</span>
                 {plotDetailsOpen ? <FaChevronUp /> : <FaChevronDown />}
               </button>
@@ -467,8 +456,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                   </Link>
                 </div>
               )}
-              {/* Extra Charge Form Submenu */}
-              {/* Extra Charge Form Menu */}
               <button
                 onClick={() => setDownloads(!downloads)}
                 className={`flex items-center w-full px-4 py-3 rounded-lg ${

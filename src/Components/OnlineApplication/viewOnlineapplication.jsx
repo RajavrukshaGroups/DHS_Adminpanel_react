@@ -1,9 +1,7 @@
-
 import axios from "axios";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 const OnlineApplicationsTable = () => {
-
   const [memberDetails, setMemberDetails] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -11,15 +9,14 @@ const OnlineApplicationsTable = () => {
 
   const fetchOnlineApplications = async () => {
     try {
-       const response = await axios.post(
-      "http://localhost:4000/defenceWebsiteRoutes/get-online-applications",
-      {
-        search: searchTerm,
-        page: currentPage,
-        limit: 10,
-      }
-    );
-      console.log(response,'incoming')
+      const response = await axios.post(
+        "http://localhost:4000/defenceWebsiteRoutes/get-online-applications",
+        {
+          search: searchTerm,
+          page: currentPage,
+          limit: 10,
+        }
+      );
       setMemberDetails(response.data.data);
       setTotalPages(response.data.totalPages);
     } catch (error) {
@@ -30,8 +27,6 @@ const OnlineApplicationsTable = () => {
   useEffect(() => {
     fetchOnlineApplications();
   }, [searchTerm, currentPage]);
-
-
 
   return (
     <div className="flex flex-col items-center min-h-screen bg-blue-50 px-4 py-6">
@@ -85,11 +80,6 @@ const OnlineApplicationsTable = () => {
                     <td className="border px-3 py-2 text-center">
                       {member.mobileNumber}
                     </td>
-                    {/* <td className="border px-3 py-2 text-center">
-                      <button onSubmit={handleAddmember} className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">
-                        View
-                      </button>
-                    </td> */}
                     <Link to={`/from-application/${member._id}`}>
                       <button className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">
                         View
@@ -125,10 +115,7 @@ const OnlineApplicationsTable = () => {
         </div>
       </div>
     </div>
+  );
+};
 
-
-
-  )
-}
-
-export default OnlineApplicationsTable
+export default OnlineApplicationsTable;

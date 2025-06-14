@@ -36,7 +36,7 @@ const EditReceipt = () => {
     const fetchReceiptIds = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:4000/receipt/get-all-receipt-ids"
+          "https://adminpanel.defencehousingsociety.com/receipt/get-all-receipt-ids"
         );
         setExistingReceiptIds(response.data.receiptIds);
       } catch (error) {
@@ -52,7 +52,7 @@ const EditReceipt = () => {
     const fetchReceipts = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:4000/receipt/edit-receipt/payment-history/${id}${window.location.search}`
+          `https://adminpanel.defencehousingsociety.com/receipt/edit-receipt/payment-history/${id}${window.location.search}`
         );
 
         setTimeout(() => {
@@ -159,7 +159,7 @@ const EditReceipt = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:4000/member/edit-receipt/${membersData._id}?paymentId=${receiptsData._id}`,
+        `https://adminpanel.defencehousingsociety.com/member/edit-receipt/${membersData._id}?paymentId=${receiptsData._id}`,
         formData
       );
 

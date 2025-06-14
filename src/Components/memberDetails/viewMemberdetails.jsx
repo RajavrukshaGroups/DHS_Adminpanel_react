@@ -17,7 +17,7 @@ function ViewMemberdetails() {
         // `http://localhost:3000/member/view-member-details?page=${page}&search=${encodeURIComponent(
         //   search
         // )}`
-        `http://localhost:4000/member/view-member-details?page=${page}&search=${encodeURIComponent(
+        `https://adminpanel.defencehousingsociety.com/member/view-member-details?page=${page}&search=${encodeURIComponent(
           search
         )}`
       );
@@ -46,7 +46,7 @@ function ViewMemberdetails() {
     try {
       await axiosInstance.put(
         // `http://localhost:3000/member/update-status/${memberId}`,
-        `http://localhost:4000/member/update-status/${memberId}`,
+        `https://adminpanel.defencehousingsociety.com/member/update-status/${memberId}`,
         { isActive: !currentStatus }
       );
       setMemberDetails((prev) =>
@@ -64,7 +64,7 @@ function ViewMemberdetails() {
     try {
       const response = await axiosInstance.post(
         // "http://localhost:3000/member/membercredentials",
-        "http://localhost:4000/member/membercredentials",
+        "https://adminpanel.defencehousingsociety.com/member/membercredentials",
         {
           name: member.name,
           email: member.email,

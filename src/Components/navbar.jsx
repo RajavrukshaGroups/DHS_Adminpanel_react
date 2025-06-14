@@ -5,6 +5,7 @@ import { useState } from "react";
 import { logout } from "../redux/authSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import LogoBanner from "../../public/images/logo200.png"
 
 import "./navbar.css";
 
@@ -22,7 +23,7 @@ const Navbar = () => {
         <div className="flex items-center">
           <a href="/" className="flex items-center no-underline">
             <img
-              src="https://adminpanel.defencehousingsociety.com/img/logo200.png"
+              src={LogoBanner}
               alt="Defence Housing Society Logo"
               width={"92"}
               height={"92"}

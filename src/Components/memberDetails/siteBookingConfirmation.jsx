@@ -1,13 +1,14 @@
 // import Image from "next/image"
 import { MapPin, Globe, Mail, Phone } from "lucide-react";
-
+import Letterheader from "../../../public/images/letterheader.jpg";
+import FooterSign from "../../../public/images/footerSign.jpg";
 export default function SiteBookingConfirmation({ member, onBack }) {
   const { userId } = member || {};
   return (
     <div className="mt-5 max-w-4xl mx-auto border border-gray-300 shadow-sm bg-white">
       <img
-        src="https://adminpanel.defencehousingsociety.com/img/letterheader.jpg"
-        alt=""
+        src={Letterheader}
+        alt="letter header"
       />
 
       {/* Document reference numbers */}
@@ -101,8 +102,8 @@ export default function SiteBookingConfirmation({ member, onBack }) {
       </div>
 
       <img
-        src="https://adminpanel.defencehousingsociety.com/img/footerSign.jpg"
-        alt=""
+        src={FooterSign}
+        alt="footer signature"
       />
     </div>
   );

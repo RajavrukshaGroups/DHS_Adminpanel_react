@@ -8,11 +8,11 @@ function PaymentDetails({ formData, handleChange, formErrors }) {
         let response;
         if (formData?.memberId) {
           response = await axiosInstance.get(
-            `http://localhost:4000/member/get-member-receipt/${formData.memberId}`
+            `https://adminpanel.defencehousingsociety.com/member/get-member-receipt/${formData.memberId}`
           );
         } else if (formData?.onlineApplicationId) {
           response = await axiosInstance.get(
-            `http://localhost:4000/member/get-member-onlineApplication/${formData.onlineApplicationId}`
+            `https://adminpanel.defencehousingsociety.com/member/get-member-onlineApplication/${formData.onlineApplicationId}`
           );
           console.log(response, "response in paymeent details application");
         }

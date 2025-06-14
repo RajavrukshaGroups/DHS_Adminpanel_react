@@ -37,7 +37,7 @@ function Dashboard() {
       try {
         const response = await axios.get(
           // "http://localhost:3000/project/totalprojectscount"
-          "http://localhost:4000/project/totalprojectscount"
+          "https://adminpanel.defencehousingsociety.com/project/totalprojectscount"
         );
         setTotalProjects(response.data.totalProjects);
         setTotalRegMembers(response.data.totalRegMembers);

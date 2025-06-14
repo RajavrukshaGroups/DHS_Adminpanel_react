@@ -31,7 +31,7 @@ const AddReceipt = () => {
         //   `http://localhost:3000/member/get-member/${id}`
         // );
         const response = await axios.get(
-          `http://localhost:4000/member/get-member/${id}`
+          `https://adminpanel.defencehousingsociety.com/member/get-member/${id}`
         );
         setTimeout(() => {
           setMemberData(response.data.member);
@@ -53,7 +53,7 @@ const AddReceipt = () => {
         //   "http://localhost:3000/receipt/get-all-receipt-ids"
         // );
         const response = await axios.get(
-          "http://localhost:4000/receipt/get-all-receipt-ids"
+          "https://adminpanel.defencehousingsociety.com/receipt/get-all-receipt-ids"
         );
         console.log("response receipts", response);
         setExistingReceiptIds(response.data.receiptIds);
@@ -98,7 +98,7 @@ const AddReceipt = () => {
       //   formData
       // );
       const response = await axios.post(
-        `http://localhost:4000/member/add-receipt/${id}`,
+        `https://adminpanel.defencehousingsociety.com/member/add-receipt/${id}`,
         formData
       );
 

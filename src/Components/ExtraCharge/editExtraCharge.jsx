@@ -31,7 +31,7 @@ const EditExtraCharge = () => {
       try {
         const res = await axios.get(
           // `http://localhost:3000/receipt/get-extra-charge-by-paymentid/${paymentId}`
-          `http://localhost:4000/receipt/get-extra-charge-by-paymentid/${paymentId}`
+          `https://adminpanel.defencehousingsociety.com/receipt/get-extra-charge-by-paymentid/${paymentId}`
         );
         const data = res.data;
         setOriginalReceiptNo(data.data.payment.receiptNo || "");
@@ -67,7 +67,7 @@ const EditExtraCharge = () => {
       try {
         const response = await axios.get(
           // "http://localhost:3000/receipt/get-all-receipt-ids"
-          "http://localhost:4000/receipt/get-all-receipt-ids"
+          "https://adminpanel.defencehousingsociety.com/receipt/get-all-receipt-ids"
         );
         console.log("response receipts", response);
         setExistingReceiptIds(response.data.receiptIds);
@@ -107,7 +107,7 @@ const EditExtraCharge = () => {
     try {
       const response = await axios.put(
         // `http://localhost:3000/receipt/update-extra-charge-receipt/${paymentId}`,
-        `http://localhost:4000/receipt/update-extra-charge-receipt/${paymentId}`,
+        `https://adminpanel.defencehousingsociety.com/receipt/update-extra-charge-receipt/${paymentId}`,
         formData
       );
       toast.success("receipt updated successfully");

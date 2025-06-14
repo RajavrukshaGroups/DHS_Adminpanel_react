@@ -18,7 +18,7 @@ const AddLandDetails = ({ refreshKey }) => {
       try {
         const res = await axios.get(
           // "http://localhost:3000/project/all-projects"
-          "http://localhost:4000/project/all-projects"
+          "https://adminpanel.defencehousingsociety.com/project/all-projects"
         );
         setProjectOptions(res.data.data || []);
       } catch (err) {
@@ -106,7 +106,7 @@ const AddLandDetails = ({ refreshKey }) => {
     try {
       const res = await axios.patch(
         // "http://localhost:3000/project/update-land-details",
-        "http://localhost:4000/project/update-land-details",
+        "https://adminpanel.defencehousingsociety.com/project/update-land-details",
         {
           projectName,
           dimensionId,
@@ -121,7 +121,7 @@ const AddLandDetails = ({ refreshKey }) => {
 
       const refreshed = await axios.get(
         // "http://localhost:3000/project/all-projects"
-        "http://localhost:4000/project/all-projects"
+        "https://adminpanel.defencehousingsociety.com/project/all-projects"
       );
       setProjectOptions(refreshed.data.data || []);
 

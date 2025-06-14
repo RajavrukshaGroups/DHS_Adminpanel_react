@@ -15,7 +15,7 @@ const ViewProjectStatus = () => {
       try {
         const response = await axios.get(
           // "http://localhost:3000/project/all-projectstatus"
-          "http://localhost:4000/project/all-projectstatus"
+          "https://adminpanel.defencehousingsociety.com/project/all-projectstatus"
         );
         if (response.data?.success) {
           setProjectStatusLists(response.data.data);
@@ -194,7 +194,7 @@ const ViewProjectStatus = () => {
                   try {
                     const res = await axios.delete(
                       // `http://localhost:3000/project/delete-projectstatus/${projectToDelete._id}`
-                      `http://localhost:4000/project/delete-projectstatus/${projectToDelete._id}`
+                      `https://adminpanel.defencehousingsociety.com/project/delete-projectstatus/${projectToDelete._id}`
                     );
                     if (res.data?.success) {
                       toast.success(res.data.message);

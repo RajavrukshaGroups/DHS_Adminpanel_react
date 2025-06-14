@@ -31,7 +31,7 @@ const ExtraChargeFormDetails = () => {
       try {
         const response = await axios.get(
           // "http://localhost:3000/member/collect-seniorityIds"
-          "http://localhost:4000/member/collect-seniorityIds"
+          "https://adminpanel.defencehousingsociety.com/member/collect-seniorityIds"
         );
         if (response.data.success) {
           const options = response.data.SeniorityIds.map((id) => ({
@@ -52,7 +52,7 @@ const ExtraChargeFormDetails = () => {
       try {
         const response = await axios.get(
           // "http://localhost:3000/receipt/get-all-receipt-ids"
-          "http://localhost:4000/receipt/get-all-receipt-ids"
+          "https://adminpanel.defencehousingsociety.com/receipt/get-all-receipt-ids"
         );
         console.log("response receipts", response);
         setExistingReceiptIds(response.data.receiptIds);
@@ -70,7 +70,7 @@ const ExtraChargeFormDetails = () => {
     try {
       const response = await axios.get(
         // `http://localhost:3000/member/member-info-seniority-id?SeniorityID=${seniorityId.value}`
-        `http://localhost:4000/member/member-info-seniority-id?SeniorityID=${seniorityId.value}`
+        `https://adminpanel.defencehousingsociety.com/member/member-info-seniority-id?SeniorityID=${seniorityId.value}`
       );
 
       if (response.data.success) {
@@ -159,7 +159,7 @@ const ExtraChargeFormDetails = () => {
     try {
       const response = await axios.post(
         // `http://localhost:3000/member/add-receipt/${memberData._id}`,
-        `http://localhost:4000/member/add-receipt/${memberData._id}`,
+        `https://adminpanel.defencehousingsociety.com/member/add-receipt/${memberData._id}`,
         payload
       );
       if (response.status === 200) {

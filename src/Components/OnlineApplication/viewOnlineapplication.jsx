@@ -10,7 +10,7 @@ const OnlineApplicationsTable = () => {
   const fetchOnlineApplications = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:4000/defenceWebsiteRoutes/get-online-applications",
+        "https://adminpanel.defencehousingsociety.com/defenceWebsiteRoutes/get-online-applications",
         {
           search: searchTerm,
           page: currentPage,

@@ -35,7 +35,7 @@ function ViewSitebookingConfirmation() {
       const res = await axiosInstance.get(
         `/receipt/view-confirmation/${memberId}`
       );
-      const confirmationUrl = `http://localhost:4000/receipt/view-confirmation/${memberId}`;
+      const confirmationUrl = `https://adminpanel.defencehousingsociety.com/receipt/view-confirmation/${memberId}`;
       window.open(confirmationUrl, "_blank");
       setSelectedMember(res.data);
     } catch (error) {

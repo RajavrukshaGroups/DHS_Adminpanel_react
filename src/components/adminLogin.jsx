@@ -4,6 +4,7 @@ import { Signin } from "../api/auth";
 import { loginSuccess } from "../redux/authSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import LoginBg from "../../public/images/letterheader-removebg-preview.png"
 import {
   showSuccessToast,
   showErrorToast,
@@ -53,7 +54,7 @@ const Login = () => {
       <header className="border-b border-gray-200 py-4 px-6">
         <div className="max-w-6xl mx-auto flex items-center gap-4">
           <img
-            src="https://adminpanel.defencehousingsociety.com/img/letterheader-removebg-preview.png"
+            src={LoginBg}
             alt="Defence Habitat Housing Logo"
             // width={120}
 

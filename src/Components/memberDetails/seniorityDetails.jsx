@@ -2,9 +2,18 @@ import React, { useEffect, useState } from "react";
 import axiosInstance from "../../api/interceptors";
 
 function SeniorityDetails({ handleChange, formData, formErrors }) {
+  console.log("Rendering SeniorityDetails with formData:", formData);
+
   const [duplicateFields, setDuplicateFields] = useState({});
   const [touchedFields, setTouchedFields] = useState({});
   const [hasInteracted, setHasInteracted] = useState(false);
+
+  const [originalValues, setOriginalValues] = useState({
+    seniorityId: "",
+    membershipNo: "",
+    cunfirmationLetterNo: "",
+    shareCertificateNo: ""
+  });
 
   // Map frontend field names to backend response keys
   const fieldKeyMap = {
@@ -14,41 +23,68 @@ function SeniorityDetails({ handleChange, formData, formErrors }) {
     shareCertificateNo: "ShareCertificateNumber",
   };
 
+    useEffect(() => {
+    if (formData?.memberId) { // Check if editing an existing member
+      setOriginalValues({
+        seniorityId: formData.seniorityId || "",
+        membershipNo: formData.membershipNo || "",
+        cunfirmationLetterNo: formData.cunfirmationLetterNo || "",
+        shareCertificateNo: formData.shareCertificateNo || ""
+      });
+    }
+  }, [formData?.memberId]);
+
   // Track when fields are touched or changed
   const handleFieldInteraction = (field) => {
     if (!hasInteracted) setHasInteracted(true);
     setTouchedFields((prev) => ({ ...prev, [field]: true }));
   };
 
-  useEffect(() => {
-    if (!hasInteracted) return; // Don't check on initial render
+useEffect(() => {
+  if (!hasInteracted) return;
 
-    const fieldsToCheck = {};
-    Object.entries(formData).forEach(([key, value]) => {
-      if (value && touchedFields[key]) {
-        fieldsToCheck[fieldKeyMap[key]] = value;
+  const fieldsToCheck = {};
+  const fieldsToSkip = {};
+
+  Object.entries(formData).forEach(([key, value]) => {
+    if (value && touchedFields[key]) {
+      // Case-sensitive comparison with original values
+      if (originalValues[key] === value) {
+        fieldsToSkip[key] = true;
+        setDuplicateFields(prev => ({ ...prev, [fieldKeyMap[key]]: false }));
+      } else {
+        fieldsToCheck[fieldKeyMap[key]] = value; // Send raw value (case-sensitive)
       }
-    });
-
-    if (Object.keys(fieldsToCheck).length > 0) {
-      axiosInstance
-        .get("/member/check-duplicates", {
-          params: fieldsToCheck,
-        })
-        .then((res) => {
-          setDuplicateFields(res.fields || {});
-        })
-        .catch((err) => console.error("Error checking duplicates:", err));
     }
-  }, [formData, touchedFields, hasInteracted]);
+  });
+
+  if (Object.keys(fieldsToCheck).length > 0) {
+    axiosInstance
+      .get("/member/check-duplicates", {
+        params: {
+          ...fieldsToCheck,
+          caseSensitive: true // Explicitly tell backend to enforce case-sensitivity
+        }
+      })
+      .then((res) => {
+        setDuplicateFields(res.fields || {});
+      })
+      .catch((err) => console.error("Error checking duplicates:", err));
+  }
+}, [formData, touchedFields, hasInteracted, originalValues]);
 
   const isDuplicate = (field) => {
+    // Not a duplicate if value matches original (when editing)
+    if (formData[field] && originalValues[field] === formData[field]) {
+      return false;
+    }
     return (
       formData[field] &&
       touchedFields[field] &&
       duplicateFields[fieldKeyMap[field]]
     );
   };
+
 
   return (
     <div className="bg-white p-6 rounded-xl shadow-md mb-6">

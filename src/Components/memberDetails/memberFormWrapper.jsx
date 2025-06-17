@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState ,useRef} from "react";
 import PersonalDetails from "./PersonalDetails";
 import ReferenceDetails from "./ReferenceDetails";
 import NomineePerticular from "./nomineePerticular";
@@ -14,6 +14,7 @@ import toast from "react-hot-toast";
 import { useEffect } from "react";
 import { FaRegEye } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
+import Spinner from "../common/Spinner.jsx";
 
 const MemberFormWrapper = () => {
   const { id } = useParams();
@@ -84,6 +85,9 @@ const MemberFormWrapper = () => {
   const [existingPhoto, setExistingPhoto] = useState(null); // Add this
   const [existingSign, setExistingSign] = useState(null); // Add this
   const [loading, setLoading] = useState(false);
+
+ const photoInputRef = useRef(null);
+  const signInputRef = useRef(null);
 
   useEffect(() => {
     if (id && isFromApplication) {
@@ -359,6 +363,12 @@ const MemberFormWrapper = () => {
     return errors;
   };
 
+//   const renderPreview = (file, url) => {
+//   if (file) return URL.createObjectURL(file);
+//   if (url) return url;
+//   return '';
+// };
+  
   const handleChange = (e) => {
     console.log(
       "e.target.name:",
@@ -448,6 +458,9 @@ const MemberFormWrapper = () => {
       className="min-h-screen w-full"
       style={{ backgroundColor: "oklch(0.92 0.04 252.1)" }}
     >
+      {/* Show spinner when loading */}
+      {loading && <Spinner />}
+
       <div className="p-6 max-w-5xl w-full mx-auto">
         <form onSubmit={handleSubmit}>
           {/* Form Sections */}
@@ -487,66 +500,115 @@ const MemberFormWrapper = () => {
             formErrors={formErrors}
           />
 
-          {/* Image Uploads */}
-          <div className="flex flex-wrap gap-6 mb-6">
+       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
             {/* Member Photo */}
-            <div className="w-full md:w-1/2">
-              <label className="block mb-2 text-sm font-medium text-gray-700">
-                Member Photo
+            <div className="w-full bg-white p-4 rounded-lg shadow-sm">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Member Photo <span className="text-red-500">*</span>
               </label>
-              <input
-                type="file"
-                name="memberPhoto"
-                accept="image/*"
-                onChange={handleFileChange}
-                className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 p-2"
-              />
-              {(memberPhoto || existingPhoto) && (
-                <div className="mt-4">
-                  <p className="text-sm text-gray-600 mb-2">Preview:</p>
-                  <img
-                    src={renderPreview(memberPhoto, existingPhoto)}
-                    alt="Member Photo Preview"
-                    className="h-32 w-32 object-cover rounded border border-gray-300"
+              <div className="flex items-center space-x-4">
+                <div className="flex-1">
+                  <input
+                    type="file"
+                    name="memberPhoto"
+                    ref={photoInputRef}
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    className="block w-full text-sm text-gray-500
+                      file:mr-4 file:py-2 file:px-4
+                      file:rounded-md file:border-0
+                      file:text-sm file:font-semibold
+                      file:bg-blue-50 file:text-blue-700
+                      hover:file:bg-blue-100"
                   />
                 </div>
-              )}
+                {(memberPhoto || existingPhoto) && (
+                  <div className="relative">
+                    <img
+                      src={renderPreview(memberPhoto, existingPhoto)}
+                      alt="Member Photo Preview"
+                      className="w-16 h-16 rounded-full object-cover border-2 border-blue-200"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setMemberPhoto(null);
+                        setExistingPhoto(null);
+                        if (photoInputRef.current) photoInputRef.current.value = '';
+                      }}
+                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 text-xs hover:bg-red-600"
+                      aria-label="Remove photo"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                )}
+              </div>
               {formErrors.memberPhoto && (
                 <p className="text-red-500 text-sm mt-2">
                   {formErrors.memberPhoto}
                 </p>
               )}
+              <p className="mt-1 text-xs text-gray-500">
+                Upload a clear passport-size photo (Max 2MB)
+              </p>
             </div>
 
             {/* Member Signature */}
-            <div className="w-full md:w-1/2">
-              <label className="block mb-2 text-sm font-medium text-gray-700">
-                Member Signature
+            <div className="w-full bg-white p-4 rounded-lg shadow-sm">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Member Signature <span className="text-red-500">*</span>
               </label>
-              <input
-                type="file"
-                name="memberSign"
-                accept="image/*"
-                onChange={handleFileChange}
-                className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 p-2"
-              />
-              {(memberSign || existingSign) && (
-                <div className="mt-4">
-                  <p className="text-sm text-gray-600 mb-2">Preview:</p>
-                  <img
-                    src={renderPreview(memberSign, existingSign)}
-                    alt="Member Signature Preview"
-                    className="h-20 w-48 object-contain border border-gray-300 bg-white"
+              <div className="flex items-center space-x-4">
+                <div className="flex-1">
+                  <input
+                    type="file"
+                    name="memberSign"
+                    ref={signInputRef}
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    className="block w-full text-sm text-gray-500
+                      file:mr-4 file:py-2 file:px-4
+                      file:rounded-md file:border-0
+                      file:text-sm file:font-semibold
+                      file:bg-blue-50 file:text-blue-700
+                      hover:file:bg-blue-100"
                   />
                 </div>
-              )}
+                {(memberSign || existingSign) && (
+                  <div className="relative">
+                    <img
+                      src={renderPreview(memberSign, existingSign)}
+                      alt="Member Signature Preview"
+                      className="w-20 h-12 object-contain border border-gray-200"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setMemberSign(null);
+                        setExistingSign(null);
+                        if (signInputRef.current) signInputRef.current.value = '';
+                      }}
+                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 text-xs hover:bg-red-600"
+                      aria-label="Remove signature"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                )}
+              </div>
               {formErrors.memberSign && (
                 <p className="text-red-500 text-sm mt-2">
                   {formErrors.memberSign}
                 </p>
               )}
+              <p className="mt-1 text-xs text-gray-500">
+                Upload your signature (White background preferred)
+              </p>
             </div>
           </div>
+
+          
 
           <div className="flex justify-start mt-6">
             <button

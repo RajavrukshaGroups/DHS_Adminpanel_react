@@ -3,8 +3,9 @@ import axios from "axios";
 import store from "../redux/store";
 
 const axiosInstance = axios.create({
-  // baseURL: "http://localhost:4000",
-  baseURL: "https://adminpanel.defencehousingsociety.com/",
+  baseURL: "http://localhost:4000",
+  // baseURL: "http://localhost:3000",
+  // baseURL: "https://adminpanel.defencehousingsociety.com/",
   headers: {
     "Content-Type": "application/json",
   },

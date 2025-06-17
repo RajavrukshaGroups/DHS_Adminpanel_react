@@ -21,12 +21,12 @@ const EditProjectStatus = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        // const res = await axios.get(
-        //   "http://localhost:3000/project/all-projects"
-        // );
         const res = await axios.get(
-          "https://adminpanel.defencehousingsociety.com/project/all-projects"
+          "http://localhost:4000/project/all-projects"
         );
+        // const res = await axios.get(
+        //   "https://adminpanel.defencehousingsociety.com/project/all-projects"
+        // );
         setListProjects(res.data.data);
       } catch (error) {
         console.error("Error fetching projects", error);
@@ -35,12 +35,12 @@ const EditProjectStatus = () => {
 
     const fetchStatus = async () => {
       try {
-        // const res = await axios.get(
-        //   `http://localhost:3000/project/indprojectstatus/${id}`
-        // );
         const res = await axios.get(
-          `https://adminpanel.defencehousingsociety.com/project/indprojectstatus/${id}`
+          `http://localhost:4000/project/indprojectstatus/${id}`
         );
+        // const res = await axios.get(
+        //   `https://adminpanel.defencehousingsociety.com/project/indprojectstatus/${id}`
+        // );
         if (res.data.success) {
           const data = res.data.data;
           setSelectedProject(data.projectName);
@@ -112,8 +112,8 @@ const EditProjectStatus = () => {
 
     try {
       const res = await axios.put(
-        // `http://localhost:3000/project/update-indprojectstatus/${id}`,
-        `https://adminpanel.defencehousingsociety.com/project/update-indprojectstatus/${id}`,
+        `http://localhost:4000/project/update-indprojectstatus/${id}`,
+        // `https://adminpanel.defencehousingsociety.com/project/update-indprojectstatus/${id}`,
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );

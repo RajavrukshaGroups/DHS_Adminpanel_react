@@ -22,19 +22,24 @@ const AddReceipt = () => {
     chequeNumber: "",
     transactionId: "",
     ddNumber: "",
+    correspondenceAddress: "",
   });
   console.log("members data", membersData);
   useEffect(() => {
     const fetchMember = async () => {
       try {
-        // const response = await axios.get(
-        //   `http://localhost:3000/member/get-member/${id}`
-        // );
         const response = await axios.get(
-          `https://adminpanel.defencehousingsociety.com/member/get-member/${id}`
+          `http://localhost:4000/member/get-member/${id}`
         );
+        // const response = await axios.get(
+        //   `https://adminpanel.defencehousingsociety.com/member/get-member/${id}`
+        // );
         setTimeout(() => {
           setMemberData(response.data.member);
+          setFormData((prev) => ({
+            ...prev,
+            correspondenceAddress: response.data.member.contactAddress || "",
+          }));
           setLoading(false);
         }, 500);
       } catch (error) {
@@ -49,12 +54,12 @@ const AddReceipt = () => {
   useEffect(() => {
     const fetchReceiptIds = async () => {
       try {
-        // const response = await axios.get(
-        //   "http://localhost:3000/receipt/get-all-receipt-ids"
-        // );
         const response = await axios.get(
-          "https://adminpanel.defencehousingsociety.com/receipt/get-all-receipt-ids"
+          "http://localhost:4000/receipt/get-all-receipt-ids"
         );
+        // const response = await axios.get(
+        //   "https://adminpanel.defencehousingsociety.com/receipt/get-all-receipt-ids"
+        // );
         console.log("response receipts", response);
         setExistingReceiptIds(response.data.receiptIds);
       } catch (error) {
@@ -93,14 +98,14 @@ const AddReceipt = () => {
     }
 
     try {
-      // const response = await axios.post(
-      //   `http://localhost:3000/member/add-receipt/${id}`,
-      //   formData
-      // );
       const response = await axios.post(
-        `https://adminpanel.defencehousingsociety.com/member/add-receipt/${id}`,
+        `http://localhost:4000/member/add-receipt/${id}`,
         formData
       );
+      // const response = await axios.post(
+      //   `https://adminpanel.defencehousingsociety.com/member/add-receipt/${id}`,
+      //   formData
+      // );
 
       if (response.status === 200) {
         toast.success("Receipt added successfully");
@@ -116,6 +121,7 @@ const AddReceipt = () => {
           chequeNumber: "",
           transactionId: "",
           ddNumber: "",
+          correspondenceAddress: "",
         });
         navigate(`/view-history/${id}`);
       } else {
@@ -191,12 +197,13 @@ const AddReceipt = () => {
           </div>
 
           <div>
-            <label className="block mb-1">Address :</label>
+            <label className="block mb-1">Correspondence Address :</label>
             <textarea
-              name="address"
-              value={membersData?.permanentAddress}
-              readOnly
-              className="w-full border rounded px-3 py-2 bg-gray-100"
+              name="correspondenceAddress"
+              value={formData?.correspondenceAddress}
+              onChange={handleChange}
+              // readOnly
+              className="w-full border rounded px-3 py-2"
               rows={4}
             />
           </div>

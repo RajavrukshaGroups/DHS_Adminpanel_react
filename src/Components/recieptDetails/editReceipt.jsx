@@ -32,11 +32,16 @@ const EditReceipt = () => {
     numberOfShares: "",
   });
 
+  console.log("formdata", formData);
+
   useEffect(() => {
     const fetchReceiptIds = async () => {
       try {
+        // const response = await axios.get(
+        //   "https://adminpanel.defencehousingsociety.com/receipt/get-all-receipt-ids"
+        // );
         const response = await axios.get(
-          "https://adminpanel.defencehousingsociety.com/receipt/get-all-receipt-ids"
+          "http://localhost:4000/receipt/get-all-receipt-ids"
         );
         setExistingReceiptIds(response.data.receiptIds);
       } catch (error) {
@@ -51,12 +56,17 @@ const EditReceipt = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     const fetchReceipts = async () => {
       try {
+        // const response = await axios.get(
+        //   `https://adminpanel.defencehousingsociety.com/receipt/edit-receipt/payment-history/${id}${window.location.search}`
+        // );
+
         const response = await axios.get(
-          `https://adminpanel.defencehousingsociety.com/receipt/edit-receipt/payment-history/${id}${window.location.search}`
+          `http://localhost:4000/receipt/edit-receipt/payment-history/${id}${window.location.search}`
         );
 
         setTimeout(() => {
           const { payment, member } = response.data;
+          console.log("payment address", payment);
 
           // Set payment data
           setReceiptsData(payment);
@@ -83,6 +93,7 @@ const EditReceipt = () => {
             applicationFee: payment.applicationFee || "",
             admissionFee: payment.admissionFee || "",
             miscellaneousExpenses: payment.miscellaneousExpenses || "",
+            correspondenceAddress: payment.correspondenceAddress || "",
           });
 
           setLoading(false);
@@ -159,7 +170,8 @@ const EditReceipt = () => {
 
     try {
       const response = await axios.put(
-        `https://adminpanel.defencehousingsociety.com/member/edit-receipt/${membersData._id}?paymentId=${receiptsData._id}`,
+        `http://localhost:4000/member/edit-receipt/${membersData._id}?paymentId=${receiptsData._id}`,
+        // `https://adminpanel.defencehousingsociety.com/member/edit-receipt/${membersData._id}?paymentId=${receiptsData._id}`,
         formData
       );
 
@@ -183,6 +195,7 @@ const EditReceipt = () => {
           miscellaneousExpenses: "",
           shareFee: "",
           numberOfShares: "",
+          correspondenceAddress: "",
         });
         navigate(`/view-history/${membersData._id}`);
       } else {
@@ -260,12 +273,14 @@ const EditReceipt = () => {
             </div>
             <div>
               <label className="block mb-1">Address:</label>
-              <input
+              <textarea
                 type="text"
-                name="address"
-                value={membersData?.permanentAddress || ""}
-                readOnly
-                className="w-full border rounded px-3 py-2 bg-gray-100"
+                name="correspondenceAddress"
+                onChange={handleChange}
+                value={formData.correspondenceAddress}
+                // readOnly
+                className="w-full border rounded px-3 py-2"
+                rows={4}
               />
             </div>
           </div>

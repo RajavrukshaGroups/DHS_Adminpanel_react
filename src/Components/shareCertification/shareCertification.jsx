@@ -11,7 +11,8 @@ const ShareCertificate = () => {
     try {
       const res = await axios.get(
         // `http://localhost:3000/receipt/get-receipt-details`,
-        `https://adminpanel.defencehousingsociety.com/receipt/collect-share-certificates`,
+        `http://localhost:4000/receipt/collect-share-certificates`,
+        // `https://adminpanel.defencehousingsociety.com/receipt/collect-share-certificates`,
         {
           params: {
             page,
@@ -45,8 +46,8 @@ const ShareCertificate = () => {
   }, 500);
 
   const handleShareCertificate = (receiptId) => {
-    // const url = `http://localhost:3000/receipt/get-share-certificate/${receiptId}`;
-    const url = `https://adminpanel.defencehousingsociety.com/receipt/get-share-certificate/${receiptId}`;
+    const url = `http://localhost:4000/receipt/get-share-certificate/${receiptId}`;
+    // const url = `https://adminpanel.defencehousingsociety.com/receipt/get-share-certificate/${receiptId}`;
     window.open(url, "_blank");
   };
 

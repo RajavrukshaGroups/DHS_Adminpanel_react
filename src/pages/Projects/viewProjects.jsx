@@ -8,8 +8,8 @@ const ViewProjects = () => {
 
   const fetchProjects = async () => {
     try {
-      const res = await axios.get("http://localhost:4000/project/all-projects");
-      // const res = await axios.get("https://adminpanel.defencehousingsociety.com/project/all-projects");
+      // const res = await axios.get("http://localhost:4000/project/all-projects");
+      const res = await axios.get("https://adminpanel.defencehousingsociety.com/project/all-projects");
       setListProjects(res.data.data);
     } catch (error) {
       console.error("error fetching projects", error);
@@ -35,8 +35,8 @@ const ViewProjects = () => {
 
     try {
       const res = await axios.get(
-        "http://localhost:4000/project/search-projectname",
-        // "https://adminpanel.defencehousingsociety.com/project/search-projectname",
+        // "http://localhost:4000/project/search-projectname",
+        "https://adminpanel.defencehousingsociety.com/project/search-projectname",
         {
           params: { searchQuery },
         }

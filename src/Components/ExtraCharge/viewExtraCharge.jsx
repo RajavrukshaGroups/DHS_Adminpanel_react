@@ -19,8 +19,8 @@ const ViewExtraCharge = () => {
 
     try {
       const res = await axios.get(
-        `http://localhost:4000/receipt/collect-all-extrachargehistory`,
-        // `https://adminpanel.defencehousingsociety.com/receipt/collect-all-extrachargehistory`,
+        // `http://localhost:4000/receipt/collect-all-extrachargehistory`,
+        `https://adminpanel.defencehousingsociety.com/receipt/collect-all-extrachargehistory`,
         {
           params: {
             page: pageNum,
@@ -68,8 +68,8 @@ const ViewExtraCharge = () => {
   const formatDate = (dateStr) => new Date(dateStr).toLocaleDateString("en-GB");
 
   const handleViewReceipt = (receiptId, paymentId) => {
-    const url = `http://localhost:4000/receipt/get-receipt-details/${receiptId}?paymentId=${paymentId}`;
-    // const url = `https://adminpanel.defencehousingsociety.com/receipt/get-receipt-details/${receiptId}?paymentId=${paymentId}`;
+    // const url = `http://localhost:4000/receipt/get-receipt-details/${receiptId}?paymentId=${paymentId}`;
+    const url = `https://adminpanel.defencehousingsociety.com/receipt/get-receipt-details/${receiptId}?paymentId=${paymentId}`;
     window.open(url, "_blank");
   };
 

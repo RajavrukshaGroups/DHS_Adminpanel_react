@@ -14,8 +14,8 @@ const ViewReceiptDetails = () => {
   const fetchReceipts = async (page = 1, search = "") => {
     try {
       const res = await axios.get(
-        `http://localhost:4000/receipt/get-receipt-details`,
-        // `https://adminpanel.defencehousingsociety.com/receipt/get-receipt-details`,
+        // `http://localhost:4000/receipt/get-receipt-details`,
+        `https://adminpanel.defence.housingsociety.com/receipt/get-receipt-details`,
         {
           params: {
             page,
@@ -49,8 +49,8 @@ const ViewReceiptDetails = () => {
   }, 500);
 
   const handleViewReceipt = (receiptId, paymentId) => {
-    // const url = `https://adminpanel.defencehousingsociety.com/receipt/get-receipt-details/${receiptId}?paymentId=${paymentId}`;
-    const url = `http://localhost:4000/receipt/get-receipt-details/${receiptId}?paymentId=${paymentId}`;
+    const url = `https://adminpanel.defencehousingsociety.com/receipt/get-receipt-details/${receiptId}?paymentId=${paymentId}`;
+    // const url = `http://localhost:4000/receipt/get-receipt-details/${receiptId}?paymentId=${paymentId}`;
     window.open(url, "_blank");
   };
 

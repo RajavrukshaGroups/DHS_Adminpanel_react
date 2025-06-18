@@ -234,7 +234,7 @@ const ExtraChargeFormDetails = () => {
               </div>
               <InputField
                 label="Residence/Contact Address"
-                value={memberData.permanentAddress}
+                value={memberData.contactAddress}
                 readOnly
               />
             </div>

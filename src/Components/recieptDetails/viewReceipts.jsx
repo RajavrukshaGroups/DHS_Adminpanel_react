@@ -14,7 +14,8 @@ const ViewReceiptDetails = () => {
   const fetchReceipts = async (page = 1, search = "") => {
     try {
       const res = await axios.get(
-        `https://adminpanel.defencehousingsociety.com/receipt/get-receipt-details`,
+        `http://localhost:4000/receipt/get-receipt-details`,
+        // `https://adminpanel.defencehousingsociety.com/receipt/get-receipt-details`,
         {
           params: {
             page,
@@ -48,7 +49,8 @@ const ViewReceiptDetails = () => {
   }, 500);
 
   const handleViewReceipt = (receiptId, paymentId) => {
-    const url = `https://adminpanel.defencehousingsociety.com/receipt/get-receipt-details/${receiptId}?paymentId=${paymentId}`;
+    // const url = `https://adminpanel.defencehousingsociety.com/receipt/get-receipt-details/${receiptId}?paymentId=${paymentId}`;
+    const url = `http://localhost:4000/receipt/get-receipt-details/${receiptId}?paymentId=${paymentId}`;
     window.open(url, "_blank");
   };
 
@@ -84,7 +86,9 @@ const ViewReceiptDetails = () => {
   return (
     <div className="min-h-screen bg-blue-100 p-6 flex items-center justify-center">
       <div className="p-4 bg-white rounded shadow-md w-full max-w-7xl">
-        <h1 className="text-2xl font-bold mb-4 text-center">View Receipt Details</h1>
+        <h1 className="text-2xl font-bold mb-4 text-center">
+          View Receipt Details
+        </h1>
         <div className="mb-4 text-center">
           <input
             type="text"

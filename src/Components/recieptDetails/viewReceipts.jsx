@@ -15,7 +15,7 @@ const ViewReceiptDetails = () => {
     try {
       const res = await axios.get(
         // `http://localhost:4000/receipt/get-receipt-details`,
-        `https://adminpaneldefence.housingsociety.com/receipt/get-receipt-details`,
+        `https://adminpanel.defencehousingsociety.com/receipt/get-receipt-details`,
         {
           params: {
             page,

@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
 import "./addNew.css";
 import "react-toastify/dist/ReactToastify.css";
+import axiosInstance from "../../api/interceptors";
 
-const AddNewProject = ({ onProjectAdded }) => {
+const AddNewProject = ({ onProjectAdded, projectList = [] }) => {
   const [formData, setFormData] = useState({
     projectName: "",
     shortCode: "",
@@ -14,6 +15,33 @@ const AddNewProject = ({ onProjectAdded }) => {
     dimensions: [],
   });
 
+  const [projects, setProjects] = useState([]);
+  const [showEditDropdown, setShowEditDropdown] = useState(false);
+  const [selectedProjectId, setSelectedProjectId] = useState(null);
+  const [isEditMode, setIsEditMode] = useState(false);
+
+  console.log("selected id", selectedProjectId);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        // const res = await axios.get(
+        //   "http://localhost:4000/project/all-projects"
+        // );
+        const data = await axiosInstance.get("/project/all-projects");
+        // setProjects(res.data.data);
+        setProjects(data.data);
+      } catch (err) {
+        toast.error("failed to fetch projects");
+      }
+    };
+    fetchProjects();
+  }, []);
+
+  const toggleEditDropdown = () => {
+    setShowEditDropdown(!showEditDropdown);
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -21,6 +49,46 @@ const AddNewProject = ({ onProjectAdded }) => {
       [name]: value,
     }));
   };
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   console.log("form submitted", formData);
+
+  //   try {
+  //     const formattedData = {
+  //       ...formData,
+  //       dimensions: formData.dimensions.map((dim) => ({
+  //         length: parseFloat(dim.length),
+  //         breadth: parseFloat(dim.breadth),
+  //       })),
+  //     };
+
+  //     const response = await axios.post(
+  //       "http://localhost:4000/project/add-project",
+  //       // "https://adminpanel.defencehousingsociety.com/project/add-project",
+  //       formattedData
+  //     );
+  //     toast.success("Project added successfully!");
+
+  //     setFormData({
+  //       projectName: "",
+  //       shortCode: "",
+  //       status: "",
+  //       location: "",
+  //       description: "",
+  //       dimensions: [],
+  //     });
+
+  //     if (onProjectAdded) onProjectAdded();
+  //   } catch (error) {
+  //     if (error.response && error.response.data?.message) {
+  //       toast.error(`Error: ${error.response.data.message}`);
+  //     } else {
+  //       toast.error("An error occurred while submitting the form.");
+  //     }
+  //     console.error("Submission error:", error);
+  //   }
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,13 +103,30 @@ const AddNewProject = ({ onProjectAdded }) => {
         })),
       };
 
-      const response = await axios.post(
-        // "http://localhost:4000/project/add-project",
-        "https://adminpanel.defencehousingsociety.com/project/add-project",
-        formattedData
-      );
-      toast.success("Project added successfully!");
+      if (isEditMode && selectedProjectId) {
+        console.log("edit mode", isEditMode);
+        console.log("selectedprojectid", selectedProjectId);
+        // Edit existing project
+        // await axios.patch(
+        //   `http://localhost:4000/project/edit-project/${selectedProjectId}`,
+        //   formattedData
+        // );
+        await axiosInstance.patch(
+          `/project/edit-project/${selectedProjectId}`,
+          formattedData
+        );
+        toast.success("Project updated successfully!");
+      } else {
+        // Add new project
+        // await axios.post(
+        //   "http://localhost:4000/project/add-project",
+        //   formattedData
+        // );
+        await axiosInstance.post("/project/add-project", formattedData);
+        toast.success("Project added successfully!");
+      }
 
+      // Reset form and states
       setFormData({
         projectName: "",
         shortCode: "",
@@ -50,7 +135,8 @@ const AddNewProject = ({ onProjectAdded }) => {
         description: "",
         dimensions: [],
       });
-
+      setSelectedProjectId(null);
+      setIsEditMode(false);
       if (onProjectAdded) onProjectAdded();
     } catch (error) {
       if (error.response && error.response.data?.message) {
@@ -98,12 +184,62 @@ const AddNewProject = ({ onProjectAdded }) => {
   return (
     <div className="flex justify-center items-center min-h-screen px-4">
       <div className="w-full max-w-4xl">
+        <div className="flex justify-end mt-3 mb-3">
+          <button
+            type="button"
+            onClick={toggleEditDropdown}
+            className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
+          >
+            Edit Project Details
+          </button>
+        </div>
+
+        {showEditDropdown && (
+          <div className="mb-6">
+            <label className="block mb-2 font-medium">
+              Select Project to Edit:
+            </label>
+            <select
+              className="w-full px-4 py-2 border rounded-md"
+              onChange={(e) => {
+                const selected = projects.find(
+                  (p) => p.projectName === e.target.value
+                );
+                if (selected) {
+                  setFormData({
+                    projectName: selected.projectName,
+                    shortCode: selected.shortCode,
+                    status: selected.status,
+                    location: selected.location || "",
+                    description: selected.description || "",
+                    dimensions: selected.dimensions.map((d) => ({
+                      length: d.length,
+                      breadth: d.breadth,
+                    })),
+                  });
+                  console.log("selected project", selected);
+                  setSelectedProjectId(selected._id); // set the selected project ID
+                  setIsEditMode(true); // enable edit mode
+                  setShowEditDropdown(false); // hide dropdown after selection
+                }
+              }}
+            >
+              <option value="">-- Select a Project --</option>
+              {projects.map((project) => (
+                <option key={project.shortCode} value={project.projectName}>
+                  {project.projectName}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
         <form
           className="bg-white p-6 sm:p-8 rounded-xl shadow-md"
           onSubmit={handleSubmit}
         >
           <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-center">
-            Add New Project Details
+            {isEditMode ? "Edit Project Details" : "Add New Project Details"}
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
@@ -261,11 +397,18 @@ const AddNewProject = ({ onProjectAdded }) => {
             </div>
           ))}
           <div className="md:col-span-2">
-            <button
+            {/* <button
               type="submit"
               className="w-full px-6 py-3 bg-blue-600 text-white rounded hover:bg-blue-700"
             >
               Submit
+            </button> */}
+
+            <button
+              type="submit"
+              className="w-full px-6 py-3 bg-blue-600 text-white rounded hover:bg-blue-700"
+            >
+              {isEditMode ? "Update Project" : "Submit"}
             </button>
           </div>
         </form>

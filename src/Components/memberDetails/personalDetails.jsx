@@ -9,7 +9,7 @@ const PersonalDetails = ({ formData, handleChange, formErrors }) => {
     <div className="bg-white p-6 rounded-xl shadow-md mb-6">
       <h2 className="text-xl font-semibold mb-4">Personal Details</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
+        {/* <div>
           <label className="block font-medium mb-1">Salutation</label>
           <input
             type="text"
@@ -22,7 +22,25 @@ const PersonalDetails = ({ formData, handleChange, formErrors }) => {
           {formErrors.salutation && (
             <p className="text-red-500 text-sm">{formErrors.salutation}</p>
           )}
+        </div> */}
+        <div>
+          <label className="block font-medium mb-1">Salutation</label>
+          <select
+            name="salutation"
+            value={formData?.salutation}
+            onChange={handleChange}
+            className="w-full border px-4 py-2 rounded-md"
+          >
+            <option value="">Select Salutation</option>
+            <option value="Mr">Mr.</option>
+            <option value="Ms">Ms.</option>
+            <option value="Mrs">Mrs.</option>
+          </select>
+          {formErrors.salutation && (
+            <p className="text-red-500 text-sm">{formErrors.salutation}</p>
+          )}
         </div>
+
         <div>
           <label className="block font-medium mb-1">Name</label>
           <input

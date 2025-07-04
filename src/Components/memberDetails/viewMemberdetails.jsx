@@ -13,13 +13,21 @@ function ViewMemberdetails() {
 
   const fetchData = async (page = 1, search = "") => {
     try {
+      // const response = await axiosInstance.get(
+      //   `http://localhost:4000/member/view-member-details?page=${page}&search=${encodeURIComponent(
+      //     search
+      //   )}`
+      //   // `https://adminpanel.defencehousingsociety.com/member/view-member-details?page=${page}&search=${encodeURIComponent(
+      //   //   search
+      //   // )}`
+      // );
       const response = await axiosInstance.get(
-        // `http://localhost:4000/member/view-member-details?page=${page}&search=${encodeURIComponent(
-        //   search
-        // )}`
-        `https://adminpanel.defencehousingsociety.com/member/view-member-details?page=${page}&search=${encodeURIComponent(
+        `/member/view-member-details?page=${page}&search=${encodeURIComponent(
           search
         )}`
+        // `https://adminpanel.defencehousingsociety.com/member/view-member-details?page=${page}&search=${encodeURIComponent(
+        //   search
+        // )}`
       );
       console.log("response", response);
       setMemberDetails(response.data || []);

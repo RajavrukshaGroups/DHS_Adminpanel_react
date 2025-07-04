@@ -1,5 +1,5 @@
 import React, { useState ,useRef} from "react";
-import PersonalDetails from "./PersonalDetails";
+import PersonalDetails from "./personalDetails.jsx";
 import ReferenceDetails from "./ReferenceDetails";
 import NomineePerticular from "./nomineePerticular";
 import SeniorityDetails from "./seniorityDetails";
@@ -221,6 +221,8 @@ const MemberFormWrapper = () => {
     formData.adminissionFee,
     formData.miscellaneousExpenses,
   ]);
+
+  
 
   const validatePersonalDetails = (data) => {
     const errors = {};

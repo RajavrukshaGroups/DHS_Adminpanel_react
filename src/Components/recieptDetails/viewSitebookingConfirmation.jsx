@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../../api/interceptors";
 import SiteBookingConfirmation from "../memberDetails/siteBookingConfirmation";
-import { FaEye, FaFileAlt, FaEdit } from "react-icons/fa";
+import { FaEye, FaFileAlt, FaEdit, FaDownload } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 function ViewSitebookingConfirmation() {
@@ -46,6 +46,7 @@ function ViewSitebookingConfirmation() {
         `/receipt/view-confirmation/${memberId}`
       );
       const confirmationUrl = `https://adminpanel.defencehousingsociety.com/receipt/view-confirmation/${memberId}`;
+      // const confirmationUrl = `http://localhost:4000/receipt/view-confirmation/${memberId}`;
       window.open(confirmationUrl, "_blank");
       setSelectedMember(res.data);
     } catch (error) {
@@ -126,20 +127,68 @@ function ViewSitebookingConfirmation() {
                       {member.userId?.ConfirmationLetterNo || "N/A"}
                     </td>
                     <td className="border px-3 py-2 text-center">
+                      {/* ₹{Number(propertyCost).toLocaleString("en-IN")} */}
                       {member.siteDownPayments?.length > 0
-                        ? member.siteDownPayments[0].amount
+                        ? `₹${Number(
+                            member.siteDownPayments[0].amount
+                          ).toLocaleString("en-In")}`
                         : "N/A"}
                     </td>
                     <td className="border px-3 py-2 text-center">
                       <div className="flex justify-center">
-                        <a
-                          href={member.affidavitUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-black underline"
-                        >
-                          <FaEye className="text-black  text-xl cursor-pointer hover:text-black" />
-                        </a>
+                        {(() => {
+                          const url = member.affidavitUrl;
+                          console.log("affidavit url", url);
+
+                          if (!url) {
+                            return (
+                              <span className="text-sm text-gray-500">N/A</span>
+                            );
+                          }
+
+                          const ext = url.split(".").pop()?.toLowerCase();
+
+                          if (
+                            ext === "pdf" ||
+                            ext === "jpg" ||
+                            ext === "jpeg" ||
+                            ext === "png" ||
+                            ext === "webp"
+                          ) {
+                            return (
+                              <a
+                                href={url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-black underline"
+                              >
+                                <FaEye className="text-black text-xl cursor-pointer hover:text-black" />
+                              </a>
+                            );
+                          } else if (ext === "doc" || ext === "docx") {
+                            return (
+                              <a
+                                href={url}
+                                download
+                                className="text-black underline"
+                              >
+                                <FaDownload className="text-black text-xl cursor-pointer hover:text-black" />
+                              </a>
+                            );
+                          } else {
+                            // Fallback: unknown but downloadable
+                            return (
+                              <a
+                                href={url}
+                                download
+                                className="text-black underline"
+                              >
+                                <FaDownload className="text-black text-xl cursor-pointer hover:text-black" />
+                              </a>
+                            );
+                          }
+                        })()}
+
                         <button
                           onClick={() =>
                             handleViewConfirmation(member.userId._id)

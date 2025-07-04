@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import axiosInstance from "../../api/interceptors";
 
 const AddLandDetails = ({ refreshKey }) => {
   const [projectOptions, setProjectOptions] = useState([]);
@@ -16,11 +17,16 @@ const AddLandDetails = ({ refreshKey }) => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const res = await axios.get(
-          // "http://localhost:4000/project/all-projects"
-          "https://adminpanel.defencehousingsociety.com/project/all-projects"
+        // const res = await axios.get(
+        //   "http://localhost:4000/project/all-projects"
+        //   // "https://adminpanel.defencehousingsociety.com/project/all-projects"
+        // );
+        // setProjectOptions(res.data.data || []);
+        const data = await axiosInstance.get(
+          "/project/all-projects"
+          // "https://adminpanel.defencehousingsociety.com/project/all-projects"
         );
-        setProjectOptions(res.data.data || []);
+        setProjectOptions(data.data || []);
       } catch (err) {
         console.error(err);
         toast.error("Failed to load project options");
@@ -104,9 +110,21 @@ const AddLandDetails = ({ refreshKey }) => {
     }
 
     try {
-      const res = await axios.patch(
-        // "http://localhost:4000/project/update-land-details",
-        "https://adminpanel.defencehousingsociety.com/project/update-land-details",
+      // const res = await axios.patch(
+      //   "http://localhost:4000/project/update-land-details",
+      //   // "https://adminpanel.defencehousingsociety.com/project/update-land-details",
+      //   {
+      //     projectName,
+      //     dimensionId,
+      //     pricePerSqft: parseFloat(pricePerSqft),
+      //     propertyCost: parseFloat(propertyCost.replace(/,/g, "")),
+      //     location,
+      //     description,
+      //   }
+      // );
+      const data = await axiosInstance.patch(
+        "/project/update-land-details",
+        // "https://adminpanel.defencehousingsociety.com/project/update-land-details",
         {
           projectName,
           dimensionId,
@@ -117,13 +135,18 @@ const AddLandDetails = ({ refreshKey }) => {
         }
       );
 
-      toast.success(res.data.message || "Land details updated!");
+      toast.success(data.message || "Land details updated!");
 
       const refreshed = await axios.get(
         // "http://localhost:4000/project/all-projects"
         "https://adminpanel.defencehousingsociety.com/project/all-projects"
       );
       setProjectOptions(refreshed.data.data || []);
+      // const refreshed = await axiosInstance.get(
+      //   "/project/all-projects"
+      //   // "https://adminpanel.defencehousingsociety.com/project/all-projects"
+      // );
+      // setProjectOptions(refreshed.data.data || []);
 
       // Reset fields
       setProjectName("");

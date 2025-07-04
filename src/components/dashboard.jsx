@@ -13,6 +13,7 @@ import {
 } from "@headlessui/react";
 import toast from "react-hot-toast";
 import axios from "axios";
+import axiosInstance from "../api/interceptors";
 
 function Dashboard() {
   const [totalProjectsCount, setTotalProjects] = useState(0);
@@ -35,13 +36,17 @@ function Dashboard() {
   useEffect(() => {
     const fetchProjectsCount = async () => {
       try {
-        const response = await axios.get(
-          // "http://localhost:4000/project/totalprojectscount"
-          "https://adminpanel.defencehousingsociety.com/project/totalprojectscount"
-        );
-        setTotalProjects(response.data.totalProjects);
-        setTotalRegMembers(response.data.totalRegMembers);
-        setTotalInactiveMembers(response.data.totalInactiveMembers);
+        // const response = await axios.get(
+        //   "http://localhost:4000/project/totalprojectscount"
+        //   // "https://adminpanel.defencehousingsociety.com/project/totalprojectscount"
+        // );
+        const data = await axiosInstance.get("/project/totalprojectscount");
+        // setTotalProjects(response.data.totalProjects);
+        // setTotalRegMembers(response.data.totalRegMembers);
+        // setTotalInactiveMembers(response.data.totalInactiveMembers);
+        setTotalProjects(data.totalProjects);
+        setTotalRegMembers(data.totalRegMembers);
+        setTotalInactiveMembers(data.totalInactiveMembers);
       } catch (err) {
         toast.error("failed to fetch the projects count");
         console.error("failed to fetch the projects count", err);

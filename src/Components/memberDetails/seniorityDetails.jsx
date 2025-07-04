@@ -12,7 +12,7 @@ function SeniorityDetails({ handleChange, formData, formErrors }) {
     seniorityId: "",
     membershipNo: "",
     cunfirmationLetterNo: "",
-    shareCertificateNo: ""
+    shareCertificateNo: "",
   });
 
   // Map frontend field names to backend response keys
@@ -23,16 +23,100 @@ function SeniorityDetails({ handleChange, formData, formErrors }) {
     shareCertificateNo: "ShareCertificateNumber",
   };
 
-    useEffect(() => {
-    if (formData?.memberId) { // Check if editing an existing member
+  useEffect(() => {
+    if (formData?.memberId) {
+      // Check if editing an existing member
       setOriginalValues({
         seniorityId: formData.seniorityId || "",
         membershipNo: formData.membershipNo || "",
         cunfirmationLetterNo: formData.cunfirmationLetterNo || "",
-        shareCertificateNo: formData.shareCertificateNo || ""
+        shareCertificateNo: formData.shareCertificateNo || "",
       });
     }
   }, [formData?.memberId]);
+
+  // useEffect(() => {
+  //   const isTapasihalli =
+  //     formData?.projectName?.toLowerCase() === "defence habitat - tapasihalli";
+  //   console.log("isTapasihalli", isTapasihalli);
+
+  //   const rawValue = formData?.cunfirmationLetterNo?.toString().trim();
+
+  //   // Skip if empty or already formatted
+  //   if (isTapasihalli && rawValue && !rawValue.startsWith("DHS/DHT/")) {
+  //     const now = new Date();
+  //     const currentYear = now.getFullYear();
+  //     const nextYear = (currentYear + 1).toString().slice(-2);
+  //     const financialYear = `${currentYear}-${nextYear}`;
+
+  //     const formatted = `DHS/DHT/${rawValue}-${financialYear}`;
+
+  //     handleChange({
+  //       target: {
+  //         name: "cunfirmationLetterNo",
+  //         value: formatted,
+  //       },
+  //     });
+  //   }
+  // }, [formData?.cunfirmationLetterNo, formData?.projectName]);
+
+  useEffect(() => {
+    const projectName = formData?.projectName?.toLowerCase();
+    const isTapasihalli = projectName === "defence habitat - tapasihalli";
+    const isMarasandra = projectName === "defence habitat - marasandra";
+
+    console.log("Project check:", { isTapasihalli, isMarasandra });
+
+    // Skip if no relevant project is selected
+    if (!isTapasihalli && !isMarasandra) return;
+
+    // Determine the project prefix
+    const projectPrefix = isTapasihalli ? "DHS/DHT" : "DHS/DHD";
+
+    // If confirmation letter number is empty, pre-fill with default format
+    if (!formData?.cunfirmationLetterNo) {
+      const now = new Date();
+      const currentYear = now.getFullYear();
+      const nextYear = (currentYear + 1).toString().slice(-2);
+      const financialYear = `${currentYear}-${nextYear}`;
+
+      // Pre-fill with a default format
+      const formatted = `${projectPrefix}/CL/0000/${financialYear}`;
+
+      handleChange({
+        target: {
+          name: "cunfirmationLetterNo",
+          value: formatted,
+        },
+      });
+    }
+    // If there's a value and it needs formatting
+    else if (formData?.cunfirmationLetterNo) {
+      const rawValue = formData.cunfirmationLetterNo.toString().trim();
+
+      // Skip if already formatted with the correct prefix
+      if (!rawValue.startsWith(projectPrefix)) {
+        const now = new Date();
+        const currentYear = now.getFullYear();
+        const nextYear = (currentYear + 1).toString().slice(-2);
+        const financialYear = `${currentYear}-${nextYear}`;
+
+        // Remove any existing prefix before applying the new one
+        const valueWithoutPrefix = rawValue.replace(
+          /^DHS\/DHT\/|^DHS\/DHD\//,
+          ""
+        );
+        const formatted = `${projectPrefix}/${valueWithoutPrefix}-${financialYear}`;
+
+        handleChange({
+          target: {
+            name: "cunfirmationLetterNo",
+            value: formatted,
+          },
+        });
+      }
+    }
+  }, [formData?.cunfirmationLetterNo, formData?.projectName]);
 
   // Track when fields are touched or changed
   const handleFieldInteraction = (field) => {
@@ -40,38 +124,41 @@ function SeniorityDetails({ handleChange, formData, formErrors }) {
     setTouchedFields((prev) => ({ ...prev, [field]: true }));
   };
 
-useEffect(() => {
-  if (!hasInteracted) return;
+  useEffect(() => {
+    if (!hasInteracted) return;
 
-  const fieldsToCheck = {};
-  const fieldsToSkip = {};
+    const fieldsToCheck = {};
+    const fieldsToSkip = {};
 
-  Object.entries(formData).forEach(([key, value]) => {
-    if (value && touchedFields[key]) {
-      // Case-sensitive comparison with original values
-      if (originalValues[key] === value) {
-        fieldsToSkip[key] = true;
-        setDuplicateFields(prev => ({ ...prev, [fieldKeyMap[key]]: false }));
-      } else {
-        fieldsToCheck[fieldKeyMap[key]] = value; // Send raw value (case-sensitive)
-      }
-    }
-  });
-
-  if (Object.keys(fieldsToCheck).length > 0) {
-    axiosInstance
-      .get("/member/check-duplicates", {
-        params: {
-          ...fieldsToCheck,
-          caseSensitive: true // Explicitly tell backend to enforce case-sensitivity
+    Object.entries(formData).forEach(([key, value]) => {
+      if (value && touchedFields[key]) {
+        // Case-sensitive comparison with original values
+        if (originalValues[key] === value) {
+          fieldsToSkip[key] = true;
+          setDuplicateFields((prev) => ({
+            ...prev,
+            [fieldKeyMap[key]]: false,
+          }));
+        } else {
+          fieldsToCheck[fieldKeyMap[key]] = value; // Send raw value (case-sensitive)
         }
-      })
-      .then((res) => {
-        setDuplicateFields(res.fields || {});
-      })
-      .catch((err) => console.error("Error checking duplicates:", err));
-  }
-}, [formData, touchedFields, hasInteracted, originalValues]);
+      }
+    });
+
+    if (Object.keys(fieldsToCheck).length > 0) {
+      axiosInstance
+        .get("/member/check-duplicates", {
+          params: {
+            ...fieldsToCheck,
+            caseSensitive: true, // Explicitly tell backend to enforce case-sensitivity
+          },
+        })
+        .then((res) => {
+          setDuplicateFields(res.fields || {});
+        })
+        .catch((err) => console.error("Error checking duplicates:", err));
+    }
+  }, [formData, touchedFields, hasInteracted, originalValues]);
 
   const isDuplicate = (field) => {
     // Not a duplicate if value matches original (when editing)
@@ -84,7 +171,6 @@ useEffect(() => {
       duplicateFields[fieldKeyMap[field]]
     );
   };
-
 
   return (
     <div className="bg-white p-6 rounded-xl shadow-md mb-6">
@@ -144,7 +230,7 @@ useEffect(() => {
             Confirmation Letter No
           </label>
           <input
-            type="number"
+            type="text"
             name="cunfirmationLetterNo"
             placeholder="Confirmation Letter No"
             value={formData?.cunfirmationLetterNo || ""}

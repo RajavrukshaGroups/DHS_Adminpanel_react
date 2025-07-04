@@ -59,6 +59,7 @@ const ViewReceiptDetails = () => {
       const { paymentType, installmentNumber, memberId } = selectedReceipt;
       await axios.delete(
         `https://adminpanel.defencehousingsociety.com/member/delete-member-receipt-payment/${memberId}`,
+        // `http://localhost:4000/member/delete-member-receipt-payment/${memberId}`,
         {
           data: { paymentType, installmentNumber },
         }

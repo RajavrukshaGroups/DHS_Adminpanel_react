@@ -9,6 +9,8 @@ function AddConfirmationletter() {
   const { id } = useParams();
   const [memberData, setMemberData] = useState({});
   const [loading, setLoading] = useState(false);
+  const [filePreview, setFilePreview] = useState(null);
+  const [fileType, setFileType] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,24 +28,57 @@ function AddConfirmationletter() {
     fetchMember();
   }, [id]);
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setFileType(file.type);
+
+    if (file.type.startsWith("image/")) {
+      const imageUrl = URL.createObjectURL(file);
+      setFilePreview({ type: "image", url: imageUrl });
+    } else if (file.type === "application/pdf") {
+      const pdfUrl = URL.createObjectURL(file);
+      setFilePreview({ type: "pdf", url: pdfUrl });
+    } else {
+      // For doc, docx, others
+      setFilePreview({ type: "doc", name: file.name });
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
+    if (!formData.get("confirmationLetterIssueDate")) {
+      toast.error("Please select a confirmation letter issue date.");
+      return;
+    }
+    if (!formData.get("duration")) {
+      toast.error("Please enter the time duration.");
+      return;
+    }
     // ✅ Validate affidavit file from FormData
     const file = formData.get("affidivate");
     if (!file || file.size === 0) {
       toast.error("Please upload an affidavit file before submitting.");
       return;
     }
+
     setLoading(true);
 
     const data = Object.fromEntries(formData.entries());
     console.log("Form Data:", data);
 
     try {
+      // const response = await axiosInstance.post(
+      //   `http://localhost:4000/member/add-confirmation/${id}`,
+      //   // `https://adminpanel.defencehousingsociety.com/member/add-confirmation/${id}`,
+      //   data,
+      //   { headers: { "Content-Type": "multipart/form-data" } }
+      // );
       const response = await axiosInstance.post(
-        // `http://localhost:4000/member/add-confirmation/${id}`,
-        `https://adminpanel.defencehousingsociety.com/member/add-confirmation/${id}`,
+        `/member/add-confirmation/${id}`,
+        // `https://adminpanel.defencehousingsociety.com/member/add-confirmation/${id}`,
         data,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
@@ -129,7 +164,7 @@ function AddConfirmationletter() {
             value={memberData?.projectLocation || ""}
           />
         </div>
-        <div>
+        {/* <div>
           <label className="block font-medium mb-1">Date</label>
           <input
             name="date"
@@ -142,9 +177,9 @@ function AddConfirmationletter() {
             placeholder="Date"
             className="w-full border px-4 py-2 rounded-md"
           />
-        </div>
+        </div> */}
         <div>
-          <label className="block font-medium mb-1">Site Diemension</label>
+          <label className="block font-medium mb-1">Site Dimension</label>
           <input
             type="text"
             name="siteDiemension"
@@ -155,7 +190,7 @@ function AddConfirmationletter() {
         </div>
 
         <div>
-          <label className="block font-medium mb-1">Memeber ID</label>
+          <label className="block font-medium mb-1">Member ID</label>
           <input
             type="text"
             name="MembershipNo"
@@ -189,22 +224,63 @@ function AddConfirmationletter() {
             Confirmation Letter Issue Date
           </label>
           <input
-            name="ConfirmationLetterDate"
+            name="confirmationLetterIssueDate"
             type="date"
-            value={new Date().toISOString().split("T")[0]}
+            // value={new Date().toISOString().split("T")[0]}
             placeholder="Select Date"
+            className="w-full border px-4 py-2 rounded-md"
+            defaultValue={new Date().toISOString().split("T")[0]} // Default today
+          />
+        </div>
+        <div>
+          <label className="block font-medium mb-1">Time Duration</label>
+          <input
+            name="duration"
+            type="text"
+            placeholder="enter duration"
             className="w-full border px-4 py-2 rounded-md"
           />
         </div>
         <div>
-          <label className="block font-medium mb-1">Upload Affidivate</label>
-          <input
+          <label className="block font-medium mb-1">Upload Affidavit</label>
+          {/* <input
             name="affidivate"
             type="file"
             placeholder="affidivate"
             className="w-full border px-4 py-2 rounded-md"
+          /> */}
+          <input
+            name="affidivate"
+            type="file"
+            onChange={handleFileChange}
+            accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.webp"
+            className="w-full border px-4 py-2 rounded-md"
           />
         </div>
+        {filePreview && (
+          <div className="mt-4">
+            <label className="font-semibold block mb-1">File Preview:</label>
+            {filePreview.type === "image" && (
+              <img
+                src={filePreview.url}
+                alt="Preview"
+                className="max-w-xs rounded"
+              />
+            )}
+            {filePreview.type === "pdf" && (
+              <iframe
+                src={filePreview.url}
+                title="PDF Preview"
+                width="100%"
+                height="400px"
+                className="rounded border"
+              />
+            )}
+            {filePreview.type === "doc" && (
+              <p className="text-gray-700">📄 {filePreview.name}</p>
+            )}
+          </div>
+        )}
 
         <button
           type="submit"

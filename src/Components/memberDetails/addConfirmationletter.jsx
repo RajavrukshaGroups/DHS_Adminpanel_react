@@ -59,10 +59,10 @@ function AddConfirmationletter() {
     }
     // ✅ Validate affidavit file from FormData
     const file = formData.get("affidivate");
-    if (!file || file.size === 0) {
-      toast.error("Please upload an affidavit file before submitting.");
-      return;
-    }
+    // if (!file || file.size === 0) {
+    //   toast.error("Please upload an affidavit file before submitting.");
+    //   return;
+    // }
 
     setLoading(true);
 

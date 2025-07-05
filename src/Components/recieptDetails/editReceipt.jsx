@@ -295,14 +295,36 @@ const EditReceipt = () => {
           </h2>
           <div className="grid grid-cols-2 gap-6">
             <div>
-              <label className="block mb-1">Payment Type :</label>
-              <input
+              {/* <input
                 type="text"
                 name="paymentType"
                 value={formData.paymentType}
                 readOnly
                 className="w-full border rounded px-3 py-2 bg-gray-100"
-              />
+              /> */}
+              <label className="block mb-1">Payment Type :</label>
+              {formData.paymentType === "Membership Fee" ? (
+                <input
+                  type="text"
+                  name="paymentType"
+                  value={formData.paymentType}
+                  readOnly
+                  className="w-full border rounded px-3 py-2 bg-gray-100"
+                />
+              ) : (
+                <select
+                  name="paymentType"
+                  value={formData.paymentType}
+                  onChange={handleChange}
+                  className="w-full border rounded px-3 py-2"
+                  required
+                >
+                  <option value="">Choose Payment Type</option>
+                  <option value="siteAdvance">Site Advance</option>
+                  <option value="siteDownPayment">Site Down Payment</option>
+                  <option value="installments">Installments</option>
+                </select>
+              )}
             </div>
             <div>
               <label className="block mb-1">Payment Mode :</label>

@@ -39,6 +39,23 @@ const ViewReceiptHistory = () => {
     fetchMember();
   }, [id]);
 
+  // const fetchReceipts = async () => {
+  //   setReceiptLoading(true);
+  //   try {
+  //     const res = await axios.get(
+  //       `http://localhost:4000/receipt/receipts/member/${id}`
+  //       // `https://adminpanel.defencehousingsociety.com/receipt/receipts/member/${id}`
+  //     );
+  //     setTimeout(() => {
+  //       setReceiptData(res.data);
+  //       setReceiptLoading(false);
+  //     }, 500); // Delay for smoother loading experience
+  //   } catch (err) {
+  //     toast.error("Failed to fetch receipt history");
+  //     setReceiptLoading(false);
+  //   }
+  // };
+
   const fetchReceipts = async () => {
     setReceiptLoading(true);
     try {
@@ -46,10 +63,19 @@ const ViewReceiptHistory = () => {
         // `http://localhost:4000/receipt/receipts/member/${id}`
         `https://adminpanel.defencehousingsociety.com/receipt/receipts/member/${id}`
       );
+
+      // Sort payments by date ascending (oldest first) inside each receipt
+      const sortedData = res.data.map((receipt) => ({
+        ...receipt,
+        payments: receipt.payments.sort(
+          (a, b) => new Date(a.date) - new Date(b.date)
+        ),
+      }));
+
       setTimeout(() => {
-        setReceiptData(res.data);
+        setReceiptData(sortedData);
         setReceiptLoading(false);
-      }, 500); // Delay for smoother loading experience
+      }, 500);
     } catch (err) {
       toast.error("Failed to fetch receipt history");
       setReceiptLoading(false);
@@ -114,6 +140,14 @@ const ViewReceiptHistory = () => {
   const handleDeleteClick = (receiptId, paymentType, installmentNumber) => {
     setSelectedReceipt({ receiptId, paymentType, installmentNumber });
     setShowDeleteModal(true);
+  };
+
+  const formatDate = (inputDate) => {
+    const d = new Date(inputDate);
+    const day = String(d.getDate()).padStart(2, "0");
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const year = d.getFullYear();
+    return `${day}/${month}/${year}`;
   };
 
   return (
@@ -271,7 +305,7 @@ const ViewReceiptHistory = () => {
                         /-
                       </td>
                       <td className="px-3 py-2 border text-center">
-                        {new Date(payment.date).toLocaleDateString("en-IN")}
+                        {formatDate(payment.date)}
                       </td>
                       <td className="px-3 py-2 border text-blue-600 text-lg text-center">
                         <div className="flex justify-center items-center gap-3 h-full">

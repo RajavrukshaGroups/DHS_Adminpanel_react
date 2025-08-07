@@ -7,6 +7,8 @@ function PlotTransferhistory() {
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 10;
 
+  console.log("transeferdata", transferData);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -66,9 +68,9 @@ function PlotTransferhistory() {
                 <th className="border px-3 py-2 text-center">Member To</th>
                 <th className="border px-3 py-2 text-center">Project Name</th>
                 <th className="border px-3 py-2 text-center">Seniority ID</th>
-                <th className="border px-3 py-2 text-center">Transfer Date</th>
+                {/* <th className="border px-3 py-2 text-center">Transfer Date</th> */}
                 <th className="border px-3 py-2 text-center">Reason</th>
-                <th className="border px-3 py-2 text-center">Date</th>
+                <th className="border px-3 py-2 text-center">Transfer Date</th>
               </tr>
             </thead>
             <tbody>
@@ -98,16 +100,22 @@ function PlotTransferhistory() {
 
                       {/* Seniority ID field not available in response now */}
                     </td>
-                    <td className="border px-3 py-2 text-center">
+                    {/* <td className="border px-3 py-2 text-center">
                       {new Date().toLocaleDateString()}
-                    </td>
+                    </td> */}
                     <td className="border px-3 py-2 text-center">
                       {/* Reason not available in backend yet */}
                       {item.transferReason || "N/A"}
                     </td>
-                    <td className="border px-3 py-2 text-center">
+                    {/* <td className="border px-3 py-2 text-center">
                       {new Date().toLocaleDateString()}{" "}
-                      {/* fallback if createdAt not available */}
+                    </td> */}
+                    <td className="border px-3 py-2 text-center">
+                      {item.transferDate
+                        ? new Date(item.transferDate).toLocaleDateString(
+                            "en-GB"
+                          ) // (DD/MM/YYYY)
+                        : "N/A"}
                     </td>
                   </tr>
                 ))

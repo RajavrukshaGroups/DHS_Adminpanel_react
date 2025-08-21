@@ -33,6 +33,8 @@ const ViewReceiptDetails = () => {
     }
   };
 
+  console.log("receipt details", receipts);
+
   useEffect(() => {
     fetchReceipts(currentPage, searchTerm);
   }, [currentPage, searchTerm]);
@@ -155,7 +157,7 @@ const ViewReceiptDetails = () => {
                       <td className="px-4 py-2 border capitalize">
                         {payment.paymentMode}
                       </td>
-                      <td
+                      {/* <td
                         className={`px-4 py-2 border font-semibold ${
                           receipt.member?.isActive
                             ? "text-green-600"
@@ -163,6 +165,27 @@ const ViewReceiptDetails = () => {
                         }`}
                       >
                         {receipt.member?.isActive ? "Active" : "Inactive"}
+                      </td> */}
+                      <td className="border px-3 py-2 text-center">
+                        <span
+                          className={`inline-block px-3 py-2 rounded-full text-xs font-semibold text-center leading-tight ${
+                            !receipt?.member.isActive
+                              ? "bg-red-600 text-white"
+                              : receipt.member.cancellationDetails
+                              ? "bg-purple-600 text-white"
+                              : receipt.member.isTransferred
+                              ? "bg-blue-600 text-white"
+                              : "bg-green-600 text-white"
+                          }`}
+                        >
+                          {!receipt.member.isActive
+                            ? "Inactive"
+                            : receipt.member.cancellationDetails
+                            ? "Plot Cancelled"
+                            : receipt.member.isTransferred
+                            ? "Plot Transferred"
+                            : "Active"}
+                        </span>
                       </td>
                       <td className="px-4 py-2 border">
                         <button

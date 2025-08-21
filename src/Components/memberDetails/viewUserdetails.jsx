@@ -133,9 +133,9 @@ function ViewUserdetails() {
                   Payment History
                 </th>
                 <th className="border px-3 py-2 text-center">Status</th>
-                <th className="border px-3 py-2 text-center">
+                {/* <th className="border px-3 py-2 text-center">
                   Plot Transfered
-                </th>
+                </th> */}
                 <th className="border px-3 py-2 text-center">
                   Additional Details
                 </th>
@@ -205,7 +205,50 @@ function ViewUserdetails() {
                         </button>
                       </td>
 
+                      {/* <td className="border px-3 py-2 text-center">
+                        <span
+                          className={`inline-block px-3 py-2 rounded-full text-xs font-semibold text-center leading-tight ${
+                            member.isTransferred
+                              ? "bg-blue-600 text-white"
+                              : member.isActive
+                              ? "bg-green-600 text-white"
+                              : "bg-red-600 text-white"
+                          }`}
+                        >
+                          {member.isTransferred ? (
+                            <>
+                              Plot <br /> Transferred
+                            </>
+                          ) : member.isActive ? (
+                            "Active"
+                          ) : (
+                            "Inactive"
+                          )}
+                        </span>
+                      </td> */}
                       <td className="border px-3 py-2 text-center">
+                        <span
+                          className={`inline-block px-3 py-2 rounded-full text-xs font-semibold text-center leading-tight ${
+                            !member.isActive
+                              ? "bg-red-600 text-white"
+                              : member.cancellationDetails
+                              ? "bg-purple-600 text-white"
+                              : member.isTransferred
+                              ? "bg-blue-600 text-white"
+                              : "bg-green-600 text-white"
+                          }`}
+                        >
+                          {!member.isActive
+                            ? "Inactive"
+                            : member.cancellationDetails
+                            ? "Plot Cancelled"
+                            : member.isTransferred
+                            ? "Plot Transferred"
+                            : "Active"}
+                        </span>
+                      </td>
+
+                      {/* <td className="border px-3 py-2 text-center">
                         <span
                           className={`px-2 py-1 rounded-full text-xs font-semibold ${
                             member.isActive
@@ -215,8 +258,8 @@ function ViewUserdetails() {
                         >
                           {member.isActive ? "Active" : "Inactive"}
                         </span>
-                      </td>
-                      <td className="border px-3 py-2 text-center">
+                      </td> */}
+                      {/* <td className="border px-3 py-2 text-center">
                         <span
                           className={`px-2 py-1 rounded-full text-xs font-semibold ${
                             member.isTransferred
@@ -226,7 +269,7 @@ function ViewUserdetails() {
                         >
                           {member.isTransferred ? "Yes" : "No"}
                         </span>
-                      </td>
+                      </td> */}
                       <td className="border px-3 py-2 text-center text-red-500">
                         <div
                           onClick={() => handleCheckAndNavigate(member._id)}

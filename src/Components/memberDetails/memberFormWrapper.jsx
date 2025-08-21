@@ -1,6 +1,6 @@
 import React, { useState ,useRef} from "react";
 import PersonalDetails from "./personalDetails.jsx";
-import ReferenceDetails from "./ReferenceDetails";
+import ReferenceDetails from "./referenceDetails.jsx";
 import NomineePerticular from "./nomineePerticular";
 import SeniorityDetails from "./seniorityDetails";
 import MemberShipDetails from "./memberShipDetails";
@@ -243,17 +243,17 @@ const MemberFormWrapper = () => {
       errors.correspondenceAddress = "Correspondence Address is required";
     if (!data.permanentAddress.trim())
       errors.permanentAddress = "Permanent Address is required";
-    if (!data.workingAddress.trim())
-      errors.workingAddress = "Working Address is required";
+    // if (!data.workingAddress.trim())
+    //   errors.workingAddress = "Working Address is required";
 
-    if (!data.refencName.trim())
-      errors.refencName = "Reference Name is required";
-    if (!data.rankDesignation.trim())
-      errors.rankDesignation = "Rank / Designation is required";
-    if (!data.ServiceId.trim())
-      errors.ServiceId = "Service / ID No is required";
-    if (!data.relationship.trim())
-      errors.relationship = "Relationship is required";
+    // if (!data.refencName.trim())
+    //   errors.refencName = "Reference Name is required";
+    // if (!data.rankDesignation.trim())
+    //   errors.rankDesignation = "Rank / Designation is required";
+    // if (!data.ServiceId.trim())
+    //   errors.ServiceId = "Service / ID No is required";
+    // if (!data.relationship.trim())
+    //   errors.relationship = "Relationship is required";
 
     if (!data.projectName.trim())
       errors.projectName = "Project name is required";

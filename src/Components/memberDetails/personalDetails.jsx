@@ -169,9 +169,9 @@ const PersonalDetails = ({ formData, handleChange, formErrors }) => {
             className="w-full border px-4 py-2 rounded-md"
             rows="2"
           />
-          {formErrors.workingAddress && (
+          {/* {formErrors.workingAddress && (
             <p className="text-red-500 text-sm">{formErrors.workingAddress}</p>
-          )}
+          )} */}
         </div>
       </div>
     </div>

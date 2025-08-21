@@ -15,9 +15,9 @@ const ReferenceDetails = ({ formData, handleChange, formErrors }) => {
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
-          {formErrors.refencName && (
+          {/* {formErrors.refencName && (
             <p className="text-red-600 text-sm">{formErrors.refencName}</p>
-          )}
+          )} */}
         </div>
         <div>
           <label className="block font-medium mb-1">Rank / Designation</label>
@@ -29,9 +29,9 @@ const ReferenceDetails = ({ formData, handleChange, formErrors }) => {
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
-          {formErrors.rankDesignation && (
+          {/* {formErrors.rankDesignation && (
             <p className="text-red-600 text-sm">{formErrors.rankDesignation}</p>
-          )}
+          )} */}
         </div>
         <div>
           <label className="block font-medium mb-1">Service / ID No</label>
@@ -43,9 +43,9 @@ const ReferenceDetails = ({ formData, handleChange, formErrors }) => {
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
-          {formErrors.ServiceId && (
+          {/* {formErrors.ServiceId && (
             <p className="text-red-600 text-sm">{formErrors.ServiceId}</p>
-          )}
+          )} */}
         </div>
         <div>
           <label className="block font-medium mb-1">Relationship</label>
@@ -57,9 +57,9 @@ const ReferenceDetails = ({ formData, handleChange, formErrors }) => {
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-md"
           />
-          {formErrors.relationship && (
+          {/* {formErrors.relationship && (
             <p className="text-red-600 text-sm">{formErrors.relationship}</p>
-          )}
+          )} */}
         </div>
       </div>
     </div>

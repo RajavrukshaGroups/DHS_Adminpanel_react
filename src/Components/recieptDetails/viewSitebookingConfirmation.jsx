@@ -128,10 +128,19 @@ function ViewSitebookingConfirmation() {
                     </td>
                     <td className="border px-3 py-2 text-center">
                       {/* ₹{Number(propertyCost).toLocaleString("en-IN")} */}
-                      {member.siteDownPayments?.length > 0
+                      {/* {member.siteDownPayments?.length > 0
                         ? `₹${Number(
                             member.siteDownPayments[0].amount
                           ).toLocaleString("en-In")}`
+                        : "N/A"} */}
+                      {member?.totalPaidAmount
+                        ? `₹${Number(member.totalPaidAmount).toLocaleString(
+                            "en-IN"
+                          )}`
+                        : member?.siteDownPayments?.length > 0
+                        ? `₹${Number(
+                            member.siteDownPayments[0].amount
+                          ).toLocaleString("en-IN")}`
                         : "N/A"}
                     </td>
                     <td className="border px-3 py-2 text-center">

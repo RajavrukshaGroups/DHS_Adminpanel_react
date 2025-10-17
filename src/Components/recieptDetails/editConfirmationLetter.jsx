@@ -185,6 +185,39 @@ function EditConfirmationLetter() {
           />
         </div>
 
+        <div>
+          <label className="block font-medium mb-1">
+            Site Down Payment Amount for Confirmation Letter(req)
+          </label>
+          <input
+            type="number"
+            name="Amount"
+            value={memberData?.Amount || ""}
+            onChange={(e) =>
+              setMemberData({ ...memberData, Amount: e.target.value })
+            }
+            className="w-full border px-4 py-2 rounded-md"
+          />
+        </div>
+
+        <div>
+          <label className="block font-medium mb-1">
+            Reciept Number for Site Downpayment(Req)
+          </label>
+          <input
+            type="number"
+            name="confirmationLetterReceiptNo"
+            value={memberData?.confirmationLetterReceiptNo || ""}
+            onChange={(e) =>
+              setMemberData({
+                ...memberData,
+                confirmationLetterReceiptNo: e.target.value,
+              })
+            }
+            className="w-full border px-4 py-2 rounded-md"
+          />
+        </div>
+
         <div className="col-span-2">
           <label className="block font-medium mb-1">
             Uploaded Affidavit (previous)

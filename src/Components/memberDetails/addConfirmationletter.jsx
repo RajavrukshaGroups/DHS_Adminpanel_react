@@ -57,6 +57,11 @@ function AddConfirmationletter() {
       toast.error("Please enter the time duration.");
       return;
     }
+
+    // if (!formData.get("Amount")) {
+    //   toast.error("Please enter the Total Site Down Payment Amount.");
+    //   return;
+    // }
     // ✅ Validate affidavit file from FormData
     const file = formData.get("affidivate");
     // if (!file || file.size === 0) {
@@ -183,7 +188,7 @@ function AddConfirmationletter() {
           <input
             type="text"
             name="siteDiemension"
-            placeholder="Relationship"
+            placeholder="Site Dimension"
             className="w-full border px-4 py-2 rounded-md"
             value={memberData?.propertyDetails?.propertySize || ""}
           />
@@ -281,6 +286,34 @@ function AddConfirmationletter() {
             )}
           </div>
         )}
+
+        <div>
+          <label className="block font-medium mb-1">
+            Site Down Payment Amount for Confirmation Letter(req)
+          </label>
+          <input
+            type="number"
+            name="Amount"
+            // defaultValue={memberData?.siteDownPaymentAmount || ""}
+            defaultValue=""
+            placeholder="Enter Amount"
+            className="w-full border px-4 py-2 rounded-md"
+          />
+        </div>
+
+         <div>
+          <label className="block font-medium mb-1">
+            Reciept Number for Site Downpayment(Req)
+          </label>
+          <input
+            type="number"
+            name="confirmationLetterReceiptNo"
+            // defaultValue={memberData?.siteDownPaymentAmount || ""}
+            defaultValue=""
+            placeholder="Enter Receipt Number"
+            className="w-full border px-4 py-2 rounded-md"
+          />
+        </div>
 
         <button
           type="submit"

@@ -28,6 +28,11 @@ const PlotTransferForm = () => {
   const [memberData, setMemberData] = useState(null);
   const [memberPhoto, setMemberPhoto] = useState(null);
   const [memberSign, setMemberSign] = useState(null);
+
+
+  const [memberList, setMemberList] = useState([]); // for multiple same-name members
+const [selectedMember, setSelectedMember] = useState(null);
+
   // const [toMember, setToMember] = useState({
   //   saluation: "",
   //   name: "",
@@ -126,41 +131,88 @@ const PlotTransferForm = () => {
     }
   };
 
-  const handleFetchMember = async () => {
-    if (!selectedId) {
-      toast.error("Please enter a Seniority ID.");
-      return;
-    }
+  // const handleFetchMember = async() => {
+  //   if (!selectedId) {
+  //     toast.error("Please enter a Seniority ID.");
+  //     return;
+  //   }
+  //   try {
+  //     const response = await axiosInstance.get(
+  //       `/plot/getMemberBySeniorityID/${selectedId}`
+  //     );
+  //     setMemberData(response);
+  //     // Pre-fill the toMember form with existing data
+  //     setToMember({
+  //       saluation: response.saluation || "",
+  //       name: response.name || "",
+  //       email: response.email || "",
+  //       mobileNumber: response.mobileNumber || "",
+  //       dateofbirth: response.dateofbirth || "",
+  //       fatherName: response.fatherName || "",
+  //       contactAddress: response.contactAddress || "",
+  //       permanentAddress: response.permanentAddress || "",
+  //       workingAddress: response.workingAddress || "",
+  //       nomineeName: response.nomineeName || "",
+  //       nomineeAge: response.nomineeAge || "",
+  //       nomineeRelation: response.nomineeRelation || "",
+  //       nomineeAddress: response.nomineeAddress || "",
+  //       reason: "",
+  //       transferDate: "",
+  //     });
+  //   } catch (error) {
+  //     console.error("Error fetching member:", error);
+  //     toast.error("Member not found or error occurred.");
+  //     setMemberData(null);
+  //   }
+  // };
 
-    try {
-      const response = await axiosInstance.get(
-        `/plot/getMemberBySeniorityID/${selectedId}`
-      );
-      setMemberData(response);
-      // Pre-fill the toMember form with existing data
-      setToMember({
-        saluation: response.saluation || "",
-        name: response.name || "",
-        email: response.email || "",
-        mobileNumber: response.mobileNumber || "",
-        dateofbirth: response.dateofbirth || "",
-        fatherName: response.fatherName || "",
-        contactAddress: response.contactAddress || "",
-        permanentAddress: response.permanentAddress || "",
-        workingAddress: response.workingAddress || "",
-        nomineeName: response.nomineeName || "",
-        nomineeAge: response.nomineeAge || "",
-        nomineeRelation: response.nomineeRelation || "",
-        nomineeAddress: response.nomineeAddress || "",
-        reason: "",
-        transferDate: "",
-      });
-    } catch (error) {
-      console.error("Error fetching member:", error);
-      toast.error("Member not found or error occurred.");
-      setMemberData(null);
+const handleFetchMember = async () => {
+  if (!selectedId.trim()) {
+    toast.error("Please enter a Seniority ID or Name.");
+    return;
+  }
+
+  setLoading(true);
+  setMemberList([]);
+  setMemberData(null);
+
+  try {
+    const { data } = await axiosInstance.get(`/plot/getMember/${selectedId}`);
+
+    if (data.type === "multiple") {
+      toast("Multiple members found with same name!");
+      setMemberList(data.data); // show list to select
+    } else if (data.type === "single") {
+      setMemberData(data.data);
+      fillToMemberForm(data.data);
     }
-  };
+  } catch (error) {
+    console.error(error);
+    toast.error("Member not found or error occurred.");
+  } finally {
+    setLoading(false);
+  }
+};
+
+const fillToMemberForm = (member) => {
+  setToMember({
+    saluation: member.saluation || "",
+    name: member.name || "",
+    email: member.email || "",
+    mobileNumber: member.mobileNumber || "",
+    dateofbirth: member.dateofbirth || "",
+    fatherName: member.fatherName || "",
+    contactAddress: member.contactAddress || "",
+    permanentAddress: member.permanentAddress || "",
+    workingAddress: member.workingAddress || "",
+    nomineeName: member.nomineeName || "",
+    nomineeAge: member.nomineeAge || "",
+    nomineeRelation: member.nomineeRelation || "",
+    nomineeAddress: member.nomineeAddress || "",
+    reason: "",
+    transferDate: "",
+  });
+};
 
   const handleInputChange = (e) => {
     const { name, value, type } = e.target;
@@ -219,6 +271,38 @@ const PlotTransferForm = () => {
                 >
                   <FiSearch className="w-6 h-6" />
                 </button>
+                {memberList.length > 0 && (
+  <div className="mt-4">
+    <label className="block text-gray-800 font-medium mb-2">
+      Select a Member:
+    </label>
+    <select
+      onChange={async (e) => {
+        const id = e.target.value;
+        if (!id) return;
+        try {
+          const { data } = await axiosInstance.get(`/plot/getMember/${id}`);
+          if (data.type === "single") {
+            setMemberData(data.data);
+            fillToMemberForm(data.data);
+            setMemberList([]); // clear list after selecting
+          }
+        } catch (err) {
+          toast.error("Error fetching selected member");
+        }
+      }}
+      className="w-full border p-2 rounded"
+    >
+      <option value="">Select member</option>
+      {memberList.map((m) => (
+        <option key={m.SeniorityID} value={m.SeniorityID}>
+          {`${m.name}, ${m.email}, ${m.mobileNumber}`}
+        </option>
+      ))}
+    </select>
+  </div>
+)}
+
               </div>
             </div>
 

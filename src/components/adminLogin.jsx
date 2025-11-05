@@ -4,7 +4,7 @@ import { Signin } from "../api/auth";
 import { loginSuccess } from "../redux/authSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import LoginBg from "../../public/images/letterheader-removebg-preview.png"
+import LoginBg from "../../public/images/letterheader-removebg-preview.png";
 import {
   showSuccessToast,
   showErrorToast,

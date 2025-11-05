@@ -47,7 +47,6 @@ const PlotTransferForm = () => {
   // });
 
   const [toMember, setToMember] = useState(initialToMember);
-
   const handleFileChange = (e) => {
     const { name, files } = e.target;
     if (name === "memberPhoto") {
@@ -742,5 +741,4 @@ const PlotTransferForm = () => {
     </div>
   );
 };
-
 export default PlotTransferForm;

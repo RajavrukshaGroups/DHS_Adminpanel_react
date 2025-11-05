@@ -7,6 +7,8 @@ import toast from "react-hot-toast";
 
 const PlotTransferForm = () => {
   const [loading, setLoading] = useState(false);
+  const [searchMode, setSearchMode] = useState("id"); // 'id' | 'name'
+  const [nameQuery, setNameQuery] = useState("");
   const initialToMember = {
     saluation: "",
     name: "",
@@ -26,6 +28,7 @@ const PlotTransferForm = () => {
   };
   const [selectedId, setSelectedId] = useState("");
   const [memberData, setMemberData] = useState(null);
+  const [searchResults, setSearchResults] = useState([]);
   const [memberPhoto, setMemberPhoto] = useState(null);
   const [memberSign, setMemberSign] = useState(null);
   // const [toMember, setToMember] = useState({
@@ -126,17 +129,106 @@ const PlotTransferForm = () => {
   };
 
   const handleFetchMember = async () => {
-    if (!selectedId) {
-      toast.error("Please enter a Seniority ID.");
-      return;
-    }
+    setSearchResults([]);
+    if (searchMode === "id") {
+      if (!selectedId) {
+        toast.error("Please enter a Seniority ID.");
+        return;
+      }
 
+      try {
+        const response = await axiosInstance.get(
+          `/plot/getMemberBySeniorityID/${selectedId}`
+        );
+        setMemberData(response);
+        setToMember({
+          saluation: response.saluation || "",
+          name: response.name || "",
+          email: response.email || "",
+          mobileNumber: response.mobileNumber || "",
+          dateofbirth: response.dateofbirth || "",
+          fatherName: response.fatherName || "",
+          contactAddress: response.contactAddress || "",
+          permanentAddress: response.permanentAddress || "",
+          workingAddress: response.workingAddress || "",
+          nomineeName: response.nomineeName || "",
+          nomineeAge: response.nomineeAge || "",
+          nomineeRelation: response.nomineeRelation || "",
+          nomineeAddress: response.nomineeAddress || "",
+          reason: "",
+          transferDate: "",
+        });
+      } catch (error) {
+        console.error("Error fetching member:", error);
+        toast.error("Member not found or error occurred.");
+        setMemberData(null);
+      }
+    } else {
+      if (!nameQuery.trim()) {
+        toast.error("Please enter a name to search.");
+        return;
+      }
+      try {
+        const res = await axiosInstance.get(
+          `/member/view-member-details?page=1&search=${encodeURIComponent(
+            nameQuery.trim()
+          )}`
+        );
+        const results = Array.isArray(res.data) ? res.data : [];
+        if (results.length === 0) {
+          toast.error("No members found with that name.");
+          setSearchResults([]);
+          setMemberData(null);
+          return;
+        }
+        if (results.length === 1) {
+          const only = results[0];
+          if (only.SeniorityID) {
+            setSelectedId(only.SeniorityID);
+            const response = await axiosInstance.get(
+              `/plot/getMemberBySeniorityID/${only.SeniorityID}`
+            );
+            setMemberData(response);
+            setToMember({
+              saluation: response.saluation || "",
+              name: response.name || "",
+              email: response.email || "",
+              mobileNumber: response.mobileNumber || "",
+              dateofbirth: response.dateofbirth || "",
+              fatherName: response.fatherName || "",
+              contactAddress: response.contactAddress || "",
+              permanentAddress: response.permanentAddress || "",
+              workingAddress: response.workingAddress || "",
+              nomineeName: response.nomineeName || "",
+              nomineeAge: response.nomineeAge || "",
+              nomineeRelation: response.nomineeRelation || "",
+              nomineeAddress: response.nomineeAddress || "",
+              reason: "",
+              transferDate: "",
+            });
+          } else {
+            setSearchResults(results);
+          }
+        } else {
+          setSearchResults(results);
+          setMemberData(null);
+        }
+      } catch (error) {
+        console.error("Error searching members by name:", error);
+        toast.error("Search failed.");
+        setSearchResults([]);
+      }
+    }
+  };
+
+  const handleSelectMemberFromList = async (member) => {
     try {
+      if (!member?.SeniorityID) return;
+      setSelectedId(member.SeniorityID);
       const response = await axiosInstance.get(
-        `/plot/getMemberBySeniorityID/${selectedId}`
+        `/plot/getMemberBySeniorityID/${member.SeniorityID}`
       );
       setMemberData(response);
-      // Pre-fill the toMember form with existing data
       setToMember({
         saluation: response.saluation || "",
         name: response.name || "",
@@ -154,10 +246,10 @@ const PlotTransferForm = () => {
         reason: "",
         transferDate: "",
       });
+      setSearchResults([]);
     } catch (error) {
-      console.error("Error fetching member:", error);
-      toast.error("Member not found or error occurred.");
-      setMemberData(null);
+      console.error("Error fetching selected member:", error);
+      toast.error("Failed to load member details.");
     }
   };
 
@@ -192,34 +284,106 @@ const PlotTransferForm = () => {
 
           <div className="grid gap-6 md:grid-cols-3">
             <div className="space-y-2">
-              <label
-                htmlFor="seniorityId"
-                className="block font-medium text-gray-800"
+              <label className="block font-medium text-gray-800">Search Mode</label>
+              <select
+                className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
+                value={searchMode}
+                onChange={(e) => {
+                  setSearchMode(e.target.value);
+                  setSearchResults([]);
+                  setMemberData(null);
+                  setSelectedId("");
+                  setNameQuery("");
+                }}
               >
-                Seniority ID
-              </label>
-              <div className="flex items-center space-x-2">
-                <input
-                  id="seniorityId"
-                  type="text"
-                  className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
-                  value={selectedId}
-                  onChange={(e) => setSelectedId(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") handleFetchMember();
-                  }}
-                  placeholder="Enter Seniority ID"
-                />
-                <button
-                  type="button"
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-2 py-1 rounded flex items-center justify-center text-sm"
-                  onClick={handleFetchMember}
-                  title="Fetch Member"
-                >
-                  <FiSearch className="w-6 h-6" />
-                </button>
-              </div>
+                <option value="id">By Seniority ID</option>
+                <option value="name">By Name</option>
+              </select>
             </div>
+
+            {searchMode === "id" && (
+              <div className="space-y-2 md:col-span-1">
+                <label
+                  htmlFor="seniorityId"
+                  className="block font-medium text-gray-800"
+                >
+                  Seniority ID
+                </label>
+                <div className="flex items-center space-x-2">
+                  <input
+                    id="seniorityId"
+                    type="text"
+                    className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
+                    value={selectedId}
+                    onChange={(e) => setSelectedId(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") handleFetchMember();
+                    }}
+                    placeholder="Enter Seniority ID"
+                  />
+                  <button
+                    type="button"
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-2 py-1 rounded flex items-center justify-center text-sm"
+                    onClick={handleFetchMember}
+                    title="Fetch Member"
+                  >
+                    <FiSearch className="w-6 h-6" />
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {searchMode === "name" && (
+              <div className="space-y-2 md:col-span-1">
+                <label htmlFor="nameSearch" className="block font-medium text-gray-800">
+                  Member Name
+                </label>
+                <div className="flex items-center space-x-2">
+                  <input
+                    id="nameSearch"
+                    type="text"
+                    className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
+                    value={nameQuery}
+                    onChange={(e) => setNameQuery(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") handleFetchMember();
+                    }}
+                    placeholder="Enter member name"
+                  />
+                  <button
+                    type="button"
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-2 py-1 rounded flex items-center justify-center text-sm"
+                    onClick={handleFetchMember}
+                    title="Search by name"
+                  >
+                    <FiSearch className="w-6 h-6" />
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {searchMode === "name" && searchResults.length > 0 && (
+              <div className="md:col-span-3">
+                <div className="mt-2 border rounded p-3 bg-gray-50">
+                  <p className="font-medium text-gray-800 mb-2">Select a member:</p>
+                  <ul className="space-y-2">
+                    {searchResults.map((m) => (
+                      <li
+                        key={m._id}
+                        className="flex justify-between items-center bg-white border rounded px-3 py-2 hover:bg-blue-50 cursor-pointer"
+                        onClick={() => handleSelectMemberFromList(m)}
+                        title="Click to select this member"
+                      >
+                        <span className="text-sm text-gray-800">
+                          {`${m.name || ""}, ${m.email || ""}, ${m.mobileNumber || ""}`}
+                        </span>
+                        <span className="text-xs text-gray-500">{m.SeniorityID ? `ID: ${m.SeniorityID}` : ""}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            )}
 
             <div className="space-y-2">
               <label

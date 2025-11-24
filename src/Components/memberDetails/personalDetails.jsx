@@ -2,6 +2,8 @@ import React from "react";
 import { useState } from "react";
 
 const PersonalDetails = ({ formData, handleChange, formErrors }) => {
+  console.log("formdata", formData);
+
   const formatDate = (isoDate) => {
     return isoDate ? isoDate.split("T")[0] : "";
   };
@@ -32,9 +34,9 @@ const PersonalDetails = ({ formData, handleChange, formErrors }) => {
             className="w-full border px-4 py-2 rounded-md"
           >
             <option value="">Select Salutation</option>
-            <option value="Mr">Mr.</option>
-            <option value="Ms">Ms.</option>
-            <option value="Mrs">Mrs.</option>
+            <option value="Mr.">Mr.</option>
+            <option value="Ms.">Ms.</option>
+            <option value="Mrs.">Mrs.</option>
           </select>
           {formErrors.salutation && (
             <p className="text-red-500 text-sm">{formErrors.salutation}</p>

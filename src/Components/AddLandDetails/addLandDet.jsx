@@ -17,15 +17,7 @@ const AddLandDetails = ({ refreshKey }) => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        // const res = await axios.get(
-        //   "http://localhost:4000/project/all-projects"
-        //   // "https://adminpanel.defencehousingsociety.com/project/all-projects"
-        // );
-        // setProjectOptions(res.data.data || []);
-        const data = await axiosInstance.get(
-          "/project/all-projects"
-          // "https://adminpanel.defencehousingsociety.com/project/all-projects"
-        );
+        const data = await axiosInstance.get("/project/all-projects");
         setProjectOptions(data.data || []);
       } catch (err) {
         console.error(err);
@@ -110,44 +102,23 @@ const AddLandDetails = ({ refreshKey }) => {
     }
 
     try {
-      // const res = await axios.patch(
-      //   "http://localhost:4000/project/update-land-details",
-      //   // "https://adminpanel.defencehousingsociety.com/project/update-land-details",
-      //   {
-      //     projectName,
-      //     dimensionId,
-      //     pricePerSqft: parseFloat(pricePerSqft),
-      //     propertyCost: parseFloat(propertyCost.replace(/,/g, "")),
-      //     location,
-      //     description,
-      //   }
-      // );
-      const data = await axiosInstance.patch(
-        "/project/update-land-details",
-        // "https://adminpanel.defencehousingsociety.com/project/update-land-details",
-        {
-          projectName,
-          dimensionId,
-          pricePerSqft: parseFloat(pricePerSqft),
-          propertyCost: parseFloat(propertyCost.replace(/,/g, "")),
-          location,
-          description,
-        }
-      );
+      const data = await axiosInstance.patch("/project/update-land-details", {
+        projectName,
+        dimensionId,
+        pricePerSqft: parseFloat(pricePerSqft),
+        propertyCost: parseFloat(propertyCost.replace(/,/g, "")),
+        location,
+        description,
+      });
 
       toast.success(data.message || "Land details updated!");
 
-      const refreshed = await axios.get(
-        // "http://localhost:4000/project/all-projects"
-        "https://adminpanel.defencehousingsociety.com/project/all-projects"
-      );
-      setProjectOptions(refreshed.data.data || []);
-      // const refreshed = await axiosInstance.get(
-      //   "/project/all-projects"
-      //   // "https://adminpanel.defencehousingsociety.com/project/all-projects"
+      // const refreshed = await axios.get(
+      //   "http://localhost:4000/project/all-projects"
+      //   "https://adminpanel.defencehousingsociety.com/project/all-projects"
       // );
-      // setProjectOptions(refreshed.data.data || []);
-
+      const refreshed = await axiosInstance.get("/project/all-projects");
+      setProjectOptions(refreshed.data.data || []);
       // Reset fields
       setProjectName("");
       setDimensions([]);

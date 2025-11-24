@@ -17,6 +17,7 @@ const ViewProjectStatus = () => {
           // "http://localhost:4000/project/all-projectstatus"
           "https://adminpanel.defencehousingsociety.com/project/all-projectstatus"
         );
+        console.log("response",response)
         if (response.data?.success) {
           setProjectStatusLists(response.data.data);
         }

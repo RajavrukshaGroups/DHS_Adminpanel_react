@@ -1,6 +1,7 @@
 import React, { use, useEffect } from "react";
 import axiosInstance from "../../api/interceptors";
 function PaymentDetails({ formData, handleChange, formErrors }) {
+  console.log("formdata payments",formData)
   const paymentMode = formData?.paymentMode;
   useEffect(() => {
     const fetchPaymentData = async () => {
@@ -88,8 +89,8 @@ function PaymentDetails({ formData, handleChange, formErrors }) {
             <option value="">Select Payment Mode</option>
             <option value="cash">Cash</option>
             <option value="cheque">Cheque</option>
-            <option value="netbanking">Netbanking/UPI</option>
-            <option value="DD">DD</option>
+            <option value="netbanking/upi">Netbanking/UPI</option>
+            <option value="dd">DD</option>
           </select>
           {formErrors.paymentMode && (
             <p className="text-red-500 text-sm">{formErrors.paymentMode}</p>
@@ -98,8 +99,8 @@ function PaymentDetails({ formData, handleChange, formErrors }) {
 
         {/* Common Inputs for cheque, netbanking, DD */}
         {(paymentMode === "cheque" ||
-          paymentMode === "netbanking" ||
-          paymentMode === "DD") && (
+          paymentMode === "netbanking/upi" ||
+          paymentMode === "dd") && (
           <>
             <div>
               <label className="block font-medium mb-1">Bank Name:</label>
@@ -135,8 +136,8 @@ function PaymentDetails({ formData, handleChange, formErrors }) {
         {/* Amount for all modes */}
         {(paymentMode === "cash" ||
           paymentMode === "cheque" ||
-          paymentMode === "netbanking" ||
-          paymentMode === "DD") && (
+          paymentMode === "netbanking/upi" ||
+          paymentMode === "dd") && (
           <div>
             <label className="block font-medium mb-1">Amount:</label>
             <input
@@ -171,7 +172,7 @@ function PaymentDetails({ formData, handleChange, formErrors }) {
           </div>
         )}
 
-        {paymentMode === "netbanking" && (
+        {paymentMode === "netbanking/upi" && (
           <div>
             <label className="block font-medium mb-1">Transaction ID:</label>
             <input
@@ -188,7 +189,7 @@ function PaymentDetails({ formData, handleChange, formErrors }) {
           </div>
         )}
 
-        {paymentMode === "DD" && (
+        {paymentMode === "dd" && (
           <div>
             <label className="block font-medium mb-1">DD Number:</label>
             <input

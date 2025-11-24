@@ -1,4 +1,4 @@
-import React, { useState ,useRef} from "react";
+import React, { useState, useRef } from "react";
 import PersonalDetails from "./personalDetails.jsx";
 import ReferenceDetails from "./referenceDetails.jsx";
 import NomineePerticular from "./nomineePerticular";
@@ -86,7 +86,7 @@ const MemberFormWrapper = () => {
   const [existingSign, setExistingSign] = useState(null); // Add this
   const [loading, setLoading] = useState(false);
 
- const photoInputRef = useRef(null);
+  const photoInputRef = useRef(null);
   const signInputRef = useRef(null);
 
   useEffect(() => {
@@ -222,8 +222,6 @@ const MemberFormWrapper = () => {
     formData.miscellaneousExpenses,
   ]);
 
-  
-
   const validatePersonalDetails = (data) => {
     const errors = {};
     if (!data.salutation.trim()) errors.salutation = "Salutation is required";
@@ -355,22 +353,22 @@ const MemberFormWrapper = () => {
     ) {
       errors.amount = "Valid amount is required";
     }
-    if (!memberPhoto && !existingPhoto) {
-      errors.memberPhoto = "Member photo is required";
-    }
-    if (!memberSign && !existingSign) {
-      errors.memberSign = "Member signature is required";
-    }
+    // if (!memberPhoto && !existingPhoto) {
+    //   errors.memberPhoto = "Member photo is required";
+    // }
+    // if (!memberSign && !existingSign) {
+    //   errors.memberSign = "Member signature is required";
+    // }
 
     return errors;
   };
 
-//   const renderPreview = (file, url) => {
-//   if (file) return URL.createObjectURL(file);
-//   if (url) return url;
-//   return '';
-// };
-  
+  //   const renderPreview = (file, url) => {
+  //   if (file) return URL.createObjectURL(file);
+  //   if (url) return url;
+  //   return '';
+  // };
+
   const handleChange = (e) => {
     console.log(
       "e.target.name:",
@@ -502,11 +500,12 @@ const MemberFormWrapper = () => {
             formErrors={formErrors}
           />
 
-       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
             {/* Member Photo */}
             <div className="w-full bg-white p-4 rounded-lg shadow-sm">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Member Photo <span className="text-red-500">*</span>
+                Member Photo
+                {/* <span className="text-red-500">*</span> */}
               </label>
               <div className="flex items-center space-x-4">
                 <div className="flex-1">
@@ -536,7 +535,8 @@ const MemberFormWrapper = () => {
                       onClick={() => {
                         setMemberPhoto(null);
                         setExistingPhoto(null);
-                        if (photoInputRef.current) photoInputRef.current.value = '';
+                        if (photoInputRef.current)
+                          photoInputRef.current.value = "";
                       }}
                       className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 text-xs hover:bg-red-600"
                       aria-label="Remove photo"
@@ -559,7 +559,8 @@ const MemberFormWrapper = () => {
             {/* Member Signature */}
             <div className="w-full bg-white p-4 rounded-lg shadow-sm">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Member Signature <span className="text-red-500">*</span>
+                Member Signature
+                {/* <span className="text-red-500">*</span> */}
               </label>
               <div className="flex items-center space-x-4">
                 <div className="flex-1">
@@ -589,7 +590,8 @@ const MemberFormWrapper = () => {
                       onClick={() => {
                         setMemberSign(null);
                         setExistingSign(null);
-                        if (signInputRef.current) signInputRef.current.value = '';
+                        if (signInputRef.current)
+                          signInputRef.current.value = "";
                       }}
                       className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 text-xs hover:bg-red-600"
                       aria-label="Remove signature"
@@ -609,8 +611,6 @@ const MemberFormWrapper = () => {
               </p>
             </div>
           </div>
-
-          
 
           <div className="flex justify-start mt-6">
             <button

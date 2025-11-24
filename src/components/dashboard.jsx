@@ -36,14 +36,7 @@ function Dashboard() {
   useEffect(() => {
     const fetchProjectsCount = async () => {
       try {
-        // const response = await axios.get(
-        //   "http://localhost:4000/project/totalprojectscount"
-        //   // "https://adminpanel.defencehousingsociety.com/project/totalprojectscount"
-        // );
         const data = await axiosInstance.get("/project/totalprojectscount");
-        // setTotalProjects(response.data.totalProjects);
-        // setTotalRegMembers(response.data.totalRegMembers);
-        // setTotalInactiveMembers(response.data.totalInactiveMembers);
         setTotalProjects(data.totalProjects);
         setTotalRegMembers(data.totalRegMembers);
         setTotalInactiveMembers(data.totalInactiveMembers);
@@ -54,6 +47,26 @@ function Dashboard() {
     };
     fetchProjectsCount();
   }, []);
+
+  // inside Dashboard component
+  const handleUploadMembers = async () => {
+    try {
+      const toastId = toast.loading("Uploading members from Google Sheet...");
+      const data = await axiosInstance.post("/member/upload-google-sheet");
+      console.log("data value", data);
+      toast.success(
+        `Upload finished. Created: ${data.summary.created}, Skipped: ${data.summary.skippedExisting}`,
+        { id: toastId }
+      );
+      console.log("Upload result:", data);
+      // Optionally refresh counts
+      // fetchProjectsCount();
+    } catch (err) {
+      console.error("Upload error:", err.response?.data || err.message);
+      toast.error("Upload failed. Check server logs.");
+    }
+  };
+
   return (
     <>
       <div className="bg-[#E7F2FD] w-full h-screen">
@@ -79,6 +92,15 @@ function Dashboard() {
               <p className="text-4xl font-bold">{totalInactiveMembers}</p>
             </div>
           </div>
+          <div className="flex justify-center mt-10">
+            <button
+              onClick={handleUploadMembers}
+              className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 transition"
+            >
+              Upload Members
+            </button>
+          </div>
+
           <div className="mt-12 mx-auto w-11/12 max-w-5xl overflow-hidden rounded-lg border border-gray-300 bg-white shadow-md">
             <div className="p-8 text-gray-700 text-lg leading-relaxed animate-scroll overflow-y-auto h-72 hover:[animation-play-state:paused] space-y-4">
               <p>

@@ -39,10 +39,8 @@ const EditReceipt = () => {
       try {
         const response = await axios.get(
           "https://adminpanel.defencehousingsociety.com/receipt/get-all-receipt-ids"
+          // "http://localhost:4000/receipt/get-all-receipt-ids"
         );
-        // const response = await axios.get(
-        //   "http://localhost:4000/receipt/get-all-receipt-ids"
-        // );
         setExistingReceiptIds(response.data.receiptIds);
       } catch (error) {
         console.error("failed to fetch receipt ids", error);
@@ -58,11 +56,8 @@ const EditReceipt = () => {
       try {
         const response = await axios.get(
           `https://adminpanel.defencehousingsociety.com/receipt/edit-receipt/payment-history/${id}${window.location.search}`
+          // `http://localhost:4000/receipt/edit-receipt/payment-history/${id}${window.location.search}`
         );
-
-        // const response = await axios.get(
-        //   `http://localhost:4000/receipt/edit-receipt/payment-history/${id}${window.location.search}`
-        // );
 
         setTimeout(() => {
           const { payment, member } = response.data;
@@ -339,7 +334,7 @@ const EditReceipt = () => {
                 <option value="">Select Payment Mode</option>
                 <option value="cash">Cash</option>
                 <option value="cheque">Cheque</option>
-                <option value="netbanking">NetBanking/UPI</option>
+                <option value="netbanking/upi">NetBanking/UPI</option>
                 <option value="dd">DD</option>
               </select>
             </div>
@@ -380,7 +375,7 @@ const EditReceipt = () => {
                     />
                   </div>
                 )}
-                {formData.paymentMode === "netbanking" && (
+                {formData.paymentMode === "netbanking/upi" && (
                   <div>
                     <label className="block mb-1">Transaction ID:</label>
                     <input

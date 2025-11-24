@@ -228,7 +228,7 @@ const EditExtraCharge = () => {
                 <option value="cash">Cash</option>
                 <option value="cheque">Cheque</option>
                 <option value="dd">DD</option>
-                <option value="netbanking">Netbanking/UPI</option>
+                <option value="netbanking/upi">Netbanking/UPI</option>
               </select>
             </div>
             <div>
@@ -247,7 +247,7 @@ const EditExtraCharge = () => {
           {/* Conditional Inputs Based on Payment Mode */}
           {(formData.paymentMode === "cheque" ||
             formData.paymentMode === "dd" ||
-            formData.paymentMode === "netbanking") && (
+            formData.paymentMode === "netbanking/upi") && (
             <>
               {formData.paymentMode === "cheque" && (
                 <div className="grid grid-cols-1 gap-6">
@@ -279,7 +279,7 @@ const EditExtraCharge = () => {
                   </div>
                 </div>
               )}
-              {formData.paymentMode === "netbanking" && (
+              {formData.paymentMode === "netbanking/upi" && (
                 <div className="grid grid-cols-1 gap-6">
                   <div>
                     <label className="block mb-2 font-medium text-gray-700">

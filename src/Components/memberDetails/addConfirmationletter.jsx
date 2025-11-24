@@ -75,12 +75,6 @@ function AddConfirmationletter() {
     console.log("Form Data:", data);
 
     try {
-      // const response = await axiosInstance.post(
-      //   `http://localhost:4000/member/add-confirmation/${id}`,
-      //   // `https://adminpanel.defencehousingsociety.com/member/add-confirmation/${id}`,
-      //   data,
-      //   { headers: { "Content-Type": "multipart/form-data" } }
-      // );
       const response = await axiosInstance.post(
         `/member/add-confirmation/${id}`,
         // `https://adminpanel.defencehousingsociety.com/member/add-confirmation/${id}`,
@@ -301,7 +295,7 @@ function AddConfirmationletter() {
           />
         </div>
 
-         <div>
+        <div>
           <label className="block font-medium mb-1">
             Reciept Number for Site Downpayment(Req)
           </label>

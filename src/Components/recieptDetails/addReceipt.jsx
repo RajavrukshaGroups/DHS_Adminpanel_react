@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 
 const AddReceipt = () => {
   const { id } = useParams();
+  console.log("add receipt id",id)
   const navigate = useNavigate();
   const [membersData, setMemberData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -213,7 +214,7 @@ const AddReceipt = () => {
               required
             >
               <option value="">Choose Payment Type</option>
-              <option value="siteAdvance">Site Advance</option>
+              <option value="siteadvance">Site Advance</option>
               <option value="siteDownPayment">Site Down Payment</option>
               <option value="installments">Installments</option>
             </select>

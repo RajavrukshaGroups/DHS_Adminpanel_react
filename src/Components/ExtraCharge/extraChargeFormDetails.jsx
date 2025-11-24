@@ -288,7 +288,7 @@ const ExtraChargeFormDetails = () => {
                   <option value="">Select</option>
                   <option value="cash">Cash</option>
                   <option value="cheque">Cheque</option>
-                  <option value="netbanking">Netbanking / UPI</option>
+                  <option value="netbanking/upi">Netbanking / UPI</option>
                   <option value="dd">DD</option>
                 </select>
               </div>
@@ -317,7 +317,7 @@ const ExtraChargeFormDetails = () => {
               </>
             )}
 
-            {paymentMode === "netbanking" && (
+            {paymentMode === "netbanking/upi" && (
               <>
                 <InputField
                   label="Transaction ID"

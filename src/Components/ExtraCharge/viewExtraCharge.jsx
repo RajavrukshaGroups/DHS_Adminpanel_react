@@ -140,7 +140,7 @@ const ViewExtraCharge = () => {
                       {item.paymentMode || ""}
                     </td>
                     <td className="border p-2 text-center">
-                      {item.paymentMode?.toLowerCase() === "netbanking"
+                      {item.paymentMode?.toLowerCase() === "netbanking/upi"
                         ? item.transactionId || "-"
                         : item.paymentMode?.toLowerCase() === "cheque"
                         ? item.chequeNumber || "-"

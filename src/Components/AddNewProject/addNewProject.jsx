@@ -50,46 +50,6 @@ const AddNewProject = ({ onProjectAdded, projectList = [] }) => {
     }));
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   console.log("form submitted", formData);
-
-  //   try {
-  //     const formattedData = {
-  //       ...formData,
-  //       dimensions: formData.dimensions.map((dim) => ({
-  //         length: parseFloat(dim.length),
-  //         breadth: parseFloat(dim.breadth),
-  //       })),
-  //     };
-
-  //     const response = await axios.post(
-  //       "http://localhost:4000/project/add-project",
-  //       // "https://adminpanel.defencehousingsociety.com/project/add-project",
-  //       formattedData
-  //     );
-  //     toast.success("Project added successfully!");
-
-  //     setFormData({
-  //       projectName: "",
-  //       shortCode: "",
-  //       status: "",
-  //       location: "",
-  //       description: "",
-  //       dimensions: [],
-  //     });
-
-  //     if (onProjectAdded) onProjectAdded();
-  //   } catch (error) {
-  //     if (error.response && error.response.data?.message) {
-  //       toast.error(`Error: ${error.response.data.message}`);
-  //     } else {
-  //       toast.error("An error occurred while submitting the form.");
-  //     }
-  //     console.error("Submission error:", error);
-  //   }
-  // };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("form submitted", formData);

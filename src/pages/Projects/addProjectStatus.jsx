@@ -21,10 +21,8 @@ const AddProjectStatus = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        // const res = await axios.get(
-        //   "http://localhost:4000/project/all-projects"
-        // );
         const res = await axios.get(
+          // "http://localhost:4000/project/all-projects"
           "https://adminpanel.defencehousingsociety.com/project/all-projects"
         );
         setListProjects(res.data.data);

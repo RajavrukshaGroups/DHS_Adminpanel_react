@@ -20,9 +20,6 @@ function ViewUserdetails() {
         `/member/view-member-details?page=${page}&search=${encodeURIComponent(
           search
         )}`
-        // `https://adminpanel.defencehousingsociety.com/member/view-member-details?page=${page}&search=${encodeURIComponent(
-        //   search
-        // )}`
       );
       console.log("response", response);
       setMemberDetails(response.data || []);

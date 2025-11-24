@@ -21,10 +21,8 @@ const EditProjectStatus = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        // const res = await axios.get(
-        //   "http://localhost:4000/project/all-projects"
-        // );
         const res = await axios.get(
+          // "http://localhost:4000/project/all-projects"
           "https://adminpanel.defencehousingsociety.com/project/all-projects"
         );
         setListProjects(res.data.data);
@@ -35,10 +33,8 @@ const EditProjectStatus = () => {
 
     const fetchStatus = async () => {
       try {
-        // const res = await axios.get(
-        //   `http://localhost:4000/project/indprojectstatus/${id}`
-        // );
         const res = await axios.get(
+          // `http://localhost:4000/project/indprojectstatus/${id}`
           `https://adminpanel.defencehousingsociety.com/project/indprojectstatus/${id}`
         );
         if (res.data.success) {

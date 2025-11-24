@@ -39,23 +39,6 @@ const ViewReceiptHistory = () => {
     fetchMember();
   }, [id]);
 
-  // const fetchReceipts = async () => {
-  //   setReceiptLoading(true);
-  //   try {
-  //     const res = await axios.get(
-  //       `http://localhost:4000/receipt/receipts/member/${id}`
-  //       // `https://adminpanel.defencehousingsociety.com/receipt/receipts/member/${id}`
-  //     );
-  //     setTimeout(() => {
-  //       setReceiptData(res.data);
-  //       setReceiptLoading(false);
-  //     }, 500); // Delay for smoother loading experience
-  //   } catch (err) {
-  //     toast.error("Failed to fetch receipt history");
-  //     setReceiptLoading(false);
-  //   }
-  // };
-
   const fetchReceipts = async () => {
     setReceiptLoading(true);
     try {
@@ -282,7 +265,8 @@ const ViewReceiptHistory = () => {
                         {payment.bankName || "-"}
                       </td>
                       <td className="px-3 py-2 border text-center">
-                        {payment.paymentMode?.toLowerCase() === "netbanking"
+                        {
+                        payment.paymentMode?.toLowerCase() === "netbanking/upi"
                           ? payment.transactionId
                           : payment.paymentMode?.toLowerCase() === "cheque"
                           ? payment.chequeNumber

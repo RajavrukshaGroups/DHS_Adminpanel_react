@@ -29,10 +29,8 @@ const AddReceipt = () => {
   useEffect(() => {
     const fetchMember = async () => {
       try {
-        // const response = await axios.get(
-        //   `http://localhost:4000/member/get-member/${id}`
-        // );
         const response = await axios.get(
+          // `http://localhost:4000/member/get-member/${id}`
           `https://adminpanel.defencehousingsociety.com/member/get-member/${id}`
         );
         setTimeout(() => {
@@ -55,10 +53,8 @@ const AddReceipt = () => {
   useEffect(() => {
     const fetchReceiptIds = async () => {
       try {
-        // const response = await axios.get(
-        //   "http://localhost:4000/receipt/get-all-receipt-ids"
-        // );
         const response = await axios.get(
+          // "http://localhost:4000/receipt/get-all-receipt-ids"
           "https://adminpanel.defencehousingsociety.com/receipt/get-all-receipt-ids"
         );
         console.log("response receipts", response);
@@ -99,11 +95,8 @@ const AddReceipt = () => {
     }
 
     try {
-      // const response = await axios.post(
-      //   `http://localhost:4000/member/add-receipt/${id}`,
-      //   formData
-      // );
       const response = await axios.post(
+        // `http://localhost:4000/member/add-receipt/${id}`,
         `https://adminpanel.defencehousingsociety.com/member/add-receipt/${id}`,
         formData
       );
@@ -238,7 +231,7 @@ const AddReceipt = () => {
               <option value="">Choose payment mode</option>
               <option value="Cash">Cash</option>
               <option value="Cheque">Cheque</option>
-              <option value="Netbanking">Netbanking/UPI</option>
+              <option value="netbanking/upi">Netbanking/UPI</option>
               <option value="dd">DD</option>
             </select>
           </div>
@@ -307,7 +300,7 @@ const AddReceipt = () => {
                 </div>
               )}
 
-              {formData.paymentMode === "Netbanking" && (
+              {formData.paymentMode === "netbanking/upi" && (
                 <div>
                   <label className="block mb-1">Transaction ID / UTR No:</label>
                   <input

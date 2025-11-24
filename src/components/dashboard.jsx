@@ -67,6 +67,40 @@ function Dashboard() {
     }
   };
 
+  const handleUploadSiteAdvanceReceipts = async () => {
+    try {
+      const toastId = toast.loading(
+        "Uploading Site Advance receipts from Site advance sheet..."
+      );
+      // this calls: POST /receipt/bulk-receipts-upload (as wired in your routes)
+      const resp = await axiosInstance.post("/receipt/bulk-receipts-upload");
+      console.log("response", resp);
+      const summary = resp?.summary || {};
+      // prefer readable fields if available
+      const success = summary.success ?? summary.created ?? 0;
+      const skipped = summary.skipped ?? 0;
+      const failed = summary.failed ?? 0;
+
+      toast.success(
+        `SiteAdvance upload finished. Success: ${success}, Skipped: ${skipped}, Failed: ${failed}`,
+        { id: toastId }
+      );
+
+      // debug log full response
+      console.log("SiteAdvance bulk upload response:", resp.data);
+    } catch (err) {
+      console.error(
+        "SiteAdvance upload error:",
+        err.response?.data || err.message
+      );
+      // try to extract server message if present
+      const serverMsg =
+        err.response?.data?.error || err.response?.data?.message;
+      if (serverMsg) toast.error(`Upload failed: ${serverMsg}`);
+      else toast.error("SiteAdvance upload failed. Check server logs.");
+    }
+  };
+
   return (
     <>
       <div className="bg-[#E7F2FD] w-full h-screen">
@@ -92,12 +126,19 @@ function Dashboard() {
               <p className="text-4xl font-bold">{totalInactiveMembers}</p>
             </div>
           </div>
-          <div className="flex justify-center mt-10">
+          <div className="flex justify-center mt-10 gap-4">
             <button
               onClick={handleUploadMembers}
               className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 transition"
             >
               Upload Members
+            </button>
+
+            <button
+              onClick={handleUploadSiteAdvanceReceipts}
+              className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 transition"
+            >
+              Upload Site Advance Receipts
             </button>
           </div>
 

@@ -113,10 +113,6 @@ const AddLandDetails = ({ refreshKey }) => {
 
       toast.success(data.message || "Land details updated!");
 
-      // const refreshed = await axios.get(
-      //   "http://localhost:4000/project/all-projects"
-      //   "https://adminpanel.defencehousingsociety.com/project/all-projects"
-      // );
       const refreshed = await axiosInstance.get("/project/all-projects");
       setProjectOptions(refreshed.data.data || []);
       // Reset fields

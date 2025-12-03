@@ -25,9 +25,6 @@ const AddNewProject = ({ onProjectAdded, projectList = [] }) => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        // const res = await axios.get(
-        //   "http://localhost:4000/project/all-projects"
-        // );
         const data = await axiosInstance.get("/project/all-projects");
         // setProjects(res.data.data);
         setProjects(data.data);
@@ -66,22 +63,13 @@ const AddNewProject = ({ onProjectAdded, projectList = [] }) => {
       if (isEditMode && selectedProjectId) {
         console.log("edit mode", isEditMode);
         console.log("selectedprojectid", selectedProjectId);
-        // Edit existing project
-        // await axios.patch(
-        //   `http://localhost:4000/project/edit-project/${selectedProjectId}`,
-        //   formattedData
-        // );
+
         await axiosInstance.patch(
           `/project/edit-project/${selectedProjectId}`,
           formattedData
         );
         toast.success("Project updated successfully!");
       } else {
-        // Add new project
-        // await axios.post(
-        //   "http://localhost:4000/project/add-project",
-        //   formattedData
-        // );
         await axiosInstance.post("/project/add-project", formattedData);
         toast.success("Project added successfully!");
       }

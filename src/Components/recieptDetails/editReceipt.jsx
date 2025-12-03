@@ -316,7 +316,8 @@ const EditReceipt = () => {
                 >
                   <option value="">Choose Payment Type</option>
                   <option value="siteadvance">Site Advance</option>
-                  <option value="siteDownPayment">Site Down Payment</option>
+                  {/* <option value="siteDownPayment">Site Down Payment</option> */}
+                  <option value="sitedownpayment">Site Down Payment</option>
                   <option value="installments">Installments</option>
                 </select>
               )}

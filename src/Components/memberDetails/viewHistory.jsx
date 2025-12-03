@@ -265,8 +265,7 @@ const ViewReceiptHistory = () => {
                         {payment.bankName || "-"}
                       </td>
                       <td className="px-3 py-2 border text-center">
-                        {
-                        payment.paymentMode?.toLowerCase() === "netbanking/upi"
+                        {payment.paymentMode?.toLowerCase() === "netbanking/upi"
                           ? payment.transactionId
                           : payment.paymentMode?.toLowerCase() === "cheque"
                           ? payment.chequeNumber

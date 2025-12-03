@@ -1,7 +1,7 @@
 import React, { use, useEffect } from "react";
 import axiosInstance from "../../api/interceptors";
 function PaymentDetails({ formData, handleChange, formErrors }) {
-  console.log("formdata payments",formData)
+  console.log("formdata payments", formData);
   const paymentMode = formData?.paymentMode;
   useEffect(() => {
     const fetchPaymentData = async () => {

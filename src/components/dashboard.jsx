@@ -138,7 +138,7 @@ function Dashboard() {
               onClick={handleUploadSiteAdvanceReceipts}
               className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 transition"
             >
-              Upload Site Advance Receipts
+              Upload Site Advance / Downpayment Receipts
             </button>
           </div>
 

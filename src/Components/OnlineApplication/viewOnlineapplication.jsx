@@ -16,7 +16,7 @@ const OnlineApplicationsTable = () => {
           search: searchTerm,
           page: currentPage,
           limit: 10,
-        }
+        },
       );
       setMemberDetails(response.data.data);
       setTotalPages(response.data.totalPages);

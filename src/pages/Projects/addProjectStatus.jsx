@@ -22,8 +22,8 @@ const AddProjectStatus = () => {
     const fetchProjects = async () => {
       try {
         const res = await axios.get(
-          // "http://localhost:4000/project/all-projects"
-          "https://adminpanel.defencehousingsociety.com/project/all-projects"
+          // "http://localhost:4000/project/all-projects",
+          "https://adminpanel.defencehousingsociety.com/project/all-projects",
         );
         setListProjects(res.data.data);
       } catch (error) {
@@ -73,7 +73,7 @@ const AddProjectStatus = () => {
         // "http://localhost:4000/project/project-status",
         "https://adminpanel.defencehousingsociety.com/project/project-status",
         formData,
-        { headers: { "Content-Type": "multipart/form-data" } }
+        { headers: { "Content-Type": "multipart/form-data" } },
       );
       toast.success("Project status added successfully!");
       setSelectedProject("");
@@ -87,7 +87,7 @@ const AddProjectStatus = () => {
       navigate("/viewprojectstatus");
     } catch (error) {
       toast.error(
-        error.response?.data?.message || "Error submitting project status"
+        error.response?.data?.message || "Error submitting project status",
       );
       console.error("Submit error:", error);
     } finally {

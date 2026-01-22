@@ -19,6 +19,9 @@ function Dashboard() {
   const [totalProjectsCount, setTotalProjects] = useState(0);
   const [totalRegMembers, setTotalRegMembers] = useState(0);
   const [totalInactiveMembers, setTotalInactiveMembers] = useState(0);
+  const [showSkippedModal, setShowSkippedModal] = useState(false);
+  const [skippedDetails, setSkippedDetails] = useState([]);
+
   const user = {
     name: "Tom Cook",
     email: "tom@example.com",
@@ -56,7 +59,7 @@ function Dashboard() {
       console.log("data value", data);
       toast.success(
         `Upload finished. Created: ${data.summary.created}, Skipped: ${data.summary.skippedExisting}`,
-        { id: toastId }
+        { id: toastId },
       );
       console.log("Upload result:", data);
       // Optionally refresh counts
@@ -67,37 +70,76 @@ function Dashboard() {
     }
   };
 
+  // const handleUploadSiteAdvanceReceipts = async () => {
+  //   try {
+  //     const toastId = toast.loading(
+  //       "Uploading Site Advance receipts from Site advance sheet..."
+  //     );
+  //     // this calls: POST /receipt/bulk-receipts-upload (as wired in your routes)
+  //     const resp = await axiosInstance.post("/receipt/bulk-receipts-upload");
+  //     console.log("response", resp);
+  //     const summary = resp?.summary || {};
+  //     // prefer readable fields if available
+  //     const success = summary.success ?? summary.created ?? 0;
+  //     const skipped = summary.skipped ?? 0;
+  //     const failed = summary.failed ?? 0;
+
+  //     toast.success(
+  //       `SiteAdvance upload finished. Success: ${success}, Skipped: ${skipped}, Failed: ${failed}`,
+  //       { id: toastId }
+  //     );
+
+  //     // debug log full response
+  //     console.log("SiteAdvance bulk upload response:", resp.data);
+  //   } catch (err) {
+  //     console.error(
+  //       "SiteAdvance upload error:",
+  //       err.response?.data || err.message
+  //     );
+  //     // try to extract server message if present
+  //     const serverMsg =
+  //       err.response?.data?.error || err.response?.data?.message;
+  //     if (serverMsg) toast.error(`Upload failed: ${serverMsg}`);
+  //     else toast.error("SiteAdvance upload failed. Check server logs.");
+  //   }
+  // };
+
   const handleUploadSiteAdvanceReceipts = async () => {
     try {
       const toastId = toast.loading(
-        "Uploading Site Advance receipts from Site advance sheet..."
+        "Uploading Site Advance receipts from Site advance sheet...",
       );
-      // this calls: POST /receipt/bulk-receipts-upload (as wired in your routes)
+
       const resp = await axiosInstance.post("/receipt/bulk-receipts-upload");
-      console.log("response", resp);
+
       const summary = resp?.summary || {};
-      // prefer readable fields if available
-      const success = summary.success ?? summary.created ?? 0;
+
+      // ✅ ADD HERE — EXACT SPOT
+      if (summary.skippedDetails?.length) {
+        console.group("Skipped Receipts");
+        summary.skippedDetails.forEach((item) => {
+          console.log(
+            `Row ${item.row} | ${item.seniorityId || "N/A"} | ${
+              item.receiptNo || "N/A"
+            } | ${item.reason}`,
+          );
+        });
+        console.groupEnd();
+
+        setSkippedDetails(summary.skippedDetails);
+        setShowSkippedModal(true);
+      }
+
+      const success = summary.success ?? 0;
       const skipped = summary.skipped ?? 0;
       const failed = summary.failed ?? 0;
 
       toast.success(
         `SiteAdvance upload finished. Success: ${success}, Skipped: ${skipped}, Failed: ${failed}`,
-        { id: toastId }
+        { id: toastId },
       );
-
-      // debug log full response
-      console.log("SiteAdvance bulk upload response:", resp.data);
     } catch (err) {
-      console.error(
-        "SiteAdvance upload error:",
-        err.response?.data || err.message
-      );
-      // try to extract server message if present
-      const serverMsg =
-        err.response?.data?.error || err.response?.data?.message;
-      if (serverMsg) toast.error(`Upload failed: ${serverMsg}`);
-      else toast.error("SiteAdvance upload failed. Check server logs.");
+      toast.error("SiteAdvance upload failed. Check server logs.");
     }
   };
 
@@ -138,17 +180,17 @@ function Dashboard() {
               onClick={handleUploadSiteAdvanceReceipts}
               className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 transition"
             >
-              Upload Site Advance / Downpayment Receipts
+              Upload Site Advance / Installments/ Downpayment Receipts
             </button>
           </div>
 
           <div className="mt-12 mx-auto w-11/12 max-w-5xl overflow-hidden rounded-lg border border-gray-300 bg-white shadow-md">
             <div className="p-8 text-gray-700 text-lg leading-relaxed animate-scroll overflow-y-auto h-72 hover:[animation-play-state:paused] space-y-4">
               <p>
-                ⭐️ Defence Habitat is a social service organization,
-                functioning with an objective of promoting and facilitating to
-                Serving and Retired Armed / Defence Forces as well as Para
-                Military personnel.
+                ⭐️ Defence Habitat is a social service organization, functioning
+                with an objective of promoting and facilitating to Serving and
+                Retired Armed / Defence Forces as well as Para Military
+                personnel.
               </p>
               <p>
                 ⭐️ The objectives of Defence Habitat amongst others, include
@@ -173,6 +215,65 @@ function Dashboard() {
           </div>
         </div>
       </div>
+
+      {showSkippedModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white w-full max-w-3xl rounded-lg shadow-lg relative">
+            {/* Header */}
+            <div className="flex items-center justify-between px-6 py-4 border-b">
+              <h2 className="text-lg font-semibold text-gray-800">
+                Skipped Receipts
+              </h2>
+              <button
+                onClick={() => setShowSkippedModal(false)}
+                className="text-gray-500 hover:text-gray-800 text-xl font-bold"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="p-6 max-h-[60vh] overflow-y-auto">
+              <table className="w-full border border-gray-200 text-sm">
+                <thead className="bg-gray-100">
+                  <tr>
+                    <th className="border px-3 py-2 text-left">Row</th>
+                    <th className="border px-3 py-2 text-left">Seniority ID</th>
+                    <th className="border px-3 py-2 text-left">Receipt No</th>
+                    <th className="border px-3 py-2 text-left">Reason</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {skippedDetails.map((item, idx) => (
+                    <tr key={idx} className="hover:bg-gray-50">
+                      <td className="border px-3 py-2">{item.row}</td>
+                      <td className="border px-3 py-2">
+                        {item.seniorityId || "—"}
+                      </td>
+                      <td className="border px-3 py-2">
+                        {item.receiptNo || "—"}
+                      </td>
+                      <td className="border px-3 py-2 text-red-600">
+                        {item.reason}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Footer */}
+            <div className="flex justify-end px-6 py-4 border-t">
+              <button
+                onClick={() => setShowSkippedModal(false)}
+                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

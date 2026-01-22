@@ -21,8 +21,8 @@ const ViewReceiptHistory = () => {
     const fetchMember = async () => {
       try {
         const response = await axios.get(
-          // `http://localhost:4000/member/get-member/${id}`
-          `https://adminpanel.defencehousingsociety.com/member/get-member/${id}`
+          // `http://localhost:4000/member/get-member/${id}`,
+          `https://adminpanel.defencehousingsociety.com/member/get-member/${id}`,
         );
         // console.log("Member data:", response.data.member);
         setTimeout(() => {
@@ -43,15 +43,15 @@ const ViewReceiptHistory = () => {
     setReceiptLoading(true);
     try {
       const res = await axios.get(
-        // `http://localhost:4000/receipt/receipts/member/${id}`
-        `https://adminpanel.defencehousingsociety.com/receipt/receipts/member/${id}`
+        // `http://localhost:4000/receipt/receipts/member/${id}`,
+        `https://adminpanel.defencehousingsociety.com/receipt/receipts/member/${id}`,
       );
 
       // Sort payments by date ascending (oldest first) inside each receipt
       const sortedData = res.data.map((receipt) => ({
         ...receipt,
         payments: receipt.payments.sort(
-          (a, b) => new Date(a.date) - new Date(b.date)
+          (a, b) => new Date(a.date) - new Date(b.date),
         ),
       }));
 
@@ -103,7 +103,7 @@ const ViewReceiptHistory = () => {
         `https://adminpanel.defencehousingsociety.com/member/delete-member-receipt-payment/${membersData._id}`,
         {
           data: { paymentType, installmentNumber },
-        }
+        },
       );
       toast.success("receipt deleted successfully");
       setShowDeleteModal(false);
@@ -268,10 +268,10 @@ const ViewReceiptHistory = () => {
                         {payment.paymentMode?.toLowerCase() === "netbanking/upi"
                           ? payment.transactionId
                           : payment.paymentMode?.toLowerCase() === "cheque"
-                          ? payment.chequeNumber
-                          : payment.paymentMode?.toLowerCase() === "dd"
-                          ? payment.ddNumber
-                          : "-"}
+                            ? payment.chequeNumber
+                            : payment.paymentMode?.toLowerCase() === "dd"
+                              ? payment.ddNumber
+                              : "-"}
                       </td>
 
                       <td className="px-3 py-2 border text-center">
@@ -282,7 +282,7 @@ const ViewReceiptHistory = () => {
                                 payment?.applicationFee +
                                 payment?.membershipFee +
                                 payment?.miscellaneousExpenses +
-                                payment?.shareFee
+                                payment?.shareFee,
                             ).toLocaleString("en-IN")
                           : Number(payment.amount).toLocaleString("en-IN")}
                         /-
@@ -314,7 +314,7 @@ const ViewReceiptHistory = () => {
                               handleDeleteClick(
                                 receipt._id,
                                 payment.paymentType,
-                                payment.installmentNumber
+                                payment.installmentNumber,
                               )
                             }
                           >
@@ -323,7 +323,7 @@ const ViewReceiptHistory = () => {
                         </div>
                       </td>
                     </tr>
-                  ))
+                  )),
                 )}
               </tbody>
             </table>

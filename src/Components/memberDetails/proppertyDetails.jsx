@@ -13,10 +13,10 @@ function ProppertyDetails({ formData, handleChange, refreshKey, formErrors }) {
     const fetchProjects = async () => {
       try {
         const res = await axios.get(
-          "https://adminpanel.defencehousingsociety.com/project/all-projects"
+          "https://adminpanel.defencehousingsociety.com/project/all-projects",
         );
         // const res = await axios.get(
-        //   "http://localhost:4000/project/all-projects"
+        //   "http://localhost:4000/project/all-projects",
         // );
         setProjectOptions(res.data.data || []);
       } catch (err) {
@@ -31,7 +31,7 @@ function ProppertyDetails({ formData, handleChange, refreshKey, formErrors }) {
   // Update dimensions when projectName changes
   useEffect(() => {
     const selected = projectOptions.find(
-      (p) => p.projectName === formData?.projectName
+      (p) => p.projectName === formData?.projectName,
     );
     if (selected?.dimensions?.length) {
       setDimensions(selected.dimensions);
@@ -69,7 +69,7 @@ function ProppertyDetails({ formData, handleChange, refreshKey, formErrors }) {
       const match = dimensions.find(
         (d) =>
           Number(d.length) === Number(formData.plotLength) &&
-          Number(d.breadth) === Number(formData.plotBreadth)
+          Number(d.breadth) === Number(formData.plotBreadth),
       );
       if (match) {
         setSelectedDimId(match._id);
@@ -134,7 +134,7 @@ function ProppertyDetails({ formData, handleChange, refreshKey, formErrors }) {
   useEffect(() => {
     if (formData?.selectedPropertyCost && formData?.percentage) {
       const numericCost = parseFloat(
-        formData.selectedPropertyCost?.toString().replace(/,/g, "")
+        formData.selectedPropertyCost?.toString().replace(/,/g, ""),
       );
       const percentageCost =
         (numericCost * parseFloat(formData.percentage)) / 100;

@@ -19,7 +19,7 @@ const ShareCertificate = () => {
             limit: 10,
             search,
           },
-        }
+        },
       );
       if (res.data?.data) {
         setReceipts(res.data.data);
@@ -84,14 +84,14 @@ const ShareCertificate = () => {
 
                 const filteredReceipts = receipts.filter((receipt) =>
                   receipt.payments?.some(
-                    (payment) => payment.shareFee && payment.shareFee > 0
-                  )
+                    (payment) => payment.shareFee && payment.shareFee > 0,
+                  ),
                 );
 
                 return filteredReceipts.flatMap((receipt) =>
                   receipt.payments
                     .filter(
-                      (payment) => payment.shareFee && payment.shareFee > 0
+                      (payment) => payment.shareFee && payment.shareFee > 0,
                     )
                     .map((payment) => {
                       // console.log("payment1234", payment);
@@ -127,7 +127,7 @@ const ShareCertificate = () => {
                           </td>
                         </tr>
                       );
-                    })
+                    }),
                 );
               })()
             ) : (

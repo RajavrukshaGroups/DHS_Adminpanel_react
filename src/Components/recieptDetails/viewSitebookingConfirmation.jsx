@@ -43,7 +43,7 @@ function ViewSitebookingConfirmation() {
   const handleViewConfirmation = async (memberId) => {
     try {
       const res = await axiosInstance.get(
-        `/receipt/view-confirmation/${memberId}`
+        `/receipt/view-confirmation/${memberId}`,
       );
       const confirmationUrl = `https://adminpanel.defencehousingsociety.com/receipt/view-confirmation/${memberId}`;
       // const confirmationUrl = `http://localhost:4000/receipt/view-confirmation/${memberId}`;
@@ -135,13 +135,13 @@ function ViewSitebookingConfirmation() {
                         : "N/A"} */}
                       {member?.totalPaidAmount
                         ? `₹${Number(member.totalPaidAmount).toLocaleString(
-                            "en-IN"
+                            "en-IN",
                           )}`
                         : member?.siteDownPayments?.length > 0
-                        ? `₹${Number(
-                            member.siteDownPayments[0].amount
-                          ).toLocaleString("en-IN")}`
-                        : "N/A"}
+                          ? `₹${Number(
+                              member.siteDownPayments[0].amount,
+                            ).toLocaleString("en-IN")}`
+                          : "N/A"}
                     </td>
                     <td className="border px-3 py-2 text-center">
                       <div className="flex justify-center">
@@ -209,7 +209,7 @@ function ViewSitebookingConfirmation() {
                         <button
                           onClick={() =>
                             navigate(
-                              `/edit-confirmationletter/${member.userId._id}`
+                              `/edit-confirmationletter/${member.userId._id}`,
                             )
                           } // Pass the member ID
                           className="text-blue-600  hover:underline"

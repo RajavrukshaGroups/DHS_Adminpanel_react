@@ -22,7 +22,7 @@ const ViewReceiptDetails = () => {
             limit: 10,
             search,
           },
-        }
+        },
       );
       if (res.data?.data) {
         setReceipts(res.data.data);
@@ -64,7 +64,7 @@ const ViewReceiptDetails = () => {
         // `http://localhost:4000/member/delete-member-receipt-payment/${memberId}`,
         {
           data: { paymentType, installmentNumber },
-        }
+        },
       );
       toast.success("receipt deleted successfully");
       setShowDeleteModal(false);
@@ -80,7 +80,7 @@ const ViewReceiptDetails = () => {
     receiptId,
     paymentType,
     installmentNumber,
-    memberId
+    memberId,
   ) => {
     setSelectedReceipt({ receiptId, paymentType, installmentNumber, memberId });
     setShowDeleteModal(true);
@@ -146,7 +146,7 @@ const ViewReceiptDetails = () => {
                                 payment?.applicationFee +
                                 payment?.membershipFee +
                                 payment?.miscellaneousExpenses +
-                                payment?.shareFee
+                                payment?.shareFee,
                             ).toLocaleString("en-IN")
                           : Number(payment.amount).toLocaleString("en-IN")}
                         /-
@@ -172,19 +172,19 @@ const ViewReceiptDetails = () => {
                             !receipt?.member.isActive
                               ? "bg-red-600 text-white"
                               : receipt.member.cancellationDetails
-                              ? "bg-purple-600 text-white"
-                              : receipt.member.isTransferred
-                              ? "bg-blue-600 text-white"
-                              : "bg-green-600 text-white"
+                                ? "bg-purple-600 text-white"
+                                : receipt.member.isTransferred
+                                  ? "bg-blue-600 text-white"
+                                  : "bg-green-600 text-white"
                           }`}
                         >
                           {!receipt.member.isActive
                             ? "Inactive"
                             : receipt.member.cancellationDetails
-                            ? "Plot Cancelled"
-                            : receipt.member.isTransferred
-                            ? "Plot Transferred"
-                            : "Active"}
+                              ? "Plot Cancelled"
+                              : receipt.member.isTransferred
+                                ? "Plot Transferred"
+                                : "Active"}
                         </span>
                       </td>
                       <td className="px-4 py-2 border">
@@ -205,7 +205,7 @@ const ViewReceiptDetails = () => {
                               receipt._id,
                               payment.paymentType,
                               payment.installmentNumber,
-                              receipt.member._id
+                              receipt.member._id,
                             )
                           }
                         >

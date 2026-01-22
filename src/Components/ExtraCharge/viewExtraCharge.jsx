@@ -27,7 +27,7 @@ const ViewExtraCharge = () => {
             limit: 10,
             search: searchQuery,
           },
-        }
+        },
       );
 
       // Enforce a minimum delay of 500ms
@@ -143,10 +143,10 @@ const ViewExtraCharge = () => {
                       {item.paymentMode?.toLowerCase() === "netbanking/upi"
                         ? item.transactionId || "-"
                         : item.paymentMode?.toLowerCase() === "cheque"
-                        ? item.chequeNumber || "-"
-                        : item.paymentMode?.toLowerCase() === "dd"
-                        ? item.ddNumber || "-"
-                        : "-"}
+                          ? item.chequeNumber || "-"
+                          : item.paymentMode?.toLowerCase() === "dd"
+                            ? item.ddNumber || "-"
+                            : "-"}
                     </td>
                     <td className="border p-2 text-center">
                       {formatDate(item.date)}

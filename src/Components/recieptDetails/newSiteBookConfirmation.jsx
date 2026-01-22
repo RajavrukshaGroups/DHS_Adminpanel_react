@@ -33,7 +33,7 @@ function ViewSitebookingConfirmation() {
   const handleViewConfirmation = async (memberId) => {
     try {
       const res = await axiosInstance.get(
-        `/receipt/view-confirmation/${memberId}`
+        `/receipt/view-confirmation/${memberId}`,
       );
       const confirmationUrl = `https://adminpanel.defencehousingsociety.com/receipt/view-confirmation/${memberId}`;
       // const confirmationUrl = `http://localhost:4000/receipt/view-confirmation/${memberId}`;
@@ -132,7 +132,7 @@ function ViewSitebookingConfirmation() {
                         <button
                           onClick={() =>
                             navigate(
-                              `/edit-confirmationletter/${member.userId._id}`
+                              `/edit-confirmationletter/${member.userId._id}`,
                             )
                           } // Pass the member ID
                           className="text-blue-600  hover:underline"

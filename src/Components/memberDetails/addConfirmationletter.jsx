@@ -17,7 +17,7 @@ function AddConfirmationletter() {
     const fetchMember = async () => {
       try {
         const response = await axiosInstance.get(
-          `/member/get-confirmation/${id}`
+          `/member/get-confirmation/${id}`,
         );
         console.log("response", response);
         setMemberData(response);
@@ -79,7 +79,7 @@ function AddConfirmationletter() {
         `/member/add-confirmation/${id}`,
         // `https://adminpanel.defencehousingsociety.com/member/add-confirmation/${id}`,
         data,
-        { headers: { "Content-Type": "multipart/form-data" } }
+        { headers: { "Content-Type": "multipart/form-data" } },
       );
       console.log("Response:", response);
       toast.success("Confirmation letter added successfully");

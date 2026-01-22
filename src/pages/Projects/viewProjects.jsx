@@ -10,8 +10,8 @@ const ViewProjects = () => {
     try {
       // const res = await axios.get("http://localhost:4000/project/all-projects");
       const res = await axios.get(
-        // "http://localhost:4000/project/all-projects"
-        "https://adminpanel.defencehousingsociety.com/project/all-projects"
+        // "http://localhost:4000/project/all-projects",
+        "https://adminpanel.defencehousingsociety.com/project/all-projects",
       );
       setListProjects(res.data.data);
     } catch (error) {
@@ -42,7 +42,7 @@ const ViewProjects = () => {
         "https://adminpanel.defencehousingsociety.com/project/search-projectname",
         {
           params: { searchQuery },
-        }
+        },
       );
       setListProjects(res.data.data);
     } catch (error) {

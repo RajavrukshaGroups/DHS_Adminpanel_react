@@ -18,8 +18,8 @@ function ViewUserdetails() {
     try {
       const response = await axiosInstance.get(
         `/member/view-member-details?page=${page}&search=${encodeURIComponent(
-          search
-        )}`
+          search,
+        )}`,
       );
       console.log("response", response);
       setMemberDetails(response.data || []);
@@ -42,14 +42,14 @@ function ViewUserdetails() {
     try {
       // Step 1: Check membership fee
       const feeResponse = await axiosInstance.get(
-        `/receipt/checkMembershipFee/${id}`
+        `/receipt/checkMembershipFee/${id}`,
       );
       console.log(feeResponse, "Membership Fee Response");
 
       if (feeResponse.feeAdded) {
         // Step 2: Check if affidavit exists
         const affidavitResponse = await axiosInstance.get(
-          `receipt/check-affidavit-model/${id}`
+          `receipt/check-affidavit-model/${id}`,
         );
         console.log(affidavitResponse.data, "Affidavit Response");
 
@@ -73,7 +73,7 @@ function ViewUserdetails() {
     if (!window.confirm("Are you sure you want to delete this member?")) return;
     try {
       await axiosInstance.delete(
-        `/member/delete-member/${id}`
+        `/member/delete-member/${id}`,
         // `https://adminpanel.defencehousingsociety.com/member/delete-member/${id}`
       );
       toast.success("Member deleted successfully");
@@ -181,7 +181,7 @@ function ViewUserdetails() {
                       <td className="border px-3 py-2 text-center">
                         ₹
                         {Number(
-                          member.propertyDetails?.paidAmount
+                          member.propertyDetails?.paidAmount,
                         ).toLocaleString("en-IN") || "-"}
                       </td>
 
@@ -229,19 +229,19 @@ function ViewUserdetails() {
                             !member.isActive
                               ? "bg-red-600 text-white"
                               : member.cancellationDetails
-                              ? "bg-purple-600 text-white"
-                              : member.isTransferred
-                              ? "bg-blue-600 text-white"
-                              : "bg-green-600 text-white"
+                                ? "bg-purple-600 text-white"
+                                : member.isTransferred
+                                  ? "bg-blue-600 text-white"
+                                  : "bg-green-600 text-white"
                           }`}
                         >
                           {!member.isActive
                             ? "Inactive"
                             : member.cancellationDetails
-                            ? "Plot Cancelled"
-                            : member.isTransferred
-                            ? "Plot Transferred"
-                            : "Active"}
+                              ? "Plot Cancelled"
+                              : member.isTransferred
+                                ? "Plot Transferred"
+                                : "Active"}
                         </span>
                       </td>
 

@@ -18,7 +18,7 @@ axiosInstance.interceptors.request.use(
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
 axiosInstance.interceptors.response.use(
@@ -26,7 +26,7 @@ axiosInstance.interceptors.response.use(
   (error) => {
     console.error("API Error:", error.response || error.message);
     return Promise.reject(error.response || error.message);
-  }
+  },
 );
 
 export default axiosInstance;

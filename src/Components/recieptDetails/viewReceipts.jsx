@@ -252,15 +252,15 @@ const ViewReceiptDetails = () => {
         )}
 
         <div className="mt-6 flex justify-center items-center gap-3">
-          <button
+          {/* <button
             className="px-3 py-1.5 bg-gray-200 rounded disabled:opacity-50"
             disabled={currentPage === 1}
             onClick={() => handlePageChange(currentPage - 1)}
           >
             Prev
-          </button>
+          </button> */}
 
-          <div className="flex gap-3">
+          {/* <div className="flex gap-3">
             {Array.from({ length: totalPages }, (_, i) => (
               <button
                 key={i}
@@ -274,15 +274,39 @@ const ViewReceiptDetails = () => {
                 {i + 1}
               </button>
             ))}
-          </div>
+          </div> */}
 
-          <button
+          {receipts.length > 0 && (
+            <div className="mt-6 flex justify-center items-center gap-4">
+              <button
+                className="bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded disabled:opacity-50"
+                disabled={currentPage === 1}
+                onClick={() => handlePageChange(currentPage - 1)}
+              >
+                Previous
+              </button>
+
+              <span className="text-sm font-medium">
+                Page {currentPage} of {totalPages}
+              </span>
+
+              <button
+                className="bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded disabled:opacity-50"
+                disabled={currentPage === totalPages}
+                onClick={() => handlePageChange(currentPage + 1)}
+              >
+                Next
+              </button>
+            </div>
+          )}
+
+          {/* <button
             className="px-3 py-1.5 bg-gray-200 rounded disabled:opacity-50"
             disabled={currentPage === totalPages}
             onClick={() => handlePageChange(currentPage + 1)}
           >
             Next
-          </button>
+          </button> */}
         </div>
       </div>
     </div>

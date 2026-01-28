@@ -52,18 +52,52 @@ function Dashboard() {
   }, []);
 
   // inside Dashboard component
+  // const handleUploadMembers = async () => {
+  //   try {
+  //     const toastId = toast.loading("Uploading members from Google Sheet...");
+  //     const data = await axiosInstance.post("/member/upload-google-sheet");
+  //     console.log("data value", data);
+  //     toast.success(
+  //       `Upload finished. Created: ${data.summary.created}, Skipped: ${data.summary.skippedExisting}`,
+  //       { id: toastId },
+  //     );
+  //     console.log("Upload result:", data);
+  //     // Optionally refresh counts
+  //     // fetchProjectsCount();
+  //   } catch (err) {
+  //     console.error("Upload error:", err.response?.data || err.message);
+  //     toast.error("Upload failed. Check server logs.");
+  //   }
+  // };
+
   const handleUploadMembers = async () => {
     try {
       const toastId = toast.loading("Uploading members from Google Sheet...");
-      const data = await axiosInstance.post("/member/upload-google-sheet");
-      console.log("data value", data);
+
+      const resp = await axiosInstance.post("/member/upload-google-sheet");
+
+      const summary = resp?.summary || {};
+
+      // ✅ SHOW SKIPPED MEMBERS MODAL (same as receipts)
+      if (summary.skippedDetails?.length) {
+        console.group("Skipped Members");
+        summary.skippedDetails.forEach((item) => {
+          console.log(
+            `Row ${item.row} | ${item.seniorityId || "N/A"} | ${
+              item.membershipNo || "N/A"
+            } | ${item.reason}`,
+          );
+        });
+        console.groupEnd();
+
+        setSkippedDetails(summary.skippedDetails);
+        setShowSkippedModal(true);
+      }
+
       toast.success(
-        `Upload finished. Created: ${data.summary.created}, Skipped: ${data.summary.skippedExisting}`,
+        `Upload finished. Created: ${summary.created}, Skipped: ${summary.skippedExisting}`,
         { id: toastId },
       );
-      console.log("Upload result:", data);
-      // Optionally refresh counts
-      // fetchProjectsCount();
     } catch (err) {
       console.error("Upload error:", err.response?.data || err.message);
       toast.error("Upload failed. Check server logs.");
@@ -143,6 +177,52 @@ function Dashboard() {
     }
   };
 
+  const handleDeleteAllMembersAndReceiptsData = async () => {
+    const confirmed = window.confirm(
+      "⚠️ This will permanently delete ALL members and ALL receipts. Are you sure?",
+    );
+
+    if (!confirmed) return;
+
+    try {
+      const toastId = toast.loading("Deleting all members and receipts...");
+
+      const resp = await axiosInstance.delete("/member/delete-members-data");
+
+      toast.success(
+        `Deleted Members: ${resp.membersDeleted}, Receipts: ${resp.receiptsDeleted}`,
+        { id: toastId },
+      );
+
+      // Optionally refresh dashboard counts
+      // fetchProjectsCount();
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to delete members and receipts");
+    }
+  };
+
+  const handleDeleteReceiptsData = async () => {
+    const confirmed = window.confirm(
+      "⚠️ This will permanently delete ALL receipts. Continue?",
+    );
+
+    if (!confirmed) return;
+
+    try {
+      const toastId = toast.loading("Deleting receipts...");
+
+      const resp = await axiosInstance.delete("/member/delete-receipts-data");
+
+      toast.success(`Deleted Receipts: ${resp.receiptsDeleted}`, {
+        id: toastId,
+      });
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to delete receipts");
+    }
+  };
+
   return (
     <>
       <div className="bg-[#E7F2FD] w-full h-screen">
@@ -184,6 +264,22 @@ function Dashboard() {
             </button>
           </div>
 
+          <div className="flex justify-center mt-10 gap-4">
+            <button
+              onClick={handleDeleteAllMembersAndReceiptsData}
+              className="bg-red-600 text-white px-6 py-3 rounded-lg shadow hover:bg-red-700 transition"
+            >
+              Delete All Members and Receipts Data
+            </button>
+
+            <button
+              onClick={handleDeleteReceiptsData}
+              className="bg-red-600 text-white px-6 py-3 rounded-lg shadow hover:bg-red-700 transition"
+            >
+              Delete Receipts Data
+            </button>
+          </div>
+
           <div className="mt-12 mx-auto w-11/12 max-w-5xl overflow-hidden rounded-lg border border-gray-300 bg-white shadow-md">
             <div className="p-8 text-gray-700 text-lg leading-relaxed animate-scroll overflow-y-auto h-72 hover:[animation-play-state:paused] space-y-4">
               <p>
@@ -222,7 +318,8 @@ function Dashboard() {
             {/* Header */}
             <div className="flex items-center justify-between px-6 py-4 border-b">
               <h2 className="text-lg font-semibold text-gray-800">
-                Skipped Receipts
+                {/* Skipped Receipts */}
+                Skipped Records
               </h2>
               <button
                 onClick={() => setShowSkippedModal(false)}
@@ -239,10 +336,13 @@ function Dashboard() {
                   <tr>
                     <th className="border px-3 py-2 text-left">Row</th>
                     <th className="border px-3 py-2 text-left">Seniority ID</th>
-                    <th className="border px-3 py-2 text-left">Receipt No</th>
+                    <th className="border px-3 py-2 text-left">
+                      Membership / Receipt No
+                    </th>
                     <th className="border px-3 py-2 text-left">Reason</th>
                   </tr>
                 </thead>
+
                 <tbody>
                   {skippedDetails.map((item, idx) => (
                     <tr key={idx} className="hover:bg-gray-50">
@@ -250,9 +350,13 @@ function Dashboard() {
                       <td className="border px-3 py-2">
                         {item.seniorityId || "—"}
                       </td>
-                      <td className="border px-3 py-2">
+                      {/* <td className="border px-3 py-2">
                         {item.receiptNo || "—"}
+                      </td> */}
+                      <td className="border px-3 py-2">
+                        {item.receiptNo || item.membershipNo || "—"}
                       </td>
+
                       <td className="border px-3 py-2 text-red-600">
                         {item.reason}
                       </td>

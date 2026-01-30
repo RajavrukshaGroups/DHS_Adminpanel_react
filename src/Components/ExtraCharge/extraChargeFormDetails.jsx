@@ -113,13 +113,13 @@ const ExtraChargeFormDetails = () => {
     console.log("receipt value", value);
     console.log("field name", field);
 
-    if (field === "recieptNo") {
-      if (existingReceiptIds.map(String).includes(value.trim())) {
-        setReceiptError("Receipt number already exists!");
-      } else {
-        setReceiptError("");
-      }
-    }
+    // if (field === "recieptNo") {
+    //   if (existingReceiptIds.map(String).includes(value.trim())) {
+    //     setReceiptError("Receipt number already exists!");
+    //   } else {
+    //     setReceiptError("");
+    //   }
+    // }
 
     setFormData({ ...formData, [field]: value });
   };

@@ -71,13 +71,13 @@ const AddReceipt = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    if (name === "recieptNo") {
-      if (existingReceiptIds.includes(value.trim())) {
-        setReceiptError("Receipt number already exists!");
-      } else {
-        setReceiptError("");
-      }
-    }
+    // if (name === "recieptNo") {
+    //   if (existingReceiptIds.includes(value.trim())) {
+    //     setReceiptError("Receipt number already exists!");
+    //   } else {
+    //     setReceiptError("");
+    //   }
+    // }
 
     if (name === "paymentMode" && !formData.paymentType) {
       toast.error("Please select a payment type first.");

@@ -136,16 +136,16 @@ const EditReceipt = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    if (name === "receiptNo") {
-      if (
-        value.trim() !== receiptsData.receiptNo &&
-        existingReceiptIds.includes(value.trim())
-      ) {
-        setReceiptError("Receipt number already exists");
-      } else {
-        setReceiptError("");
-      }
-    }
+    // if (name === "receiptNo") {
+    //   if (
+    //     value.trim() !== receiptsData.receiptNo &&
+    //     existingReceiptIds.includes(value.trim())
+    //   ) {
+    //     setReceiptError("Receipt number already exists");
+    //   } else {
+    //     setReceiptError("");
+    //   }
+    // }
 
     if (name === "paymentMode" && !formData.paymentType) {
       toast.error("Please select a payment type first.");

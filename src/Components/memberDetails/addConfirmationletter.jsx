@@ -13,6 +13,8 @@ function AddConfirmationletter() {
   const [fileType, setFileType] = useState(null);
   const navigate = useNavigate();
 
+  console.log("member data", memberData);
+
   useEffect(() => {
     const fetchMember = async () => {
       try {
@@ -27,6 +29,30 @@ function AddConfirmationletter() {
     };
     fetchMember();
   }, [id]);
+
+  useEffect(() => {
+    if (!memberData?.propertyDetails?.projectName) return;
+
+    // Don't override if already exists
+    if (memberData?.ConfirmationLetterNo) return;
+
+    const projectName = memberData.propertyDetails.projectName.toLowerCase();
+
+    let prefix = "";
+
+    if (projectName.includes("tapasihalli")) {
+      prefix = "DHS/DHT/CL/0000/2026-27";
+    } else if (projectName.includes("marasandra")) {
+      prefix = "DHS/DHD/CL/0000/2026-27";
+    }
+
+    if (prefix) {
+      setMemberData((prev) => ({
+        ...prev,
+        ConfirmationLetterNo: prefix,
+      }));
+    }
+  }, [memberData?.propertyDetails?.projectName]);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -184,7 +210,10 @@ function AddConfirmationletter() {
             name="siteDiemension"
             placeholder="Site Dimension"
             className="w-full border px-4 py-2 rounded-md"
-            value={memberData?.propertyDetails?.propertySize || ""}
+            value={
+              memberData?.propertyDetails?.length *
+                memberData?.propertyDetails?.breadth || ""
+            }
           />
         </div>
 
@@ -198,7 +227,7 @@ function AddConfirmationletter() {
             value={memberData?.MembershipNo || ""}
           />
         </div>
-        <div>
+        {/* <div>
           <label className="block font-medium mb-1">Seniority No</label>
           <input
             type="text"
@@ -207,14 +236,21 @@ function AddConfirmationletter() {
             className="w-full border px-4 py-2 rounded-md"
             value={memberData?.SeniorityID || ""}
           />
-        </div>
+        </div> */}
         <div>
           <label className="block font-medium mb-1">Confirmation Number</label>
           <input
             name="ConfirmationLetterNo"
             type="text"
+            // value={memberData?.ConfirmationLetterNo || ""}
             value={memberData?.ConfirmationLetterNo || ""}
-            placeholder="Relationship"
+            onChange={(e) =>
+              setMemberData((prev) => ({
+                ...prev,
+                ConfirmationLetterNo: e.target.value,
+              }))
+            }
+            placeholder="Enter Confirmation Number"
             className="w-full border px-4 py-2 rounded-md"
           />
         </div>
@@ -285,12 +321,18 @@ function AddConfirmationletter() {
           <label className="block font-medium mb-1">
             Site Down Payment Amount for Confirmation Letter(req)
           </label>
-          <input
+          {/* <input
             type="number"
             name="Amount"
             // defaultValue={memberData?.siteDownPaymentAmount || ""}
             defaultValue=""
             placeholder="Enter Amount"
+            className="w-full border px-4 py-2 rounded-md"
+          /> */}
+          <input
+            type="number"
+            name="Amount"
+            defaultValue={memberData?.siteDownPaymentAmount || ""}
             className="w-full border px-4 py-2 rounded-md"
           />
         </div>
@@ -299,12 +341,18 @@ function AddConfirmationletter() {
           <label className="block font-medium mb-1">
             Reciept Number for Site Downpayment(Req)
           </label>
-          <input
+          {/* <input
             type="number"
             name="confirmationLetterReceiptNo"
             // defaultValue={memberData?.siteDownPaymentAmount || ""}
             defaultValue=""
             placeholder="Enter Receipt Number"
+            className="w-full border px-4 py-2 rounded-md"
+          /> */}
+          <input
+            type="text"
+            name="confirmationLetterReceiptNo"
+            defaultValue={memberData?.firstSiteDownPaymentReceiptNo || ""}
             className="w-full border px-4 py-2 rounded-md"
           />
         </div>

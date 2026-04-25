@@ -51,25 +51,6 @@ function Dashboard() {
     fetchProjectsCount();
   }, []);
 
-  // inside Dashboard component
-  // const handleUploadMembers = async () => {
-  //   try {
-  //     const toastId = toast.loading("Uploading members from Google Sheet...");
-  //     const data = await axiosInstance.post("/member/upload-google-sheet");
-  //     console.log("data value", data);
-  //     toast.success(
-  //       `Upload finished. Created: ${data.summary.created}, Skipped: ${data.summary.skippedExisting}`,
-  //       { id: toastId },
-  //     );
-  //     console.log("Upload result:", data);
-  //     // Optionally refresh counts
-  //     // fetchProjectsCount();
-  //   } catch (err) {
-  //     console.error("Upload error:", err.response?.data || err.message);
-  //     toast.error("Upload failed. Check server logs.");
-  //   }
-  // };
-
   const handleUploadMembers = async () => {
     try {
       const toastId = toast.loading("Uploading members from Google Sheet...");
@@ -104,40 +85,6 @@ function Dashboard() {
     }
   };
 
-  // const handleUploadSiteAdvanceReceipts = async () => {
-  //   try {
-  //     const toastId = toast.loading(
-  //       "Uploading Site Advance receipts from Site advance sheet..."
-  //     );
-  //     // this calls: POST /receipt/bulk-receipts-upload (as wired in your routes)
-  //     const resp = await axiosInstance.post("/receipt/bulk-receipts-upload");
-  //     console.log("response", resp);
-  //     const summary = resp?.summary || {};
-  //     // prefer readable fields if available
-  //     const success = summary.success ?? summary.created ?? 0;
-  //     const skipped = summary.skipped ?? 0;
-  //     const failed = summary.failed ?? 0;
-
-  //     toast.success(
-  //       `SiteAdvance upload finished. Success: ${success}, Skipped: ${skipped}, Failed: ${failed}`,
-  //       { id: toastId }
-  //     );
-
-  //     // debug log full response
-  //     console.log("SiteAdvance bulk upload response:", resp.data);
-  //   } catch (err) {
-  //     console.error(
-  //       "SiteAdvance upload error:",
-  //       err.response?.data || err.message
-  //     );
-  //     // try to extract server message if present
-  //     const serverMsg =
-  //       err.response?.data?.error || err.response?.data?.message;
-  //     if (serverMsg) toast.error(`Upload failed: ${serverMsg}`);
-  //     else toast.error("SiteAdvance upload failed. Check server logs.");
-  //   }
-  // };
-
   const handleUploadSiteAdvanceReceipts = async () => {
     try {
       const toastId = toast.loading(
@@ -152,10 +99,15 @@ function Dashboard() {
       if (summary.skippedDetails?.length) {
         console.group("Skipped Receipts");
         summary.skippedDetails.forEach((item) => {
+          // console.log(
+          //   `Row ${item.row} | ${item.seniorityId || "N/A"} | ${
+          //     item.receiptNo || "N/A"
+          //   } | ${item.reason}`,
+          // );
           console.log(
-            `Row ${item.row} | ${item.seniorityId || "N/A"} | ${
-              item.receiptNo || "N/A"
-            } | ${item.reason}`,
+            `Row ${item.row} | ${
+              item.membershipNo || item.seniorityId || "N/A"
+            } | ${item.receiptNo || "N/A"} | ${item.reason}`,
           );
         });
         console.groupEnd();
@@ -357,7 +309,21 @@ function Dashboard() {
                         {item.receiptNo || item.membershipNo || "—"}
                       </td>
 
-                      <td className="border px-3 py-2 text-red-600">
+                      {/* <td className="border px-3 py-2 text-red-600">
+                        {item.reason}
+                      </td> */}
+                      <td
+                        className={`border px-3 py-2 ${
+                          item.reason?.includes("not found") ||
+                          item.reason?.includes("Missing MembershipNo")
+                            ? "text-red-600"
+                            : item.reason?.includes("Duplicate MembershipNo")
+                              ? "text-yellow-600"
+                              : item.reason?.includes("Duplicate receipt")
+                                ? "text-orange-600"
+                                : "text-gray-700"
+                        }`}
+                      >
                         {item.reason}
                       </td>
                     </tr>

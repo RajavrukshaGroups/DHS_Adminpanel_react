@@ -3,6 +3,7 @@ import axiosInstance from "../../api/interceptors";
 import SiteBookingConfirmation from "../memberDetails/siteBookingConfirmation";
 import { FaEye, FaFileAlt, FaEdit, FaDownload } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 function ViewSitebookingConfirmation() {
   const [memberDetails, setMemberDetails] = useState([]);
@@ -19,9 +20,11 @@ function ViewSitebookingConfirmation() {
       const res = await axiosInstance.get("/member/all", {
         params: { page, limit: itemsPerPage, search: search.trim() },
       });
-      console.log("response site", res);
-      setMemberDetails(res.data || []);
-      setTotalPages(res.pagination.totalPages || 1);
+
+      const data = res.data;
+
+      setMemberDetails(Array.isArray(data) ? data : data?.data || []);
+      setTotalPages(data?.pagination?.totalPages || 1);
     } catch (error) {
       console.error("Error fetching data", error);
     }
@@ -78,7 +81,24 @@ function ViewSitebookingConfirmation() {
             className="border border-gray-300 rounded px-3 py-2 w-full max-w-md"
           />
         </div>
+        <button
+          className="bg-red-500 text-white px-4 py-2 rounded"
+          onClick={async () => {
+            if (!window.confirm("Delete ALL affidavits?")) return;
 
+            try {
+              await axiosInstance.delete(
+                "/member/delete-all-affidavits?confirm=YES",
+              );
+              toast.success("All deleted");
+              fetchAffidavits(1, "");
+            } catch (err) {
+              toast.error("Failed to delete all");
+            }
+          }}
+        >
+          Delete All
+        </button>
         <div className="mt-4 overflow-x-auto">
           <table className="w-full text-left border border-gray-300">
             <thead className="bg-gray-100">
@@ -124,7 +144,7 @@ function ViewSitebookingConfirmation() {
                       {member.userId?.MembershipNo || "N/A"}
                     </td>
                     <td className="border px-3 py-2 text-center">
-                      {member.userId?.ConfirmationLetterNo || "N/A"}
+                      {member?.ConfirmationLetterNo || "N/A"}
                     </td>
                     <td className="border px-3 py-2 text-center">
                       {/* ₹{Number(propertyCost).toLocaleString("en-IN")} */}
@@ -215,6 +235,25 @@ function ViewSitebookingConfirmation() {
                           className="text-blue-600  hover:underline"
                         >
                           <FaEdit className="text-black text-xl cursor-pointer hover:text-black" />
+                        </button>
+
+                        <button
+                          onClick={async () => {
+                            if (!window.confirm("Delete this affidavit?"))
+                              return;
+
+                            try {
+                              await axiosInstance.delete(
+                                `/member/delete-affidavit/${member._id}`,
+                              );
+                              toast.success("Deleted successfully");
+                              fetchAffidavits(currentPage, searchTerm);
+                            } catch (err) {
+                              toast.error("Delete failed");
+                            }
+                          }}
+                        >
+                          ❌
                         </button>
                       </div>
                     </td>

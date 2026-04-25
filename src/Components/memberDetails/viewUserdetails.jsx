@@ -12,6 +12,8 @@ function ViewUserdetails() {
   const [searchTerm, setSearchTerm] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
+  console.log("member details", memberDetails);
+
   const navigate = useNavigate();
 
   const fetchData = async (page = 1, search = "") => {

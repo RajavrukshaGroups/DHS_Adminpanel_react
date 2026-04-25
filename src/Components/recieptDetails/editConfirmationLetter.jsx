@@ -202,6 +202,24 @@ function EditConfirmationLetter() {
 
         <div>
           <label className="block font-medium mb-1">
+            Confirmation Letter Number (Req)
+          </label>
+          <input
+            type="text"
+            name="ConfirmationLetterNo"
+            value={memberData?.ConfirmationLetterNo || ""}
+            onChange={(e) =>
+              setMemberData({
+                ...memberData,
+                ConfirmationLetterNo: e.target.value,
+              })
+            }
+            className="w-full border px-4 py-2 rounded-md"
+          />
+        </div>
+
+        <div>
+          <label className="block font-medium mb-1">
             Reciept Number for Site Downpayment(Req)
           </label>
           <input

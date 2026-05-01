@@ -175,6 +175,114 @@ function Dashboard() {
     }
   };
 
+  const handleUploadMarasandraMembers = async () => {
+    try {
+      const toastId = toast.loading("Uploading members from Google Sheet...");
+
+      const resp = await axiosInstance.post(
+        "/member/upload-marasandra-members",
+      );
+
+      const summary = resp?.summary || {};
+
+      // ✅ SHOW SKIPPED MEMBERS MODAL (same as receipts)
+      if (summary.skippedDetails?.length) {
+        console.group("Skipped Members");
+        summary.skippedDetails.forEach((item) => {
+          console.log(
+            `Row ${item.row} | ${item.seniorityId || "N/A"} | ${
+              item.membershipNo || "N/A"
+            } | ${item.reason}`,
+          );
+        });
+        console.groupEnd();
+
+        setSkippedDetails(summary.skippedDetails);
+        setShowSkippedModal(true);
+      }
+
+      toast.success(
+        `Upload finished. Created: ${summary.created}, Skipped: ${summary.skippedExisting}`,
+        { id: toastId },
+      );
+    } catch (err) {
+      console.error("Upload error:", err.response?.data || err.message);
+      toast.error("Upload failed. Check server logs.");
+    }
+  };
+
+  const handleUploadMarasandraSiteAdvanceReceipts = async () => {
+    try {
+      const toastId = toast.loading(
+        "Uploading Site Advance receipts from Site advance sheet...",
+      );
+
+      const resp = await axiosInstance.post(
+        "/receipt/bulk-receipts-marasandra",
+      );
+
+      const summary = resp?.summary || {};
+
+      // ✅ ADD HERE — EXACT SPOT
+      if (summary.skippedDetails?.length) {
+        console.group("Skipped Receipts");
+        summary.skippedDetails.forEach((item) => {
+          // console.log(
+          //   `Row ${item.row} | ${item.seniorityId || "N/A"} | ${
+          //     item.receiptNo || "N/A"
+          //   } | ${item.reason}`,
+          // );
+          console.log(
+            `Row ${item.row} | ${
+              item.membershipNo || item.seniorityId || "N/A"
+            } | ${item.receiptNo || "N/A"} | ${item.reason}`,
+          );
+        });
+        console.groupEnd();
+
+        setSkippedDetails(summary.skippedDetails);
+        setShowSkippedModal(true);
+      }
+
+      const success = summary.success ?? 0;
+      const skipped = summary.skipped ?? 0;
+      const failed = summary.failed ?? 0;
+
+      toast.success(
+        `SiteAdvance upload finished. Success: ${success}, Skipped: ${skipped}, Failed: ${failed}`,
+        { id: toastId },
+      );
+    } catch (err) {
+      toast.error("SiteAdvance upload failed. Check server logs.");
+    }
+  };
+
+  const handleDeleteOtherReceipts = async () => {
+    const confirmAction = window.confirm(
+      "Are you sure you want to delete all non-membership receipts?",
+    );
+
+    if (!confirmAction) return;
+
+    try {
+      const toastId = toast.loading("Deleting non-membership receipts...");
+
+      const res = await axiosInstance.delete(
+        "/member/delete-other-receipts?confirm=YES",
+      );
+
+      toast.success(
+        `Deleted successfully. Updated: ${res.receiptsUpdated}, Removed Payments: ${res.paymentsRemoved}, Deleted Receipts: ${res.receiptsDeleted}`,
+        { id: toastId },
+      );
+
+      // 🔥 OPTIONAL: refresh data
+      // fetchMembers() OR reload page
+    } catch (err) {
+      toast.error(err?.response?.data?.message || "Failed to delete receipts");
+    }
+  };
+
   return (
     <>
       <div className="bg-[#E7F2FD] w-full h-screen">
@@ -200,20 +308,40 @@ function Dashboard() {
               <p className="text-4xl font-bold">{totalInactiveMembers}</p>
             </div>
           </div>
-          <div className="flex justify-center mt-10 gap-4">
-            <button
-              onClick={handleUploadMembers}
-              className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 transition"
-            >
-              Upload Members
-            </button>
+          <div className="flex flex-col items-center mt-10 gap-4">
+            {/* Row 1 */}
+            <div className="flex gap-4">
+              <button
+                onClick={handleUploadMembers}
+                className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 transition"
+              >
+                Upload Members (Tapasihalli)
+              </button>
 
-            <button
-              onClick={handleUploadSiteAdvanceReceipts}
-              className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 transition"
-            >
-              Upload Site Advance / Installments/ Downpayment Receipts
-            </button>
+              <button
+                onClick={handleUploadMarasandraMembers}
+                className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 transition"
+              >
+                Upload Members (Marasandra)
+              </button>
+            </div>
+
+            {/* Row 2 */}
+            <div className="flex gap-4">
+              <button
+                onClick={handleUploadSiteAdvanceReceipts}
+                className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 transition"
+              >
+                Upload Receipts (Tapasihalli)
+              </button>
+
+              <button
+                onClick={handleUploadMarasandraSiteAdvanceReceipts}
+                className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 transition"
+              >
+                Upload Receipts (Marasandra)
+              </button>
+            </div>
           </div>
 
           <div className="flex justify-center mt-10 gap-4">
@@ -228,7 +356,15 @@ function Dashboard() {
               onClick={handleDeleteReceiptsData}
               className="bg-red-600 text-white px-6 py-3 rounded-lg shadow hover:bg-red-700 transition"
             >
-              Delete Receipts Data
+              Delete All Receipts Data(Including Membership Fee)
+            </button>
+          </div>
+          <div className="flex justify-center mt-10 gap-4">
+            <button
+              onClick={handleDeleteOtherReceipts}
+              className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
+            >
+              Delete Receipts (Except Membership Fee)
             </button>
           </div>
 

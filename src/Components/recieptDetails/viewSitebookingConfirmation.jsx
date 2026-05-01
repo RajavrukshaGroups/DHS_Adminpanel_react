@@ -10,23 +10,32 @@ function ViewSitebookingConfirmation() {
   const [selectedMember, setSelectedMember] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [itemsPerPage] = useState(10); // You can adjust the limit
+  const [itemsPerPage] = useState(10); // Must match backend `limit`
   const [searchTerm, setSearchTerm] = useState("");
 
   const navigate = useNavigate();
 
   const fetchAffidavits = async (page = 1, search = "") => {
     try {
-      const res = await axiosInstance.get("/member/all", {
+      const response = await axiosInstance.get("/member/all", {
         params: { page, limit: itemsPerPage, search: search.trim() },
       });
 
-      const data = res.data;
+      // Handle both axios interceptor behaviours:
+      // - If interceptor returns full response, response.data = backend object { data, pagination }
+      // - If interceptor unwraps, response = backend object directly
+      const backendData = response.data?.pagination ? response.data : response;
+      // backendData now always looks like { data: [...], pagination: {...} }
 
-      setMemberDetails(Array.isArray(data) ? data : data?.data || []);
-      setTotalPages(data?.pagination?.totalPages || 1);
+      const membersArray = backendData.data || [];
+      const pagination = backendData.pagination || {};
+
+      setMemberDetails(Array.isArray(membersArray) ? membersArray : []);
+      setTotalPages(pagination.totalPages || 1);
     } catch (error) {
       console.error("Error fetching data", error);
+      setMemberDetails([]);
+      setTotalPages(1);
     }
   };
 
@@ -34,7 +43,7 @@ function ViewSitebookingConfirmation() {
     const delayDebounce = setTimeout(() => {
       setCurrentPage(1);
       fetchAffidavits(1, searchTerm);
-    }, 500); // 500ms delay after typing stops
+    }, 500);
 
     return () => clearTimeout(delayDebounce);
   }, [searchTerm]);
@@ -45,15 +54,13 @@ function ViewSitebookingConfirmation() {
 
   const handleViewConfirmation = async (memberId) => {
     try {
-      const res = await axiosInstance.get(
-        `/receipt/view-confirmation/${memberId}`,
-      );
+      await axiosInstance.get(`/receipt/view-confirmation/${memberId}`);
       const confirmationUrl = `https://adminpanel.defencehousingsociety.com/receipt/view-confirmation/${memberId}`;
       // const confirmationUrl = `http://localhost:4000/receipt/view-confirmation/${memberId}`;
       window.open(confirmationUrl, "_blank");
-      setSelectedMember(res.data);
     } catch (error) {
       console.error("Error fetching confirmation letter", error);
+      toast.error("Failed to open confirmation letter");
     }
   };
 
@@ -72,6 +79,7 @@ function ViewSitebookingConfirmation() {
         <h1 className="text-xl font-semibold mb-4 text-center">
           View Site Booking
         </h1>
+
         <div className="flex items-center gap-2 mb-4">
           <input
             type="text"
@@ -81,11 +89,11 @@ function ViewSitebookingConfirmation() {
             className="border border-gray-300 rounded px-3 py-2 w-full max-w-md"
           />
         </div>
+
         <button
           className="bg-red-500 text-white px-4 py-2 rounded"
           onClick={async () => {
             if (!window.confirm("Delete ALL affidavits?")) return;
-
             try {
               await axiosInstance.delete(
                 "/member/delete-all-affidavits?confirm=YES",
@@ -99,6 +107,7 @@ function ViewSitebookingConfirmation() {
         >
           Delete All
         </button>
+
         <div className="mt-4 overflow-x-auto">
           <table className="w-full text-left border border-gray-300">
             <thead className="bg-gray-100">
@@ -121,7 +130,7 @@ function ViewSitebookingConfirmation() {
             <tbody>
               {memberDetails.length === 0 ? (
                 <tr>
-                  <td colSpan="9" className="text-center py-4 text-gray-500">
+                  <td colSpan="7" className="text-center py-4 text-gray-500">
                     No data found.
                   </td>
                 </tr>
@@ -132,116 +141,83 @@ function ViewSitebookingConfirmation() {
                       {(currentPage - 1) * itemsPerPage + index + 1}
                     </td>
                     <td className="border px-3 py-2 text-center">
-                      <p>{`${member.userId?.saluation} ${member.userId?.name}`}</p>
-                      <p>{member.userId?.mobileNumber}</p>
-                      <p>{member.userId?.email}</p>
-                      <p>{member.userId?.contactAddress}</p>
+                      <p>{`${member.userId?.saluation || ""} ${member.userId?.name || ""}`}</p>
+                      <p>{member.userId?.mobileNumber || ""}</p>
+                      <p>{member.userId?.email || ""}</p>
+                      <p>{member.userId?.contactAddress || ""}</p>
                     </td>
                     <td className="border px-3 py-2 text-center">
-                      {member.projectAddress}
+                      {member.projectAddress || "N/A"}
                     </td>
                     <td className="border px-3 py-2 text-center">
                       {member.userId?.MembershipNo || "N/A"}
                     </td>
                     <td className="border px-3 py-2 text-center">
-                      {member?.ConfirmationLetterNo || "N/A"}
+                      {member.ConfirmationLetterNo || "N/A"}
                     </td>
                     <td className="border px-3 py-2 text-center">
-                      {/* ₹{Number(propertyCost).toLocaleString("en-IN")} */}
-                      {/* {member.siteDownPayments?.length > 0
-                        ? `₹${Number(
-                            member.siteDownPayments[0].amount
-                          ).toLocaleString("en-In")}`
-                        : "N/A"} */}
-                      {member?.totalPaidAmount
-                        ? `₹${Number(member.totalPaidAmount).toLocaleString(
-                            "en-IN",
-                          )}`
-                        : member?.siteDownPayments?.length > 0
-                          ? `₹${Number(
-                              member.siteDownPayments[0].amount,
-                            ).toLocaleString("en-IN")}`
+                      {member.totalPaidAmount
+                        ? `₹${Number(member.totalPaidAmount).toLocaleString("en-IN")}`
+                        : member.siteDownPayments?.length > 0
+                          ? `₹${Number(member.siteDownPayments[0].amount).toLocaleString("en-IN")}`
                           : "N/A"}
                     </td>
                     <td className="border px-3 py-2 text-center">
-                      <div className="flex justify-center">
+                      <div className="flex justify-center gap-2">
+                        {/* Affidavit preview/download */}
                         {(() => {
                           const url = member.affidavitUrl;
-                          console.log("affidavit url", url);
-
-                          if (!url) {
+                          if (!url)
                             return (
                               <span className="text-sm text-gray-500">N/A</span>
                             );
-                          }
-
                           const ext = url.split(".").pop()?.toLowerCase();
-
                           if (
-                            ext === "pdf" ||
-                            ext === "jpg" ||
-                            ext === "jpeg" ||
-                            ext === "png" ||
-                            ext === "webp"
+                            ["pdf", "jpg", "jpeg", "png", "webp"].includes(ext)
                           ) {
                             return (
                               <a
                                 href={url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-black underline"
                               >
                                 <FaEye className="text-black text-xl cursor-pointer hover:text-black" />
                               </a>
                             );
-                          } else if (ext === "doc" || ext === "docx") {
-                            return (
-                              <a
-                                href={url}
-                                download
-                                className="text-black underline"
-                              >
-                                <FaDownload className="text-black text-xl cursor-pointer hover:text-black" />
-                              </a>
-                            );
                           } else {
-                            // Fallback: unknown but downloadable
                             return (
-                              <a
-                                href={url}
-                                download
-                                className="text-black underline"
-                              >
+                              <a href={url} download>
                                 <FaDownload className="text-black text-xl cursor-pointer hover:text-black" />
                               </a>
                             );
                           }
                         })()}
 
+                        {/* View Confirmation Letter */}
                         <button
                           onClick={() =>
                             handleViewConfirmation(member.userId._id)
-                          } // ✅ correct usage if userId is an object
-                          className="text-black underline"
+                          }
                         >
                           <FaFileAlt className="text-black text-xl cursor-pointer hover:text-blue-700" />
                         </button>
+
+                        {/* Edit Confirmation Letter */}
                         <button
                           onClick={() =>
                             navigate(
                               `/edit-confirmationletter/${member.userId._id}`,
                             )
-                          } // Pass the member ID
-                          className="text-blue-600  hover:underline"
+                          }
                         >
                           <FaEdit className="text-black text-xl cursor-pointer hover:text-black" />
                         </button>
 
+                        {/* Delete single affidavit */}
                         <button
                           onClick={async () => {
                             if (!window.confirm("Delete this affidavit?"))
                               return;
-
                             try {
                               await axiosInstance.delete(
                                 `/member/delete-affidavit/${member._id}`,

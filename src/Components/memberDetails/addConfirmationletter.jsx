@@ -12,6 +12,8 @@ function AddConfirmationletter() {
   const [filePreview, setFilePreview] = useState(null);
   const [fileType, setFileType] = useState(null);
   const navigate = useNavigate();
+  const [selectedPayments, setSelectedPayments] = useState([]);
+  const [totalAmount, setTotalAmount] = useState(0);
 
   console.log("member data", memberData);
 
@@ -72,6 +74,27 @@ function AddConfirmationletter() {
     }
   };
 
+  const handleCheckboxChange = (payment) => {
+    let updated;
+
+    const exists = selectedPayments.find(
+      (p) => p.receiptNo === payment.receiptNo,
+    );
+
+    if (exists) {
+      updated = selectedPayments.filter(
+        (p) => p.receiptNo !== payment.receiptNo,
+      );
+    } else {
+      updated = [...selectedPayments, payment];
+    }
+
+    setSelectedPayments(updated);
+
+    const total = updated.reduce((sum, p) => sum + p.amount, 0);
+    setTotalAmount(total);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -99,6 +122,10 @@ function AddConfirmationletter() {
 
     const data = Object.fromEntries(formData.entries());
     console.log("Form Data:", data);
+    data.Amount = totalAmount;
+
+    data.confirmationLetterReceiptNo = selectedPayments.map((p) => p.receiptNo);
+    data.confirmationPayments = JSON.stringify(selectedPayments);
 
     try {
       const response = await axiosInstance.post(
@@ -317,50 +344,145 @@ function AddConfirmationletter() {
           </div>
         )}
 
-        <div>
+        {/* <div>
           <label className="block font-medium mb-1">
             Site Down Payment Amount for Confirmation Letter(req)
           </label>
-          {/* <input
-            type="number"
-            name="Amount"
-            // defaultValue={memberData?.siteDownPaymentAmount || ""}
-            defaultValue=""
-            placeholder="Enter Amount"
-            className="w-full border px-4 py-2 rounded-md"
-          /> */}
           <input
             type="number"
             name="Amount"
             defaultValue={memberData?.siteDownPaymentAmount || ""}
             className="w-full border px-4 py-2 rounded-md"
           />
-        </div>
+        </div> */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:col-span-2">
+          <div>
+            <label className="block font-medium mb-1">
+              Site Down Payment Amount for Confirmation Letter
+            </label>
 
-        <div>
-          <label className="block font-medium mb-1">
-            Reciept Number for Site Downpayment(Req)
+            <input
+              type="number"
+              name="Amount"
+              value={totalAmount}
+              readOnly
+              className="w-full border px-4 py-2 rounded-md bg-gray-100"
+            />
+          </div>
+
+          <div>
+            <label className="block font-medium mb-1">
+              Reciept Number for Site Downpayment(Req)
+            </label>
+
+            <input
+              type="text"
+              name="confirmationLetterReceiptNo"
+              value={selectedPayments.map((p) => p.receiptNo).join(", ")}
+              readOnly
+              className="w-full border px-4 py-2 rounded-md bg-gray-100"
+            />
+          </div>
+        </div>
+        <div className="md:col-span-2">
+          <label className="block font-medium mb-2">
+            Site Down Payments (Select Multiple)
           </label>
-          {/* <input
-            type="number"
-            name="confirmationLetterReceiptNo"
-            // defaultValue={memberData?.siteDownPaymentAmount || ""}
-            defaultValue=""
-            placeholder="Enter Receipt Number"
-            className="w-full border px-4 py-2 rounded-md"
-          /> */}
-          <input
-            type="text"
-            name="confirmationLetterReceiptNo"
-            defaultValue={memberData?.firstSiteDownPaymentReceiptNo || ""}
-            className="w-full border px-4 py-2 rounded-md"
-          />
+
+          {memberData?.siteDownPayments?.length > 0 ? (
+            <div className="border rounded-md p-3 max-h-48 overflow-y-auto">
+              {memberData.siteDownPayments.map((payment) => (
+                // <div
+                //   key={payment.receiptNo}
+                //   className="flex items-start gap-3 mb-3"
+                // >
+                <div
+                  key={payment.receiptNo}
+                  onClick={() => handleCheckboxChange(payment)}
+                  className={`flex items-start gap-3 mb-3 cursor-pointer border rounded-lg p-2 transition-all duration-200 ${
+                    selectedPayments.some(
+                      (p) => p.receiptNo === payment.receiptNo,
+                    )
+                      ? "bg-blue-50 border-blue-500"
+                      : "hover:bg-gray-50 border-gray-200"
+                  }`}
+                >
+                  {/* <input
+                    type="checkbox"
+                    className="mt-2"
+                    onChange={() => handleCheckboxChange(payment)}
+                  /> */}
+                  <input
+                    type="checkbox"
+                    className="mt-2"
+                    checked={selectedPayments.some(
+                      (p) => p.receiptNo === payment.receiptNo,
+                    )}
+                    readOnly
+                  />
+
+                  <div className="text-sm rounded-md p-3 w-full bg-gray-50">
+                    <div>
+                      <strong>Receipt No:</strong> {payment.receiptNo}
+                    </div>
+
+                    <div>
+                      <strong>Amount:</strong> ₹
+                      {Number(payment.amount).toLocaleString("en-IN")}
+                    </div>
+
+                    <div>
+                      <strong>Date:</strong>{" "}
+                      {new Date(payment.date).toLocaleDateString("en-GB")}
+                    </div>
+
+                    <div>
+                      <strong>Payment Mode:</strong>{" "}
+                      {payment.paymentMode || "-"}
+                    </div>
+
+                    {payment.bankName && (
+                      <div>
+                        <strong>Bank Name:</strong> {payment.bankName}
+                      </div>
+                    )}
+
+                    {payment.branchName && (
+                      <div>
+                        <strong>Branch Name:</strong> {payment.branchName}
+                      </div>
+                    )}
+
+                    {payment.chequeNumber && (
+                      <div>
+                        <strong>Cheque No:</strong> {payment.chequeNumber}
+                      </div>
+                    )}
+
+                    {payment.transactionId && (
+                      <div>
+                        <strong>Transaction ID:</strong> {payment.transactionId}
+                      </div>
+                    )}
+
+                    {payment.ddNumber && (
+                      <div>
+                        <strong>DD Number:</strong> {payment.ddNumber}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-500">No Site Down Payments Found</p>
+          )}
         </div>
 
         <button
           type="submit"
           disabled={loading}
-          className={`w-32 px-6 py-3 bg-blue-600 text-white rounded hover:bg-blue-700 flex items-center justify-center transition-all duration-200 ${
+          className={`w-32 px-2 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 flex items-center justify-center transition-all duration-200 ${
             loading ? "opacity-50 cursor-not-allowed" : ""
           }`}
         >

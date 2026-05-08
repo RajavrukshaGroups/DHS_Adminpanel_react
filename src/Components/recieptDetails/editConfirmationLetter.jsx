@@ -10,18 +10,50 @@ function EditConfirmationLetter() {
   const [memberData, setMemberData] = useState({});
   const [loading, setLoading] = useState(false);
   const [newFilePreview, setNewFilePreview] = useState(null);
+  const [selectedPayments, setSelectedPayments] = useState([]);
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [siteDownPayments, setSiteDownPayments] = useState([]);
+  console.log("site down payments", siteDownPayments);
 
   useEffect(() => {
     const fetchMember = async () => {
       try {
         const response = await axiosInstance.get(`/member/get-affidavit/${id}`);
+        const paymentResponse = await axiosInstance.get(
+          `/member/get-confirmation/${id}`,
+        );
+        console.log("payment response", paymentResponse);
         setMemberData(response);
+        setSiteDownPayments(paymentResponse.siteDownPayments || []);
       } catch (error) {
         console.error("Error fetching member data:", error);
       }
     };
     fetchMember();
   }, [id]);
+
+  useEffect(() => {
+    if (
+      memberData?.confirmationLetterReceiptNo &&
+      siteDownPayments.length > 0
+    ) {
+      const existingReceipts = Array.isArray(
+        memberData.confirmationLetterReceiptNo,
+      )
+        ? memberData.confirmationLetterReceiptNo
+        : [memberData.confirmationLetterReceiptNo];
+
+      const matchedPayments = siteDownPayments.filter((payment) =>
+        existingReceipts.includes(payment.receiptNo),
+      );
+
+      setSelectedPayments(matchedPayments);
+
+      const total = matchedPayments.reduce((sum, p) => sum + p.amount, 0);
+
+      setTotalAmount(total);
+    }
+  }, [memberData, siteDownPayments]);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -39,9 +71,39 @@ function EditConfirmationLetter() {
     }
   };
 
+  const handleCheckboxChange = (payment) => {
+    let updated;
+
+    const exists = selectedPayments.find(
+      (p) => p.receiptNo === payment.receiptNo,
+    );
+
+    if (exists) {
+      updated = selectedPayments.filter(
+        (p) => p.receiptNo !== payment.receiptNo,
+      );
+    } else {
+      updated = [...selectedPayments, payment];
+    }
+
+    setSelectedPayments(updated);
+
+    const total = updated.reduce((sum, p) => sum + p.amount, 0);
+
+    setTotalAmount(total);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
+    formData.set("Amount", totalAmount);
+
+    formData.delete("confirmationLetterReceiptNo");
+
+    selectedPayments.forEach((payment) => {
+      formData.append("confirmationLetterReceiptNo", payment.receiptNo);
+    });
+    formData.set("confirmationPayments", JSON.stringify(selectedPayments));
     setLoading(true);
 
     try {
@@ -189,7 +251,7 @@ function EditConfirmationLetter() {
           <label className="block font-medium mb-1">
             Site Down Payment Amount for Confirmation Letter(req)
           </label>
-          <input
+          {/* <input
             type="number"
             name="Amount"
             value={memberData?.Amount || ""}
@@ -197,7 +259,111 @@ function EditConfirmationLetter() {
               setMemberData({ ...memberData, Amount: e.target.value })
             }
             className="w-full border px-4 py-2 rounded-md"
+          /> */}
+          <input
+            type="number"
+            name="Amount"
+            value={totalAmount}
+            readOnly
+            className="w-full border px-4 py-2 rounded-md bg-gray-100"
           />
+        </div>
+
+        <div className="md:col-span-2">
+          <label className="block font-medium mb-2">
+            Site Down Payments (Select Multiple)
+          </label>
+
+          {siteDownPayments.length > 0 ? (
+            <div className="border rounded-md p-3 max-h-48 overflow-y-auto">
+              {siteDownPayments.map((payment) => (
+                // <div
+                //   key={payment.receiptNo}
+                //   className="flex items-center gap-2 mb-2"
+                // >
+                <div
+                  key={payment.receiptNo}
+                  onClick={() => handleCheckboxChange(payment)}
+                  className={`flex items-start gap-3 mb-3 cursor-pointer border rounded-lg p-2 transition-all duration-200 ${
+                    selectedPayments.some(
+                      (p) => p.receiptNo === payment.receiptNo,
+                    )
+                      ? "bg-blue-50 border-blue-500"
+                      : "hover:bg-gray-50 border-gray-200"
+                  }`}
+                >
+                  {/* <input
+                    type="checkbox"
+                    checked={selectedPayments.some(
+                      (p) => p.receiptNo === payment.receiptNo,
+                    )}
+                    onChange={() => handleCheckboxChange(payment)}
+                  /> */}
+                  <input
+                    type="checkbox"
+                    className="mt-2"
+                    checked={selectedPayments.some(
+                      (p) => p.receiptNo === payment.receiptNo,
+                    )}
+                    readOnly
+                  />
+
+                  <div className="text-sm border rounded-md p-3 w-full bg-gray-50">
+                    <div>
+                      <strong>Receipt No:</strong> {payment.receiptNo}
+                    </div>
+
+                    <div>
+                      <strong>Amount:</strong> ₹
+                      {Number(payment.amount).toLocaleString("en-IN")}
+                    </div>
+
+                    <div>
+                      <strong>Date:</strong>{" "}
+                      {new Date(payment.date).toLocaleDateString("en-GB")}
+                    </div>
+
+                    <div>
+                      <strong>Payment Mode:</strong>{" "}
+                      {payment.paymentMode || "-"}
+                    </div>
+
+                    {payment.bankName && (
+                      <div>
+                        <strong>Bank Name:</strong> {payment.bankName}
+                      </div>
+                    )}
+
+                    {payment.branchName && (
+                      <div>
+                        <strong>Branch Name:</strong> {payment.branchName}
+                      </div>
+                    )}
+
+                    {payment.chequeNumber && (
+                      <div>
+                        <strong>Cheque No:</strong> {payment.chequeNumber}
+                      </div>
+                    )}
+
+                    {payment.transactionId && (
+                      <div>
+                        <strong>Transaction ID:</strong> {payment.transactionId}
+                      </div>
+                    )}
+
+                    {payment.ddNumber && (
+                      <div>
+                        <strong>DD Number:</strong> {payment.ddNumber}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-500">No Site Down Payments Found</p>
+          )}
         </div>
 
         <div>
@@ -222,7 +388,7 @@ function EditConfirmationLetter() {
           <label className="block font-medium mb-1">
             Reciept Number for Site Downpayment(Req)
           </label>
-          <input
+          {/* <input
             type="number"
             name="confirmationLetterReceiptNo"
             value={memberData?.confirmationLetterReceiptNo || ""}
@@ -233,6 +399,13 @@ function EditConfirmationLetter() {
               })
             }
             className="w-full border px-4 py-2 rounded-md"
+          /> */}
+          <input
+            type="text"
+            name="confirmationLetterReceiptNo"
+            value={selectedPayments.map((p) => p.receiptNo).join(", ")}
+            readOnly
+            className="w-full border px-4 py-2 rounded-md bg-gray-100"
           />
         </div>
 

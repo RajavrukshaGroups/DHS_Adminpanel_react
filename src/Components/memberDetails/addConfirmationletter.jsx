@@ -9,7 +9,9 @@ function AddConfirmationletter() {
   const { id } = useParams();
   const [memberData, setMemberData] = useState({});
   const [loading, setLoading] = useState(false);
-  const [filePreview, setFilePreview] = useState(null);
+  // const [filePreview, setFilePreview] = useState(null);
+  const [filePreviews, setFilePreviews] = useState([]);
+  const [selectedFiles, setSelectedFiles] = useState([]);
   const [fileType, setFileType] = useState(null);
   const navigate = useNavigate();
   const [selectedPayments, setSelectedPayments] = useState([]);
@@ -56,22 +58,96 @@ function AddConfirmationletter() {
     }
   }, [memberData?.propertyDetails?.projectName]);
 
+  // const handleFileChange = (e) => {
+  //   const file = e.target.files[0];
+  //   if (!file) return;
+
+  //   setFileType(file.type);
+
+  //   if (file.type.startsWith("image/")) {
+  //     const imageUrl = URL.createObjectURL(file);
+  //     setFilePreview({ type: "image", url: imageUrl });
+  //   } else if (file.type === "application/pdf") {
+  //     const pdfUrl = URL.createObjectURL(file);
+  //     setFilePreview({ type: "pdf", url: pdfUrl });
+  //   } else {
+  //     // For doc, docx, others
+  //     setFilePreview({ type: "doc", name: file.name });
+  //   }
+  // };
+
   const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+    const newFiles = Array.from(e.target.files);
 
-    setFileType(file.type);
+    // append new files
+    const updatedFiles = [...selectedFiles, ...newFiles];
 
-    if (file.type.startsWith("image/")) {
-      const imageUrl = URL.createObjectURL(file);
-      setFilePreview({ type: "image", url: imageUrl });
-    } else if (file.type === "application/pdf") {
-      const pdfUrl = URL.createObjectURL(file);
-      setFilePreview({ type: "pdf", url: pdfUrl });
-    } else {
-      // For doc, docx, others
-      setFilePreview({ type: "doc", name: file.name });
-    }
+    setSelectedFiles(updatedFiles);
+
+    const previews = updatedFiles.map((file) => {
+      const fileUrl = URL.createObjectURL(file);
+
+      if (file.type.startsWith("image/")) {
+        return {
+          type: "image",
+          url: fileUrl,
+          name: file.name,
+        };
+      }
+
+      if (file.type === "application/pdf") {
+        return {
+          type: "pdf",
+          url: fileUrl,
+          name: file.name,
+        };
+      }
+
+      return {
+        type: "doc",
+        name: file.name,
+      };
+    });
+
+    setFilePreviews(previews);
+
+    // reset input
+    e.target.value = "";
+  };
+
+  const removeFile = (indexToRemove) => {
+    const updatedFiles = selectedFiles.filter(
+      (_, index) => index !== indexToRemove,
+    );
+
+    setSelectedFiles(updatedFiles);
+
+    const updatedPreviews = updatedFiles.map((file) => {
+      const fileUrl = URL.createObjectURL(file);
+
+      if (file.type.startsWith("image/")) {
+        return {
+          type: "image",
+          url: fileUrl,
+          name: file.name,
+        };
+      }
+
+      if (file.type === "application/pdf") {
+        return {
+          type: "pdf",
+          url: fileUrl,
+          name: file.name,
+        };
+      }
+
+      return {
+        type: "doc",
+        name: file.name,
+      };
+    });
+
+    setFilePreviews(updatedPreviews);
   };
 
   const handleCheckboxChange = (payment) => {
@@ -95,50 +171,140 @@ function AddConfirmationletter() {
     setTotalAmount(total);
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   const formData = new FormData(e.target);
+  //   if (!formData.get("confirmationLetterIssueDate")) {
+  //     toast.error("Please select a confirmation letter issue date.");
+  //     return;
+  //   }
+  //   if (!formData.get("duration")) {
+  //     toast.error("Please enter the time duration.");
+  //     return;
+  //   }
+
+  //   // if (!formData.get("Amount")) {
+  //   //   toast.error("Please enter the Total Site Down Payment Amount.");
+  //   //   return;
+  //   // }
+  //   // ✅ Validate affidavit file from FormData
+  //   const file = formData.get("affidivate");
+  //   // if (!file || file.size === 0) {
+  //   //   toast.error("Please upload an affidavit file before submitting.");
+  //   //   return;
+  //   // }
+
+  //   setLoading(true);
+
+  //   const data = Object.fromEntries(formData.entries());
+  //   console.log("Form Data:", data);
+  //   data.Amount = totalAmount;
+
+  //   data.confirmationLetterReceiptNo = selectedPayments.map((p) => p.receiptNo);
+  //   data.confirmationPayments = JSON.stringify(selectedPayments);
+
+  //   try {
+  //     const response = await axiosInstance.post(
+  //       `/member/add-confirmation/${id}`,
+  //       // `https://adminpanel.defencehousingsociety.com/member/add-confirmation/${id}`,
+  //       data,
+  //       { headers: { "Content-Type": "multipart/form-data" } },
+  //     );
+  //     console.log("Response:", response);
+  //     toast.success("Confirmation letter added successfully");
+  //     navigate("/viewsiteBooking");
+  //   } catch (error) {
+  //     console.error("Error adding confirmation letter:", error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
-    if (!formData.get("confirmationLetterIssueDate")) {
+
+    const form = e.target;
+
+    // validations
+    if (!form.confirmationLetterIssueDate.value) {
       toast.error("Please select a confirmation letter issue date.");
       return;
     }
-    if (!formData.get("duration")) {
+
+    if (!form.duration.value) {
       toast.error("Please enter the time duration.");
       return;
     }
 
-    // if (!formData.get("Amount")) {
-    //   toast.error("Please enter the Total Site Down Payment Amount.");
-    //   return;
-    // }
-    // ✅ Validate affidavit file from FormData
-    const file = formData.get("affidivate");
-    // if (!file || file.size === 0) {
-    //   toast.error("Please upload an affidavit file before submitting.");
-    //   return;
-    // }
-
     setLoading(true);
 
-    const data = Object.fromEntries(formData.entries());
-    console.log("Form Data:", data);
-    data.Amount = totalAmount;
-
-    data.confirmationLetterReceiptNo = selectedPayments.map((p) => p.receiptNo);
-    data.confirmationPayments = JSON.stringify(selectedPayments);
-
     try {
+      // create multipart form data
+      const formData = new FormData();
+
+      // append normal fields
+      formData.append(
+        "confirmationLetterIssueDate",
+        form.confirmationLetterIssueDate.value,
+      );
+
+      formData.append("duration", form.duration.value);
+
+      formData.append("projectAddress", form.projectAddress.value);
+
+      formData.append("pricePerSqft", form.pricePerSqft.value);
+
+      formData.append("MembershipNo", form.MembershipNo.value);
+
+      formData.append(
+        "ConfirmationLetterNo",
+        memberData?.ConfirmationLetterNo || "",
+      );
+
+      formData.append("Amount", totalAmount);
+
+      // optional fields
+      formData.append("ChequeNo", form.ChequeNo?.value || "");
+
+      // selected receipts
+      selectedPayments.forEach((payment) => {
+        formData.append("confirmationLetterReceiptNo", payment.receiptNo);
+      });
+
+      // full payment details
+      formData.append("confirmationPayments", JSON.stringify(selectedPayments));
+
+      // append all uploaded files
+      selectedFiles.forEach((file) => {
+        formData.append("affidivate", file);
+      });
+
+      console.log("Selected Files:", selectedFiles);
+
+      console.log("Selected Payments:", selectedPayments);
+
+      // API call
       const response = await axiosInstance.post(
         `/member/add-confirmation/${id}`,
-        // `https://adminpanel.defencehousingsociety.com/member/add-confirmation/${id}`,
-        data,
-        { headers: { "Content-Type": "multipart/form-data" } },
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        },
       );
+
       console.log("Response:", response);
+
       toast.success("Confirmation letter added successfully");
+
       navigate("/viewsiteBooking");
     } catch (error) {
       console.error("Error adding confirmation letter:", error);
+
+      toast.error(
+        error?.response?.data?.message || "Failed to add confirmation letter",
+      );
     } finally {
       setLoading(false);
     }
@@ -303,23 +469,23 @@ function AddConfirmationletter() {
             className="w-full border px-4 py-2 rounded-md"
           />
         </div>
-        <div>
-          <label className="block font-medium mb-1">Upload Affidavit</label>
-          {/* <input
-            name="affidivate"
-            type="file"
-            placeholder="affidivate"
-            className="w-full border px-4 py-2 rounded-md"
-          /> */}
-          <input
-            name="affidivate"
-            type="file"
-            onChange={handleFileChange}
-            accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.webp"
-            className="w-full border px-4 py-2 rounded-md"
-          />
+        <div className="flex items-center gap-3">
+          <label className="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer hover:bg-blue-700 transition">
+            Upload Files
+            <input
+              type="file"
+              multiple
+              onChange={handleFileChange}
+              accept=".pdf,.jpg,.jpeg,.png,.webp"
+              className="hidden"
+            />
+          </label>
+
+          <span className="text-sm text-gray-600">
+            {selectedFiles.length} files selected
+          </span>
         </div>
-        {filePreview && (
+        {/* {filePreview && (
           <div className="mt-4">
             <label className="font-semibold block mb-1">File Preview:</label>
             {filePreview.type === "image" && (
@@ -341,6 +507,43 @@ function AddConfirmationletter() {
             {filePreview.type === "doc" && (
               <p className="text-gray-700">📄 {filePreview.name}</p>
             )}
+          </div>
+        )} */}
+        {filePreviews.length > 0 && (
+          <div className="mt-4 md:col-span-2">
+            <label className="font-semibold block mb-3">File Previews:</label>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {filePreviews.map((file, index) => (
+                <div key={index} className="border rounded-lg p-2 relative">
+                  {" "}
+                  <button
+                    type="button"
+                    onClick={() => removeFile(index)}
+                    className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 text-xs z-10"
+                  >
+                    ✕
+                  </button>
+                  {file.type === "image" && (
+                    <img
+                      src={file.url}
+                      alt={`Preview ${index}`}
+                      className="w-full h-40 object-cover rounded"
+                    />
+                  )}
+                  {file.type === "pdf" && (
+                    <iframe
+                      src={file.url}
+                      title={`PDF ${index}`}
+                      className="w-full h-40 rounded"
+                    />
+                  )}
+                  {file.type === "doc" && (
+                    <p className="text-gray-700 text-sm">📄 {file.name}</p>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         )}
 

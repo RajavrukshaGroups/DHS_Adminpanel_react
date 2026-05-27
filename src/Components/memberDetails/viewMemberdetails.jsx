@@ -68,7 +68,8 @@ function ViewMemberdetails() {
         {
           name: member.name,
           email: member.email,
-          SeniorityID: member.SeniorityID,
+          // SeniorityID: member.SeniorityID,
+          MembershipNo: member.MembershipNo,
           password: member.password,
         },
       );
@@ -90,7 +91,7 @@ function ViewMemberdetails() {
           <div className="mb-4 text-center">
             <input
               type="text"
-              placeholder="Search by name, email or Seniority ID"
+              placeholder="Search by name, email or Seniority ID or Membership No"
               className="border border-gray-300 rounded px-4 py-2 w-full max-w-md"
               value={searchTerm}
               onChange={(e) => {
@@ -107,6 +108,7 @@ function ViewMemberdetails() {
                 <th className="border px-3 py-2 text-center">Mobile No</th>
                 <th className="border px-3 py-2 text-center">Email</th>
                 <th className="border px-3 py-2 text-center">Seniority ID</th>
+                <th className="border px-3 py-2 text-center">Membership No</th>
                 <th className="border px-3 py-2 text-center">Password</th>
                 <th className="border px-3 py-2 text-center">Status</th>
                 <th className="border px-3 py-2 text-center">Send email</th>
@@ -136,6 +138,9 @@ function ViewMemberdetails() {
                     </td>
                     <td className="border px-3 py-2 text-center">
                       {member.SeniorityID}
+                    </td>
+                    <td className="border px-3 py-2 text-center">
+                      {member.MembershipNo}{" "}
                     </td>
                     <td className="border px-3 py-2 text-center">
                       {member.password}

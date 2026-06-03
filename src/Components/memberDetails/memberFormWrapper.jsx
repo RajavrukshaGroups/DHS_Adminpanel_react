@@ -224,6 +224,7 @@ const MemberFormWrapper = () => {
 
   const validatePersonalDetails = (data) => {
     const errors = {};
+    console.log("errors", errors);
     if (!data.salutation.trim()) errors.salutation = "Salutation is required";
     if (!data.name.trim()) errors.name = "Name is required";
     if (!data.mobile) errors.mobile = "Mobile is required";
@@ -237,10 +238,10 @@ const MemberFormWrapper = () => {
     if (!data.dob.trim()) errors.dob = "Date of Birth is required";
     if (!data.fatherSpouse.trim())
       errors.fatherSpouse = "Father/Spouse Name is required";
-    if (!data.correspondenceAddress.trim())
-      errors.correspondenceAddress = "Correspondence Address is required";
-    if (!data.permanentAddress.trim())
-      errors.permanentAddress = "Permanent Address is required";
+    // if (!data.correspondenceAddress.trim())
+    //   errors.correspondenceAddress = "Correspondence Address is required";
+    // if (!data.permanentAddress.trim())
+    //   errors.permanentAddress = "Permanent Address is required";
     // if (!data.workingAddress.trim())
     //   errors.workingAddress = "Working Address is required";
 
@@ -277,8 +278,8 @@ const MemberFormWrapper = () => {
       errors.membershipNo = "Membership No is required";
     if (!data.cunfirmationLetterNo.trim())
       errors.cunfirmationLetterNo = "Confirmation Letter No is required";
-    if (!data.shareCertificateNo.trim())
-      errors.shareCertificateNo = "Share Certificate No is required";
+    // if (!data.shareCertificateNo.trim())
+    //   errors.shareCertificateNo = "Share Certificate No is required";
 
     // Membership Details
     if (!data.recieptNo.trim()) errors.recieptNo = "Receipt No is required";
@@ -334,7 +335,7 @@ const MemberFormWrapper = () => {
 
     if (
       ["cheque", "online", "card"].includes(
-        formData?.paymentMode?.toLowerCase()
+        formData?.paymentMode?.toLowerCase(),
       )
     ) {
       if (!formData.bankName.trim()) {
@@ -374,7 +375,7 @@ const MemberFormWrapper = () => {
       "e.target.name:",
       e.target.name,
       "e.target.value:",
-      e.target.value
+      e.target.value,
     );
 
     const { name, value } = e.target;
@@ -414,10 +415,23 @@ const MemberFormWrapper = () => {
     // Validate form data here and set errors if any
     const personalErrors = validatePersonalDetails(formData);
 
+    // if (Object.keys(personalErrors).length > 0) {
+    //   setFormErrors(personalErrors);
+    //   window.scrollTo({ top: 0, behavior: "smooth" });
+    //   setLoading(false); // Stop loading on validation error
+    //   return;
+    // }
     if (Object.keys(personalErrors).length > 0) {
       setFormErrors(personalErrors);
+
+      const firstError = Object.values(personalErrors)[0];
+
+      toast.error(firstError);
+
+      console.log("Validation Errors:", personalErrors);
+
       window.scrollTo({ top: 0, behavior: "smooth" });
-      setLoading(false); // Stop loading on validation error
+      setLoading(false);
       return;
     }
     // setFormErrors(validationErrors);

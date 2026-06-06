@@ -21,7 +21,7 @@ function ViewUserdetails() {
       const response = await axiosInstance.get(
         `/member/view-member-details?page=${page}&search=${encodeURIComponent(
           search,
-        )}`,
+        )}&status=active`,
       );
       console.log("response", response);
       setMemberDetails(response.data || []);
@@ -38,6 +38,12 @@ function ViewUserdetails() {
         setErrorMessage("An unexpected error occurred.");
       }
     }
+  };
+
+  const formatDate = (date) => {
+    if (!date) return "-";
+
+    return new Date(date).toLocaleDateString("en-GB").replace(/\//g, "-");
   };
 
   const handleCheckAndNavigate = async (id) => {
@@ -114,19 +120,29 @@ function ViewUserdetails() {
             <thead className="bg-gray-100">
               <tr>
                 <th className="border px-3 py-2 text-center">S.No</th>
-                <th className="border px-3 py-2 text-center">
+                <th className="border px-3 py-2 text-center min-w-[120px]:">
+                  Date
+                </th>
+                {/* <th className="border px-3 py-2 text-center">
                   Member details & Seniority ID
+                </th> */}
+                <th className="border px-3 py-2 text-center min-w-[220px]">
+                  Member details
+                </th>{" "}
+                <th className="border px-3 py-2 text-center min-w-[250px]">
+                  Project
                 </th>
-                <th className="border px-3 py-2 text-center">Project</th>
-                <th className="border px-3 py-2 text-center">Project Size </th>
-                <th className="border px-3 py-2 text-center">
-                  Project Price (₹)
+                <th className="border px-3 py-2 text-center min-w-[150px]">
+                  Project Size{" "}
                 </th>
-                <th className="border px-3 py-2 text-center">
-                  Paid Amount (₹)
+                <th className="border px-3 py-2 text-center min-w-[150px]">
+                  Project Price
                 </th>
-                <th className="border px-3 py-2 text-center">
-                  Pending Amount (₹)
+                <th className="border px-3 py-2 text-center min-w-[135px]">
+                  Paid Amount
+                </th>
+                <th className="border px-3 py-2 text-center min-w-[135px]">
+                  Pending Amount
                 </th>
                 <th className="border px-3 py-2 text-center">
                   Payment History
@@ -166,10 +182,20 @@ function ViewUserdetails() {
                         {/* {index + 1} */}
                         {(currentPage - 1) * 10 + index + 1}
                       </td>
+                      {/* <td className="border px-3 py-2 text-center">
+                        {formatDate(member.date)}
+                      </td> */}
+                      <td className="border px-4 py-3 min-w-[120px] whitespace-nowrap">
+                        {formatDate(member.date)}
+                      </td>
                       <td className="border px-3 py-2 text-center">
                         {member.name} <br />
                         <span className="text-xs text-gray-500">
                           {member.SeniorityID}
+                          <br />
+                          <span className="text-red-500">
+                            Member No:{member.MembershipNo}
+                          </span>
                         </span>
                       </td>
                       <td className="border px-3 py-2 text-center">

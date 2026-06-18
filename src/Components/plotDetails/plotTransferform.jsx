@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 
 const PlotTransferForm = () => {
   const [loading, setLoading] = useState(false);
-  const [searchMode, setSearchMode] = useState("id"); // 'id' | 'name'
+  const [searchMode, setSearchMode] = useState("membershipNo"); // 'id' | 'name'
   const [nameQuery, setNameQuery] = useState("");
   const initialToMember = {
     saluation: "",
@@ -26,7 +26,8 @@ const PlotTransferForm = () => {
     reason: "",
     transferDate: "",
   };
-  const [selectedId, setSelectedId] = useState("");
+  // const [selectedId, setSelectedId] = useState("");
+  const [membershipNo, setMembershipNo] = useState("");
   const [memberData, setMemberData] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
   const [memberPhoto, setMemberPhoto] = useState(null);
@@ -74,7 +75,7 @@ const PlotTransferForm = () => {
     formData.append(
       "fromMember",
       JSON.stringify({
-        seniorityId: selectedId,
+        membershipNo: membershipNo,
         name: memberData.name,
         email: memberData.email,
         projectName: memberData.propertyDetails?.projectName || "",
@@ -83,7 +84,7 @@ const PlotTransferForm = () => {
           memberData.propertyDetails?.breadth
             ? `${memberData.propertyDetails.length}X${memberData.propertyDetails.breadth}`
             : "",
-      })
+      }),
     );
 
     formData.append(
@@ -102,7 +103,7 @@ const PlotTransferForm = () => {
         nomineeAge: toMember.nomineeAge,
         nomineeRelation: toMember.nomineeRelation,
         nomineeAddress: toMember.nomineeAddress,
-      })
+      }),
     );
 
     formData.append("reason", toMember.reason);
@@ -115,7 +116,7 @@ const PlotTransferForm = () => {
         headers: { "Content-Type": "multipart/form-data" },
       });
       toast.success("Plot transferred successfully.");
-      setSelectedId("");
+      setMembershipNo("");
       setMemberData(null);
       setMemberPhoto(null);
       setMemberSign(null);
@@ -130,15 +131,15 @@ const PlotTransferForm = () => {
 
   const handleFetchMember = async () => {
     setSearchResults([]);
-    if (searchMode === "id") {
-      if (!selectedId) {
-        toast.error("Please enter a Seniority ID.");
+    if (searchMode === "membershipNo") {
+      if (!membershipNo) {
+        toast.error("Please enter a Membership Number.");
         return;
       }
 
       try {
         const response = await axiosInstance.get(
-          `/plot/getMemberBySeniorityID/${selectedId}`
+          `/plot/getMemberByMembershipNo/${membershipNo}`,
         );
         setMemberData(response);
         setToMember({
@@ -171,8 +172,8 @@ const PlotTransferForm = () => {
       try {
         const res = await axiosInstance.get(
           `/member/view-member-details?page=1&search=${encodeURIComponent(
-            nameQuery.trim()
-          )}`
+            nameQuery.trim(),
+          )}`,
         );
         const results = Array.isArray(res.data) ? res.data : [];
         if (results.length === 0) {
@@ -183,10 +184,10 @@ const PlotTransferForm = () => {
         }
         if (results.length === 1) {
           const only = results[0];
-          if (only.SeniorityID) {
-            setSelectedId(only.SeniorityID);
+          if (only.MembershipNo) {
+            setMembershipNo(only.MembershipNo);
             const response = await axiosInstance.get(
-              `/plot/getMemberBySeniorityID/${only.SeniorityID}`
+              `/plot/getMemberByMembershipNo/${only.MembershipNo}`,
             );
             setMemberData(response);
             setToMember({
@@ -223,10 +224,10 @@ const PlotTransferForm = () => {
 
   const handleSelectMemberFromList = async (member) => {
     try {
-      if (!member?.SeniorityID) return;
-      setSelectedId(member.SeniorityID);
+      if (!member?.MembershipNo) return;
+      setMembershipNo(member.MembershipNo);
       const response = await axiosInstance.get(
-        `/plot/getMemberBySeniorityID/${member.SeniorityID}`
+        `/plot/getMemberByMembershipNo/${member.MembershipNo}`,
       );
       setMemberData(response);
       setToMember({
@@ -275,7 +276,7 @@ const PlotTransferForm = () => {
               Back
             </button>
           </div>
-          <h2 className="mb-6 text-2xl font-bold">Plot Transfer From</h2>
+          <h2 className="mb-6 text-2xl font-bold">Plot Transfer Form</h2>
           {loading && (
             <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/20">
               <ClipLoader color="#36d7b7" size={60} />
@@ -284,7 +285,9 @@ const PlotTransferForm = () => {
 
           <div className="grid gap-6 md:grid-cols-3">
             <div className="space-y-2">
-              <label className="block font-medium text-gray-800">Search Mode</label>
+              <label className="block font-medium text-gray-800">
+                Search Mode
+              </label>
               <select
                 className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
                 value={searchMode}
@@ -292,34 +295,34 @@ const PlotTransferForm = () => {
                   setSearchMode(e.target.value);
                   setSearchResults([]);
                   setMemberData(null);
-                  setSelectedId("");
+                  setMembershipNo("");
                   setNameQuery("");
                 }}
               >
-                <option value="id">By Seniority ID</option>
+                <option value="membershipNo">By Membership No</option>
                 <option value="name">By Name</option>
               </select>
             </div>
 
-            {searchMode === "id" && (
+            {searchMode === "membershipNo" && (
               <div className="space-y-2 md:col-span-1">
                 <label
-                  htmlFor="seniorityId"
+                  htmlFor="membershipNo"
                   className="block font-medium text-gray-800"
                 >
-                  Seniority ID
+                  Membership No
                 </label>
                 <div className="flex items-center space-x-2">
                   <input
-                    id="seniorityId"
+                    id="membershipNo"
                     type="text"
                     className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
-                    value={selectedId}
-                    onChange={(e) => setSelectedId(e.target.value)}
+                    value={membershipNo}
+                    onChange={(e) => setMembershipNo(e.target.value)}
                     onKeyDown={(e) => {
                       if (e.key === "Enter") handleFetchMember();
                     }}
-                    placeholder="Enter Seniority ID"
+                    placeholder="Enter Membership Number"
                   />
                   <button
                     type="button"
@@ -335,7 +338,10 @@ const PlotTransferForm = () => {
 
             {searchMode === "name" && (
               <div className="space-y-2 md:col-span-1">
-                <label htmlFor="nameSearch" className="block font-medium text-gray-800">
+                <label
+                  htmlFor="nameSearch"
+                  className="block font-medium text-gray-800"
+                >
                   Member Name
                 </label>
                 <div className="flex items-center space-x-2">
@@ -365,7 +371,9 @@ const PlotTransferForm = () => {
             {searchMode === "name" && searchResults.length > 0 && (
               <div className="md:col-span-3">
                 <div className="mt-2 border rounded p-3 bg-gray-50">
-                  <p className="font-medium text-gray-800 mb-2">Select a member:</p>
+                  <p className="font-medium text-gray-800 mb-2">
+                    Select a member:
+                  </p>
                   <ul className="space-y-2">
                     {searchResults.map((m) => (
                       <li
@@ -377,7 +385,9 @@ const PlotTransferForm = () => {
                         <span className="text-sm text-gray-800">
                           {`${m.name || ""}, ${m.email || ""}, ${m.mobileNumber || ""}`}
                         </span>
-                        <span className="text-xs text-gray-500">{m.SeniorityID ? `ID: ${m.SeniorityID}` : ""}</span>
+                        <span className="text-xs text-gray-500">
+                          {m.MembershipNo ? `ID: ${m.MembershipNo}` : ""}
+                        </span>
                       </li>
                     ))}
                   </ul>
@@ -439,7 +449,7 @@ const PlotTransferForm = () => {
                 value={
                   memberData?.dateofbirth
                     ? new Date(memberData.dateofbirth).toLocaleDateString(
-                        "en-GB"
+                        "en-GB",
                       ) // DD/MM/YYYY
                     : ""
                 }

@@ -7,28 +7,31 @@ const CancelledMembersTable = () => {
   const [cancelledMembers, setCancelledMembers] = useState([]);
   console.log(cancelledMembers, "cancelled members");
   const handleDelete = async (memberId) => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this cancellation record?",
+    );
+
+    if (!confirmed) return;
+
     try {
-      console.log(memberId, "member id");
-      const response = await axiosInstance
-        .post("/plot/delete-plote-cancelation", {
-          memberId: memberId, // Send this to backend
-        })
-        .then((res) => {
-          if (res) {
-            toast.success(res.message);
-          }
-        })
-        .catch((err) => {
-          toast.error("failed to delete or some other network erros ocuured");
-          console.error("failed to delete or some other network erros ocuured");
-        });
-      // ✅ Remove deleted member from the list in the frontend
-      setCancelledMembers((prevMembers) =>
-        prevMembers.filter((member) => member._id !== memberId)
+      const res = await axiosInstance.post("/plot/delete-plote-cancelation", {
+        memberId,
+      });
+
+      toast.success(
+        res.data?.message || "Cancellation record deleted successfully",
       );
-      // Optionally refresh your data or UI
+
+      setCancelledMembers((prevMembers) =>
+        prevMembers.filter((member) => member._id !== memberId),
+      );
     } catch (error) {
       console.error("Error deleting plot cancellation:", error);
+
+      toast.error(
+        error?.response?.data?.message ||
+          "Failed to delete cancellation record",
+      );
     }
   };
 
@@ -46,7 +49,7 @@ const CancelledMembersTable = () => {
         <thead className="bg-gray-100">
           <tr>
             <th className="border px-3 py-2 text-center">S.No</th>
-            <th className="border px-3 py-2 text-center">Seniority ID</th>
+            <th className="border px-3 py-2 text-center">Membership No</th>
             <th className="border px-3 py-2 text-center">Name</th>
             <th className="border px-3 py-2 text-center">Email</th>
             <th className="border px-3 py-2 text-center">Mobile</th>
@@ -71,7 +74,7 @@ const CancelledMembersTable = () => {
               <tr key={idx} className="hover:bg-gray-50">
                 <td className="border px-3 py-2 text-center">{idx + 1}</td>
                 <td className="border px-3 py-2 text-center">
-                  {member.SeniorityID}
+                  {member.MembershipNo}
                 </td>
                 <td className="border px-3 py-2 text-center">{member.name}</td>
                 <td className="border px-3 py-2 text-center">{member.email}</td>
@@ -84,10 +87,17 @@ const CancelledMembersTable = () => {
                 <td className="border px-3 py-2 text-center">
                   {member.propertyDetails?.propertySize}
                 </td>
-                <td className="border px-3 py-2 text-center">
+                {/* <td className="border px-3 py-2 text-center">
                   {new Date(
                     member.cancellationDetails?.cancellationDate
                   ).toLocaleDateString()}
+                </td> */}
+                <td className="border px-3 py-2 text-center">
+                  {member.cancellationDetails?.cancellationDate
+                    ? new Date(
+                        member.cancellationDetails.cancellationDate,
+                      ).toLocaleDateString("en-GB")
+                    : "-"}
                 </td>
                 <td className="border px-3 py-2 text-center">
                   {member.cancellationDetails?.reason}
@@ -111,7 +121,7 @@ const CancelledMembersTable = () => {
                 </td>
                 <td
                   onClick={() => handleDelete(member._id)}
-                  className="border px-3 py-2 text-center"
+                  className="border px-3 py-2 text-center cursor-pointer"
                 >
                   🗑️
                 </td>

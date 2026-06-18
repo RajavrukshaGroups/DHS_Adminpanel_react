@@ -1,15 +1,19 @@
-import { ArrowLeft, Calendar } from "lucide-react";
+import { ArrowLeft, Calendar, X } from "lucide-react";
 import axiosInstance from "../../api/interceptors";
 import { useState, useEffect } from "react";
 import { FiSearch } from "react-icons/fi";
 import ClipLoader from "react-spinners/ClipLoader";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const PlotCancellationForm = () => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [selectedId, setSelectedId] = useState("");
+  // const [selectedId, setSelectedId] = useState("");
+  const [membershipNo, setMembershipNo] = useState("");
   const [memberData, setMemberData] = useState(null);
   const [cancelLetter, setCancelLetter] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState("");
   const [cancelData, setCancelData] = useState({
     reason: "",
     cancellationDate: "",
@@ -17,13 +21,13 @@ const PlotCancellationForm = () => {
   });
 
   const handleFetchMember = async () => {
-    if (!selectedId) {
-      toast.error("Please enter a Seniority ID.");
+    if (!membershipNo) {
+      toast.error("Please enter a Membership No.");
       return;
     }
     try {
       const response = await axiosInstance.get(
-        `/plot/getMemberBySeniorityID/${selectedId}`
+        `/plot/getMemberByMembershipNo/${membershipNo}`,
       );
       setMemberData(response);
     } catch (error) {
@@ -33,9 +37,22 @@ const PlotCancellationForm = () => {
     }
   };
 
+  // const handleDocumentUpload = (e) => {
+  //   const file = e.target.files[0];
+  //   setCancelLetter(file);
+  // };
   const handleDocumentUpload = (e) => {
     const file = e.target.files[0];
+
+    if (!file) return;
+
     setCancelLetter(file);
+
+    if (file.type.startsWith("image/")) {
+      setPreviewUrl(URL.createObjectURL(file));
+    } else {
+      setPreviewUrl("");
+    }
   };
 
   const handleSubmit = async () => {
@@ -53,7 +70,7 @@ const PlotCancellationForm = () => {
     formData.append(
       "member",
       JSON.stringify({
-        seniorityId: selectedId,
+        membershipNo: membershipNo,
         name: memberData.name,
         email: memberData.email,
         projectName: memberData.propertyDetails?.projectName || "",
@@ -62,13 +79,16 @@ const PlotCancellationForm = () => {
           memberData.propertyDetails?.breadth
             ? `${memberData.propertyDetails.length}X${memberData.propertyDetails.breadth}`
             : "",
-      })
+      }),
     );
     try {
       const res = await axiosInstance.post("/plot/plot-cancel", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       toast.success("Plot cancellation successful.");
+      setTimeout(() => {
+        navigate("/PlotCancelledList");
+      }, 1000);
       console.log(res);
     } catch (err) {
       toast.error("Cancellation failed.");
@@ -99,22 +119,23 @@ const PlotCancellationForm = () => {
           <div className="grid gap-6 md:grid-cols-3">
             <div className="space-y-2">
               <label
-                htmlFor="seniorityId"
+                htmlFor="membershipNo"
                 className="block text-sm font-medium text-gray-700"
               >
-                Seniority ID
+                {/* Seniority ID */}
+                Membership Number
               </label>
               <div className="flex items-center space-x-2">
                 <input
-                  id="seniorityId"
+                  id="membershipNo"
                   type="text"
                   className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
-                  value={selectedId}
-                  onChange={(e) => setSelectedId(e.target.value)}
+                  value={membershipNo}
+                  onChange={(e) => setMembershipNo(e.target.value)}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") handleFetchMember();
                   }}
-                  placeholder="Enter Seniority ID"
+                  placeholder="Enter Membership Number"
                 />
                 <button
                   type="button"
@@ -260,16 +281,58 @@ const PlotCancellationForm = () => {
               />
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-2 mb-6">
               <label className="block text-sm font-medium text-gray-700">
                 Upload Cancellation Letter
               </label>
+
               <input
                 type="file"
-                name="memberPhoto"
-                accept="document/*"
+                accept=".pdf,.jpg,.jpeg,.png"
                 onChange={handleDocumentUpload}
+                className="w-full"
               />
+
+              {cancelLetter && (
+                <div className="mt-3 border rounded-lg p-3 bg-gray-50 relative">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCancelLetter(null);
+                      setPreviewUrl("");
+                    }}
+                    className="absolute top-2 right-2 text-red-500 hover:text-red-700"
+                  >
+                    <X size={18} />
+                  </button>
+
+                  <p className="text-sm font-medium break-all">
+                    {cancelLetter.name}
+                  </p>
+
+                  {previewUrl ? (
+                    <img
+                      src={previewUrl}
+                      alt="Cancellation Letter Preview"
+                      className="mt-3 max-h-64 border rounded"
+                    />
+                  ) : (
+                    cancelLetter &&
+                    cancelLetter.type === "application/pdf" && (
+                      <div className="mt-2">
+                        <a
+                          href={URL.createObjectURL(cancelLetter)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 underline font-medium"
+                        >
+                          View PDF
+                        </a>
+                      </div>
+                    )
+                  )}
+                </div>
+              )}
             </div>
           </div>
 

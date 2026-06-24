@@ -344,7 +344,8 @@ function Dashboard() {
             </div>
           </div>
 
-          <div className="flex justify-center mt-10 gap-4">
+          {/* activate this delete receipts whenever u needed */}
+          {/* <div className="flex justify-center mt-10 gap-4">
             <button
               onClick={handleDeleteAllMembersAndReceiptsData}
               className="bg-red-600 text-white px-6 py-3 rounded-lg shadow hover:bg-red-700 transition"
@@ -358,15 +359,15 @@ function Dashboard() {
             >
               Delete All Receipts Data(Including Membership Fee)
             </button>
-          </div>
-          <div className="flex justify-center mt-10 gap-4">
+          </div> */}
+          {/* <div className="flex justify-center mt-10 gap-4">
             <button
               onClick={handleDeleteOtherReceipts}
               className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
             >
               Delete Receipts (Except Membership Fee)
             </button>
-          </div>
+          </div> */}
 
           <div className="mt-12 mx-auto w-11/12 max-w-5xl overflow-hidden rounded-lg border border-gray-300 bg-white shadow-md">
             <div className="p-8 text-gray-700 text-lg leading-relaxed animate-scroll overflow-y-auto h-72 hover:[animation-play-state:paused] space-y-4">
